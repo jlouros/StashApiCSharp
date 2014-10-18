@@ -1,4 +1,4 @@
-TeamCityApiDotNet
+Atlassian Stash API .Net
 =================
 
-TeamCity API wrapper built in C#
+C# API wrapper for Atlassian Stash

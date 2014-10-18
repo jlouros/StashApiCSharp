@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlassian.Stash.Api", "Atlassian.Stash.Api\Atlassian.Stash.Api.csproj", "{60BB1478-E71E-4278-BEBE-9769624A7A0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlassian.Stash.Api.IntegrationTests", "Atlassian.Stash.Api.IntegrationTests\Atlassian.Stash.Api.IntegrationTests.csproj", "{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{60BB1478-E71E-4278-BEBE-9769624A7A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60BB1478-E71E-4278-BEBE-9769624A7A0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60BB1478-E71E-4278-BEBE-9769624A7A0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
