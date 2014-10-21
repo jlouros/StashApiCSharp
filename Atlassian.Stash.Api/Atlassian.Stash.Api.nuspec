@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+	<iconUrl>https://developer.atlassian.com/imgs/charlie.png</iconUrl>
+    <licenseUrl>https://raw.githubusercontent.com/jlouros/StashApiCSharp/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/jlouros/StashApiCSharp</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>"Alpha package"
+
+Including only basic get methods for:
+   - GET all Projects
+   - GET all Repositories of a Projects
+   - GET all Tags from a Repository</releaseNotes>
+    <copyright>Copyright John Louros 2014</copyright>
+    <tags>Atlassian Stash API-Wrapper</tags>
+	<dependencies>
+		<dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.2" />
+	</dependencies>
+  </metadata>
+</package>
