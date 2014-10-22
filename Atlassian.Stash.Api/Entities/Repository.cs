@@ -12,5 +12,8 @@ namespace Atlassian.Stash.Api.Entities
         public bool Forkable { get; set; }
         public bool @Public { get; set; }
         public string CloneUrl { get; set; }
+        public Link Link { get; set; }
+        public Links Links { get; set; }
+        public Project Project { get; set; }
     }
 }

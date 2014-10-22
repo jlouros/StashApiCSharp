@@ -1,9 +1,7 @@
-﻿using Atlassian.Stash.Api.Entities;
-using Atlassian.Stash.Api.Helpers;
+﻿using Atlassian.Stash.Api.Helpers;
 using Atlassian.Stash.Api.Wrappers;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -44,29 +42,27 @@ namespace Atlassian.Stash.Api
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", userPassBase64);
         }
 
-        public async Task<IEnumerable<Project>> GetProjectsAsync()
+        public async Task<T> GetSingleTAsync<T>(params string[] inputs)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(RestUrlsMap.GetProjectsUrl());
+            HttpResponseMessage response = await _httpClient.GetAsync(RestUrlsMap.GetSingleTUrl<T>(inputs));
 
             string json = await response.Content.ReadAsStringAsync();
 
-            var projectsResponse = JsonConvert.DeserializeObject<ResponseWrapper<Project>>(json);
+            var projectsResponse = JsonConvert.DeserializeObject<T>(json);
 
-            return projectsResponse.Values;
+            return projectsResponse;
         }
 
-        public async Task<IEnumerable<T>> GetTAsync<T>(params string[] inputs)
+        public async Task<ResponseWrapper<T>> GetManyTAsync<T>(params string[] inputs)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(RestUrlsMap.GetTUrl<T>(inputs));
+            HttpResponseMessage response = await _httpClient.GetAsync(RestUrlsMap.GetManyTUrl<T>(inputs));
 
             string json = await response.Content.ReadAsStringAsync();
 
             var projectsResponse = JsonConvert.DeserializeObject<ResponseWrapper<T>>(json);
 
-            return projectsResponse.Values;
-            
+            return projectsResponse;
         }
-
     }
 
     

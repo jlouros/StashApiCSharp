@@ -8,6 +8,11 @@ namespace Atlassian.Stash.Api.IntegrationTests
     [TestClass]
     public class StashClientTester
     {
+        // data required to run this tests
+        // please review this variables before you run this tests
+        private const string EXISTING_PROJECT_NAME = "test";
+        private const string EXISTING_REPOSITORY_NAME = "testrepository";
+
         private StashClient _stashClient;
 
         [TestInitialize]
@@ -18,34 +23,56 @@ namespace Atlassian.Stash.Api.IntegrationTests
         }
 
         [TestMethod]
-        public void Can_GetProjects()
+        public void Can_GetManyProjects_UsingGeneric()
         {
-            var projects = _stashClient.GetProjectsAsync().Result;
+            var response = _stashClient.GetManyTAsync<Project>().Result;
+            var projects = response.Values;
 
             Assert.IsNotNull(projects);
             Assert.IsInstanceOfType(projects, typeof(IEnumerable<Project>));
-            Assert.IsTrue(projects.Count() > 0);
+            Assert.IsTrue(projects.Any());
         }
 
         [TestMethod]
-        public void Can_GetProjects_UsingGeneric()
+        public void Can_GetSingleProject_UsingGeneric()
         {
-            var projects = _stashClient.GetTAsync<Project>().Result;
+            var project = _stashClient.GetSingleTAsync<Project>(EXISTING_PROJECT_NAME).Result;
 
-            Assert.IsNotNull(projects);
-            Assert.IsInstanceOfType(projects, typeof(IEnumerable<Project>));
-            Assert.IsTrue(projects.Count() > 0);
+            Assert.IsNotNull(project);
+            Assert.IsInstanceOfType(project, typeof(Project));
+            Assert.AreEqual(EXISTING_PROJECT_NAME.ToLower(), project.Name.ToLower());
         }
 
         [TestMethod]
-        public void Can_GetRepositories_UsingGeneric()
+        public void Can_GetManyRepositories_UsingGeneric()
         {
-            // todo: remove hardcoded value
-            var repositories = _stashClient.GetTAsync<Repository>("test").Result;
+            var response = _stashClient.GetManyTAsync<Repository>(EXISTING_PROJECT_NAME).Result;
+            var repositories = response.Values;
 
             Assert.IsNotNull(repositories);
             Assert.IsInstanceOfType(repositories, typeof(IEnumerable<Repository>));
-            Assert.IsTrue(repositories.Count() > 0);
+            Assert.IsTrue(repositories.Any());
+        }
+
+        [TestMethod]
+        public void Can_GetSingleRepository_UsingGeneric()
+        {
+            var repository = (_stashClient.GetSingleTAsync<Repository>(EXISTING_PROJECT_NAME, EXISTING_REPOSITORY_NAME).Result);
+
+            Assert.IsNotNull(repository);
+            Assert.IsInstanceOfType(repository, typeof(Repository));
+            Assert.AreEqual(EXISTING_REPOSITORY_NAME.ToLower(), repository.Name.ToLower());
+        }
+
+        [TestMethod]
+        public void Can_GetManyTags_UsingGeneric()
+        {
+            var response = _stashClient.GetManyTAsync<Tag>(EXISTING_PROJECT_NAME, EXISTING_REPOSITORY_NAME).Result;
+            var tags = response.Values;
+
+            Assert.IsNotNull(tags);
+            Assert.IsInstanceOfType(tags, typeof(IEnumerable<Tag>));
+            Assert.IsTrue(tags.Any());
         }
     }
 }

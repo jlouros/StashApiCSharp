@@ -48,8 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Clone.cs" />
+    <Compile Include="Entities\Link.cs" />
+    <Compile Include="Entities\Links.cs" />
     <Compile Include="Entities\Project.cs" />
     <Compile Include="Entities\Repository.cs" />
+    <Compile Include="Entities\Self.cs" />
     <Compile Include="Entities\Tag.cs" />
     <Compile Include="Helpers\RestUrlsMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,5 +1,6 @@
 ﻿using Atlassian.Stash.Api.Entities;
 using System;
+using System.Linq;
 
 namespace Atlassian.Stash.Api.Helpers
 {
@@ -10,38 +11,65 @@ namespace Atlassian.Stash.Api.Helpers
             return "/rest/api/1.0/projects";
         }
 
-        public static string GetProjectsUrl(params object[] inputs)
+        public static string GetProjectUrl(params string[] inputs)
         {
-            return String.Format("/rest/api/1.0/projects", inputs);
+            StringParamsValidator(1, inputs);
+
+            return String.Format("/rest/api/1.0/projects/{0}", inputs);
         }
 
-        public static string GetRepositoriesUrl(string projectKey)
+        public static string GetRepositoriesUrl(params string[] inputs)
         {
-            return String.Format("/rest/api/1.0/projects/{0}/repos", projectKey);
-        }
+            StringParamsValidator(1, inputs);
 
-        public static string GetRepositoriesUrl(params object[] inputs)
-        {
             return String.Format("/rest/api/1.0/projects/{0}/repos", inputs);
         }
 
-        public static string GetTagsUrl(string projectKey, string repositorySlug)
+        public static string GetRepositoryUrl(params string[] inputs)
         {
-            return String.Format("/rest/api/1.0/projects/{0}/repos/{1}/tags", projectKey, repositorySlug);
+            StringParamsValidator(2, inputs);
+
+            return String.Format("/rest/api/1.0/projects/{0}/repos/{1}", inputs);
         }
 
-        public static string GetTagsUrl(params object[] inputs)
+        public static string GetTagsUrl(params string[] inputs)
         {
+            StringParamsValidator(2, inputs);
+
             return String.Format("/rest/api/1.0/projects/{0}/repos/{1}/tags", inputs);
         }
 
-        public static string GetTUrl<T>(params string[] inputs)
+        private static void StringParamsValidator(int validParamCount, params string[] inputs)
+        {
+            if (inputs.Length != validParamCount || inputs.Any(x => string.IsNullOrWhiteSpace(x)))
+                throw new ArgumentException(string.Format("Wrong number of parameters passed, expecting exactly '{0}' parameters", validParamCount));
+        }
+
+        // todo: add unit tests
+        public static string GetSingleTUrl<T>(params string[] inputs)
         {
             Type T_Type = typeof(T);
 
             if (T_Type == typeof(Project))
             {
-                return GetProjectsUrl(inputs);
+                return GetProjectUrl(inputs);
+            }
+
+            else if (T_Type == typeof(Repository))
+            {
+                return GetRepositoryUrl(inputs);
+            }
+
+            throw new ArgumentException(String.Format("Unable to find method to handle the requested type: '{0}'", T_Type.ToString()));
+        }
+
+        public static string GetManyTUrl<T>(params string[] inputs)
+        {
+            Type T_Type = typeof(T);
+
+            if (T_Type == typeof(Project))
+            {
+                return GetProjectsUrl();
             }
             else if (T_Type == typeof(Repository))
             {
@@ -52,7 +80,7 @@ namespace Atlassian.Stash.Api.Helpers
                 return GetTagsUrl(inputs);
             }
 
-            throw new ArgumentException(String.Format("Unsupported type: '{0}'", T_Type.ToString()));
+            throw new ArgumentException(String.Format("Unable to find method to handle the requested type: '{0}'", T_Type.ToString()));
         }
     }
 }
