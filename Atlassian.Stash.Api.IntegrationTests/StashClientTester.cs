@@ -1,4 +1,5 @@
 ﻿using Atlassian.Stash.Api.Entities;
+using Atlassian.Stash.Api.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,18 @@ namespace Atlassian.Stash.Api.IntegrationTests
         }
 
         [TestMethod]
+        public void Can_GetManyProjects_UsingGeneric_WithRequestOptions()
+        {
+            int requestLimit = 1;
+            var response = _stashClient.GetManyTAsync<Project>(new RequestOptions { Limit = requestLimit, Start = 1 }).Result;
+            var projects = response.Values;
+
+            Assert.IsNotNull(projects);
+            Assert.IsInstanceOfType(projects, typeof(IEnumerable<Project>));
+            Assert.AreEqual(requestLimit, projects.Count());
+        }
+
+        [TestMethod]
         public void Can_GetSingleProject_UsingGeneric()
         {
             var project = _stashClient.GetSingleTAsync<Project>(EXISTING_PROJECT_NAME).Result;
@@ -46,12 +59,24 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetManyRepositories_UsingGeneric()
         {
-            var response = _stashClient.GetManyTAsync<Repository>(EXISTING_PROJECT_NAME).Result;
+            var response = _stashClient.GetManyTAsync<Repository>(null, EXISTING_PROJECT_NAME).Result;
             var repositories = response.Values;
 
             Assert.IsNotNull(repositories);
             Assert.IsInstanceOfType(repositories, typeof(IEnumerable<Repository>));
             Assert.IsTrue(repositories.Any());
+        }
+
+        [TestMethod]
+        public void Can_GetManyRepositories_UsingGeneric_WithRequestOptions()
+        {
+            int requestLimit = 2;
+            var response = _stashClient.GetManyTAsync<Repository>(new RequestOptions { Limit = requestLimit }, EXISTING_PROJECT_NAME).Result;
+            var repositories = response.Values;
+
+            Assert.IsNotNull(repositories);
+            Assert.IsInstanceOfType(repositories, typeof(IEnumerable<Repository>));
+            Assert.AreEqual(requestLimit, repositories.Count());
         }
 
         [TestMethod]
@@ -67,12 +92,24 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetManyTags_UsingGeneric()
         {
-            var response = _stashClient.GetManyTAsync<Tag>(EXISTING_PROJECT_NAME, EXISTING_REPOSITORY_NAME).Result;
+            var response = _stashClient.GetManyTAsync<Tag>(null, EXISTING_PROJECT_NAME, EXISTING_REPOSITORY_NAME).Result;
             var tags = response.Values;
 
             Assert.IsNotNull(tags);
             Assert.IsInstanceOfType(tags, typeof(IEnumerable<Tag>));
             Assert.IsTrue(tags.Any());
+        }
+
+        [TestMethod]
+        public void Can_GetManyTags_UsingGeneric_WithRequestOptions()
+        {
+            int requestLimit = 1;
+            var response = _stashClient.GetManyTAsync<Tag>(new RequestOptions { Limit = requestLimit }, EXISTING_PROJECT_NAME, EXISTING_REPOSITORY_NAME).Result;
+            var tags = response.Values;
+
+            Assert.IsNotNull(tags);
+            Assert.IsInstanceOfType(tags, typeof(IEnumerable<Tag>));
+            Assert.AreEqual(requestLimit, tags.Count());
         }
     }
 }

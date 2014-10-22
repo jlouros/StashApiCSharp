@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Atlassian.Stash.Api.Wrappers
+namespace Atlassian.Stash.Api.Helpers
 {
     public class ResponseWrapper<T>
     {

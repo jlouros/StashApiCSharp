@@ -58,7 +58,8 @@
     <Compile Include="Helpers\RestUrlsMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StashClient.cs" />
-    <Compile Include="Wrappers\ResponseWrapper.cs" />
+    <Compile Include="Helpers\RequestOptions.cs" />
+    <Compile Include="Helpers\ResponseWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

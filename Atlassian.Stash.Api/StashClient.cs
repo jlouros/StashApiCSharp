@@ -1,5 +1,4 @@
 ﻿using Atlassian.Stash.Api.Helpers;
-using Atlassian.Stash.Api.Wrappers;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
@@ -53,9 +52,9 @@ namespace Atlassian.Stash.Api
             return projectsResponse;
         }
 
-        public async Task<ResponseWrapper<T>> GetManyTAsync<T>(params string[] inputs)
+        public async Task<ResponseWrapper<T>> GetManyTAsync<T>(RequestOptions requestOptions = null, params string[] inputs)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(RestUrlsMap.GetManyTUrl<T>(inputs));
+            HttpResponseMessage response = await _httpClient.GetAsync(RestUrlsMap.GetManyTUrl<T>(requestOptions, inputs));
 
             string json = await response.Content.ReadAsStringAsync();
 
