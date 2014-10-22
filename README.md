@@ -11,6 +11,9 @@ There are 2 ways to use this library:
 
 * Install-Package Atlassian.Stash.Api -Pre (via Nuget)
 * Download source code and compile
+ 
+##NuGet
+https://www.nuget.org/packages/Atlassian.Stash.Api/
 
 ##Sample Usage
 To get a list of projects
