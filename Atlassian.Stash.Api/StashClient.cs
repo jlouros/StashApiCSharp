@@ -1,68 +1,36 @@
-﻿using Atlassian.Stash.Api.Helpers;
-using Newtonsoft.Json;
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Atlassian.Stash.Api.Api;
+using Atlassian.Stash.Api.Workers;
 
 namespace Atlassian.Stash.Api
 {
     public class StashClient
     {
-        private HttpClient _httpClient;
+        private HttpCommunicationWorker _httpWorker;
 
         public StashClient(string baseUrl, string base64Auth)
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri(baseUrl);
-
-            SetBasicAuthentication(base64Auth);
+            _httpWorker = new HttpCommunicationWorker(baseUrl, base64Auth);
+            InjectDependencies();
         }
 
         public StashClient(string baseUrl, string username, string password)
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri(baseUrl);
-
-            SetBasicAuthentication(username, password);
+            _httpWorker = new HttpCommunicationWorker(baseUrl, username, password);
+            InjectDependencies();
         }
 
-        public void SetBasicAuthentication(string base64Auth)
+        private void InjectDependencies()
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64Auth);
+            this.Projects = new Projects(_httpWorker);
+            this.Repositories = new Repositories(_httpWorker);
+            this.Tags = new Tags(_httpWorker);
         }
 
-        public void SetBasicAuthentication(string username, string password)
-        {
-            byte[] userPassBytes = Encoding.UTF8.GetBytes(string.Format("{0}:{1}", username, password));
-            string userPassBase64 = Convert.ToBase64String(userPassBytes);
+        public Projects Projects { get; private set; }
+        public Repositories Repositories { get; private set; }
+        public Branches Branches { get; private set; }
+        public Commits Commits { get; private set; }
+        public Tags Tags { get; private set; }
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", userPassBase64);
-        }
-
-        public async Task<T> GetSingleTAsync<T>(params string[] inputs)
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync(RestUrlsMap.GetSingleTUrl<T>(inputs));
-
-            string json = await response.Content.ReadAsStringAsync();
-
-            var projectsResponse = JsonConvert.DeserializeObject<T>(json);
-
-            return projectsResponse;
-        }
-
-        public async Task<ResponseWrapper<T>> GetManyTAsync<T>(RequestOptions requestOptions = null, params string[] inputs)
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync(RestUrlsMap.GetManyTUrl<T>(requestOptions, inputs));
-
-            string json = await response.Content.ReadAsStringAsync();
-
-            var projectsResponse = JsonConvert.DeserializeObject<ResponseWrapper<T>>(json);
-
-            return projectsResponse;
-        }
     }
-
-    
 }
