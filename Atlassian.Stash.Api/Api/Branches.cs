@@ -16,9 +16,9 @@ namespace Atlassian.Stash.Api.Api
             _httpWorker = httpWorker;
         }
 
-        public async Task<ResponseWrapper<Branch>> GetAll(string projectKey, string repositorySlug)
+        public async Task<ResponseWrapper<Branch>> GetAll(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
         {
-            string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_BRANCHES, null, projectKey, repositorySlug);
+            string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_BRANCHES, requestOptions, projectKey, repositorySlug);
 
             ResponseWrapper<Branch> response = await _httpWorker.GetAsync<ResponseWrapper<Branch>>(requestUrl);
 

@@ -13,6 +13,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         // please review this variables before you run this tests
         private const string EXISTING_PROJECT_NAME = "test";
         private const string EXISTING_REPOSITORY_NAME = "testrepository";
+        private const string EXISTING_COMMIT_ID = "92c374add7dc939383a92128a29a7ef96c8af723";
 
         private StashClient _stashClient;
 
@@ -115,31 +116,57 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetAllBranches()
         {
-            Assert.Fail();
+            var response = _stashClient.Branches.GetAll(EXISTING_PROJECT_NAME, EXISTING_REPOSITORY_NAME).Result;
+            var branches = response.Values;
+
+            Assert.IsNotNull(branches);
+            Assert.IsInstanceOfType(branches, typeof(IEnumerable<Branch>));
+            Assert.IsTrue(branches.Any());
         }
 
         [TestMethod]
         public void Can_GetAllBranches_WithRequestOptions()
         {
-            Assert.Fail();
+            int requestLimit = 1;
+            var response = _stashClient.Branches.GetAll(EXISTING_PROJECT_NAME, EXISTING_REPOSITORY_NAME, new RequestOptions { Limit = requestLimit }).Result;
+            var branches = response.Values;
+
+            Assert.IsNotNull(branches);
+            Assert.IsInstanceOfType(branches, typeof(IEnumerable<Branch>));
+            Assert.AreEqual(requestLimit, branches.Count());
         }
 
         [TestMethod]
         public void Can_GetAllCommits()
         {
-            Assert.Fail();
+            var response = _stashClient.Commits.GetAll(EXISTING_PROJECT_NAME, EXISTING_REPOSITORY_NAME).Result;
+            var commits = response.Values;
+
+            Assert.IsNotNull(commits);
+            Assert.IsInstanceOfType(commits, typeof(IEnumerable<Commit>));
+            Assert.IsTrue(commits.Any());
         }
 
         [TestMethod]
         public void Can_GetAllCommits_WithRequestOptions()
         {
-            Assert.Fail();
+            int requestLimit = 2;
+            var response = _stashClient.Commits.GetAll(EXISTING_PROJECT_NAME, EXISTING_REPOSITORY_NAME, new RequestOptions { Limit = requestLimit }).Result;
+            var commits = response.Values;
+
+            Assert.IsNotNull(commits);
+            Assert.IsInstanceOfType(commits, typeof(IEnumerable<Commit>));
+            Assert.AreEqual(requestLimit, commits.Count());
         }
 
         [TestMethod]
         public void Can_GetByIdCommit()
         {
-            Assert.Fail();
+            var commit = _stashClient.Commits.GetById(EXISTING_PROJECT_NAME, EXISTING_REPOSITORY_NAME, EXISTING_COMMIT_ID).Result;
+
+            Assert.IsNotNull(commit);
+            Assert.IsInstanceOfType(commit, typeof(Commit));
+            Assert.AreEqual(EXISTING_COMMIT_ID.ToLower(), commit.Id.ToLower());
         }
     }
 }

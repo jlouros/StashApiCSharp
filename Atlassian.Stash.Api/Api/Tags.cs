@@ -1,4 +1,5 @@
-﻿using Atlassian.Stash.Api.Helpers;
+﻿using Atlassian.Stash.Api.Entities;
+using Atlassian.Stash.Api.Helpers;
 using Atlassian.Stash.Api.Workers;
 using System.Threading.Tasks;
 
@@ -14,11 +15,11 @@ namespace Atlassian.Stash.Api.Api
         {
             _httpWorker = httpWorker;
         }
-        public async Task<ResponseWrapper<Tags>> GetAll(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
+        public async Task<ResponseWrapper<Tag>> GetAll(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_TAGS, requestOptions, projectKey, repositorySlug);
 
-            ResponseWrapper<Tags> response = await _httpWorker.GetAsync<ResponseWrapper<Tags>>(requestUrl);
+            ResponseWrapper<Tag> response = await _httpWorker.GetAsync<ResponseWrapper<Tag>>(requestUrl);
 
             return response;
         }

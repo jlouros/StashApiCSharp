@@ -9,7 +9,7 @@ namespace Atlassian.Stash.Api.Helpers
         public bool IsLastPage { get; set; }
         public IEnumerable<T> Values { get; set; }
         public int Start { get; set; }
-        public int NextPageStart { get; set; }
+        public int? NextPageStart { get; set; }
     }
 
     #warning JSON Response error

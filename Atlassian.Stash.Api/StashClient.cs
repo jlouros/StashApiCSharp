@@ -23,6 +23,8 @@ namespace Atlassian.Stash.Api
         {
             this.Projects = new Projects(_httpWorker);
             this.Repositories = new Repositories(_httpWorker);
+            this.Branches = new Branches(_httpWorker);
+            this.Commits = new Commits(_httpWorker);
             this.Tags = new Tags(_httpWorker);
         }
 
