@@ -17,7 +17,7 @@ namespace Atlassian.Stash.Api.Api
             _httpWorker = httpWorker;
         }
 
-        public async Task<ResponseWrapper<Project>> GetAll(RequestOptions requestOptions = null)
+        public async Task<ResponseWrapper<Project>> Get(RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_PROJECTS, requestOptions);
 
@@ -33,6 +33,22 @@ namespace Atlassian.Stash.Api.Api
             Project response = await _httpWorker.GetAsync<Project>(requestUrl);
 
             return response;
+        }
+
+        public async Task<Project> Create(Project project)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_PROJECTS);
+
+            Project response = await _httpWorker.PostAsync<Project>(requestUrl, project);
+
+            return response;
+        }
+
+        public async Task Delete(string projectKey)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_PROJECT, null, projectKey);
+
+            await _httpWorker.DeleteAsync(requestUrl);
         }
     }
 }

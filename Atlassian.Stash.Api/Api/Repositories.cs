@@ -9,6 +9,8 @@ namespace Atlassian.Stash.Api.Api
     {
         private const string MANY_REPOSITORIES = "/rest/api/1.0/projects/{0}/repos";
         private const string ONE_REPOSITORY = "/rest/api/1.0/projects/{0}/repos/{1}";
+        private const string MANY_TAGS = "/rest/api/1.0/projects/{0}/repos/{1}/tags";
+        private const string MANY_FILES = "/rest/api/1.0/projects/{0}/repos/{1}/files";
 
         private HttpCommunicationWorker _httpWorker;
 
@@ -16,7 +18,7 @@ namespace Atlassian.Stash.Api.Api
         {
             _httpWorker = httpWorker;
         }
-        public async Task<ResponseWrapper<Repository>> GetAll(string projectKey, RequestOptions requestOptions = null)
+        public async Task<ResponseWrapper<Repository>> Get(string projectKey, RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_REPOSITORIES, requestOptions, projectKey);
 
@@ -32,6 +34,40 @@ namespace Atlassian.Stash.Api.Api
             Repository response = await _httpWorker.GetAsync<Repository>(requestUrl);
 
             return response;
+        }
+
+        public async Task<ResponseWrapper<Tag>> GetTags(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_TAGS, requestOptions, projectKey, repositorySlug);
+
+            ResponseWrapper<Tag> response = await _httpWorker.GetAsync<ResponseWrapper<Tag>>(requestUrl);
+
+            return response;
+        }
+
+        public async Task<ResponseWrapper<string>> GetFiles(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_FILES, requestOptions, projectKey, repositorySlug);
+
+            ResponseWrapper<string> response = await _httpWorker.GetAsync<ResponseWrapper<string>>(requestUrl);
+
+            return response;
+        }
+
+        public async Task<Repository> Create(string projectKey, Repository repository)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_REPOSITORIES, null, projectKey);
+
+            Repository response = await _httpWorker.PostAsync<Repository>(requestUrl, repository);
+
+            return response;
+        }
+
+        public async Task Delete(string projectKey, string repositorySlug)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_REPOSITORY, null, projectKey, repositorySlug);
+
+            await _httpWorker.DeleteAsync(requestUrl);
         }
     }
 }

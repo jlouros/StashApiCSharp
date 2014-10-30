@@ -9,7 +9,9 @@ namespace Atlassian.Stash.Api.Api
     {
         private const string MANY_COMMITS = "/rest/api/1.0/projects/{0}/repos/{1}/commits";
         private const string ONE_COMMIT = "/rest/api/1.0/projects/{0}/repos/{1}/commits/{2}";
-        
+        private const string CHANGES_UNTIL = "/rest/api/1.0/projects/{0}/repos/{1}/changes?until={2}";
+        private const string CHANGES_UNTIL_AND_SINCE = "/rest/api/1.0/projects/{0}/repos/{1}/changes?until={2}&since={3}";
+
         private HttpCommunicationWorker _httpWorker;
 
         internal Commits(HttpCommunicationWorker httpWorker)
@@ -31,6 +33,20 @@ namespace Atlassian.Stash.Api.Api
             string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_COMMIT, null, projectKey, repositorySlug, commitId);
 
             Commit response = await _httpWorker.GetAsync<Commit>(requestUrl);
+
+            return response;
+        }
+
+        public async Task<Changes> GetChanges(string projectKey, string repositorySlug, string untilCommit, string sinceCommit = null, RequestOptions requestOptions = null)
+        {
+            string requestUrl = "";
+
+            if (string.IsNullOrWhiteSpace(sinceCommit))
+                requestUrl = UrlBuilder.FormatRestApiUrl(CHANGES_UNTIL, requestOptions, projectKey, repositorySlug, untilCommit);
+            else
+                requestUrl = UrlBuilder.FormatRestApiUrl(CHANGES_UNTIL, requestOptions, projectKey, repositorySlug, untilCommit, sinceCommit);
+
+            Changes response = await _httpWorker.GetAsync<Changes>(requestUrl);
 
             return response;
         }

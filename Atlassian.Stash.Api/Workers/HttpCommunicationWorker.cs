@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,6 +51,32 @@ namespace Atlassian.Stash.Api.Workers
             T response = JsonConvert.DeserializeObject<T>(json);
 
             return response;
+        }
+
+        public async Task<T> PostAsync<T>(string requestUrl, T data)
+        {
+            HttpResponseMessage httpResponse = await _httpClient.PostAsync<T>(requestUrl, data, new JsonMediaTypeFormatter());
+
+            if (httpResponse.StatusCode != HttpStatusCode.Created)
+            {
+                throw new Exception(string.Format("POST operation unsuccessful. Got HTTP status code '{0}'", httpResponse.StatusCode));
+            }
+
+            string json = await httpResponse.Content.ReadAsStringAsync();
+
+            T response = JsonConvert.DeserializeObject<T>(json);
+
+            return response;
+        }
+
+        public async Task DeleteAsync(string requestUrl)
+        {
+            HttpResponseMessage httpResponse = await _httpClient.DeleteAsync(requestUrl);
+
+            if (httpResponse.StatusCode != HttpStatusCode.NoContent && httpResponse.StatusCode != HttpStatusCode.Accepted)
+            {
+                throw new Exception(string.Format("DELETE operation unsuccessful! Got HTTP status code '{0}'", httpResponse.StatusCode));
+            }
         }
     }
 }

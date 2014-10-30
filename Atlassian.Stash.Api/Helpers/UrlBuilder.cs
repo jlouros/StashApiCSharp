@@ -16,15 +16,17 @@ namespace Atlassian.Stash.Api.Helpers
             if (requestOptions != null)
             {
                 string partialUrl = "";
+                bool urlHasQueryParams = restUrl.IndexOf('?') > -1;
+
                 if (requestOptions.Limit != null && requestOptions.Limit.HasValue && requestOptions.Limit.Value > 0)
                 {
-                    partialUrl += string.IsNullOrWhiteSpace(partialUrl) ? "?" : "&";
+                    partialUrl += string.IsNullOrWhiteSpace(partialUrl) && !urlHasQueryParams ? "?" : "&";
                     partialUrl += string.Format("limit={0}", requestOptions.Limit.Value);
                 }
 
                 if (requestOptions.Start != null && requestOptions.Start.HasValue && requestOptions.Start.Value >= 0)
                 {
-                    partialUrl += string.IsNullOrWhiteSpace(partialUrl) ? "?" : "&";
+                    partialUrl += string.IsNullOrWhiteSpace(partialUrl) && !urlHasQueryParams ? "?" : "&";
                     partialUrl += string.Format("start={0}", requestOptions.Start.Value);
                 }
 

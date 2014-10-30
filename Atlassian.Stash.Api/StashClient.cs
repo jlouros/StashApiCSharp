@@ -25,14 +25,12 @@ namespace Atlassian.Stash.Api
             this.Repositories = new Repositories(_httpWorker);
             this.Branches = new Branches(_httpWorker);
             this.Commits = new Commits(_httpWorker);
-            this.Tags = new Tags(_httpWorker);
         }
 
         public Projects Projects { get; private set; }
         public Repositories Repositories { get; private set; }
         public Branches Branches { get; private set; }
         public Commits Commits { get; private set; }
-        public Tags Tags { get; private set; }
 
     }
 }
