@@ -75,6 +75,7 @@
     <Compile Include="Workers\HttpCommunicationWorker.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Atlassian.Stash.Api.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
