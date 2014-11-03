@@ -17,19 +17,19 @@ https://www.nuget.org/packages/Atlassian.Stash.Api/
 
 ##Sample Usage
 
-Create a Stash connection
+	//Create a Stash connection
 	// Stash client connection using basic authentication
 	var client = new StashClient("http://your_stash_server_url:7990/", "username", "password");
 
-Gets a list of projects (by default a maximum of 25 results will be return)
+	//Gets a list of projects (by default a maximum of 25 results will be return)
 	// we recommend use of async/await instead of forcing synchronous execution
 	var projects = client.Projects.Get().Result;
 
-Gets a list of repositories from project "PROJKEY" (by default a maximum of 25 results will be return)
+	//Gets a list of repositories from project "PROJKEY" (by default a maximum of 25 results will be return)
 	// using async
 	var repositories = await client.Repositories.Get("PROJKEY");
 
-Delete repository "REPOSLUG" from project "PROJKEY"
+	//Delete repository "REPOSLUG" from project "PROJKEY"
 	await client.Repositories.Delete("PROJKEY", "REPOSLUG");
 
 

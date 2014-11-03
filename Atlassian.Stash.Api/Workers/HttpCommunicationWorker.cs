@@ -78,5 +78,22 @@ namespace Atlassian.Stash.Api.Workers
                 throw new Exception(string.Format("DELETE operation unsuccessful! Got HTTP status code '{0}'", httpResponse.StatusCode));
             }
         }
+
+        public async Task DeleteAsyncWithJsonContent<T>(string requestUrl, T data)
+        {
+            var requestMessage = new HttpRequestMessage(HttpMethod.Delete, requestUrl);
+
+            string jsonData = JsonConvert.SerializeObject(data);
+
+            requestMessage.Content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+
+            HttpResponseMessage httpResponse = await _httpClient.SendAsync(requestMessage);
+            
+
+            if (httpResponse.StatusCode != HttpStatusCode.NoContent && httpResponse.StatusCode != HttpStatusCode.Accepted)
+            {
+                throw new Exception(string.Format("DELETE operation unsuccessful! Got HTTP status code '{0}'", httpResponse.StatusCode));
+            }
+        }
     }
 }

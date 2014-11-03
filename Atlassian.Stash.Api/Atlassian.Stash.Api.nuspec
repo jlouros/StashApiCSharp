@@ -11,15 +11,16 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>$description$</description>
 		<releaseNotes>
-			*Warning this package isn't backwards compatible*
-			Functionality changes:
-			- More comprehensive  API abstraction.
-			- API actions organized by Stash area (like projects, repositories, branches, etc)
+			Features:
+			- manage Stash 'Projects' (get information, create and delete capabilities)
+			- manage Stash 'Repositories' (get information, create and delete capabilities)
+			- manage Stash 'Branches' (get information, create and delete capabilities)
+			- get information about 'repository files'
+			- get information about 'Commits' and 'commit changes'
+			- get information about 'Tags'
 
 			New features:
-			- refactored StashClient class. Use it to access APIs actions (StashClient.Projects.{Action})
-			- Added GET capabilities for 'branches' and 'commits'
-			- Added DELETE capabilities for 'projects' and 'repositories'
+			- adding CREATE and DELETE capabilities to 'branches'
 		</releaseNotes>
 		<copyright>Copyright John Louros 2014</copyright>
 		<tags>Atlassian Stash API-Wrapper</tags>

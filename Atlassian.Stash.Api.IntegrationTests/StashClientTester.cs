@@ -15,6 +15,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         private const string EXISTING_REPOSITORY = "testrepository";
         private const string EXISTING_COMMIT = "86486c762e901ea5efef1b7d287514b7f2cc0c82";
         private const string EXISTING_OLDER_COMMIT = "9b533044d39811db518250b441d472ece955b0e3";
+        private const string EXISTING_BRANCH_REFERENCE = "refs/heads/master";
 
         private StashClient _stashClient;
 
@@ -263,6 +264,22 @@ namespace Atlassian.Stash.Api.IntegrationTests
             Assert.AreEqual(newRepository.Name.ToLower(), createdRepository.Name.ToLower());
 
             _stashClient.Repositories.Delete(EXISTING_PROJECT, createdRepository.Slug).Wait();
+        }
+
+        [TestMethod]
+        public void Can_CreateBranch_Than_DeleteBranch()
+        {
+            Branch newBranch = new Branch { Name = "test-repo", StartPoint = EXISTING_BRANCH_REFERENCE };
+            var createdBranch = _stashClient.Branches.Create(EXISTING_PROJECT, EXISTING_REPOSITORY, newBranch).Result;
+
+            Assert.IsNotNull(createdBranch);
+            Assert.IsInstanceOfType(createdBranch, typeof(Branch));
+            Assert.AreEqual(newBranch.Name.ToLower(), createdBranch.DisplayId.ToLower());
+
+
+            Branch deleteBranch = new Branch { Name = newBranch.Name, DryRun = false };
+
+            _stashClient.Branches.Delete(EXISTING_PROJECT, EXISTING_REPOSITORY, deleteBranch).Wait();
         }
 
         #endregion
