@@ -13,6 +13,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         // please review this variables before you run this tests
         private const string EXISTING_PROJECT = "test";
         private const string EXISTING_REPOSITORY = "testrepository";
+        private const string EXISTING_FILE = "test.txt";
         private const string EXISTING_COMMIT = "86486c762e901ea5efef1b7d287514b7f2cc0c82";
         private const string EXISTING_OLDER_COMMIT = "9b533044d39811db518250b441d472ece955b0e3";
         private const string EXISTING_BRANCH_REFERENCE = "refs/heads/master";
@@ -24,6 +25,24 @@ namespace Atlassian.Stash.Api.IntegrationTests
         {
             // WARNING: requires a real Stash instance and real User credentials
             _stashClient = new StashClient("http://ptr-vcs:7990/", "TestUser", "password");
+        }
+
+        [TestMethod]
+        public void Can_GetFileContents()
+        {
+            var response = _stashClient.Repositories.GetFileContents(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_FILE).Result;
+
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.FileContents.Count > 0);
+        }
+
+        [TestMethod]
+        public void Can_GetBranchesForCommit()
+        {
+            var response = _stashClient.Branches.GetByCommitId(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT).Result;
+
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Values.Any(x => x.Id.Equals(EXISTING_BRANCH_REFERENCE)));
         }
 
         [TestMethod]
