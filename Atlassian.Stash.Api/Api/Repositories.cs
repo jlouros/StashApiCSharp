@@ -11,6 +11,7 @@ namespace Atlassian.Stash.Api.Api
         private const string ONE_REPOSITORY = "/rest/api/1.0/projects/{0}/repos/{1}";
         private const string MANY_TAGS = "/rest/api/1.0/projects/{0}/repos/{1}/tags";
         private const string MANY_FILES = "/rest/api/1.0/projects/{0}/repos/{1}/files";
+        private const string ONE_FILE = "/rest/api/1.0/projects/{0}/repos/{1}/browse/{2}";
 
         private HttpCommunicationWorker _httpWorker;
 
@@ -50,6 +51,14 @@ namespace Atlassian.Stash.Api.Api
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_FILES, requestOptions, projectKey, repositorySlug);
 
             ResponseWrapper<string> response = await _httpWorker.GetAsync<ResponseWrapper<string>>(requestUrl);
+
+            return response;
+        }
+
+        public async Task<File> GetFileContents(string projectKey, string repositorySlug, string path, RequestOptions requestOptions = null)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_FILE, requestOptions, projectKey, repositorySlug, path);
+            File response = await _httpWorker.GetAsync<File>(requestUrl);
 
             return response;
         }
