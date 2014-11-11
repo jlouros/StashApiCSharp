@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 
 namespace Atlassian.Stash.Api.Helpers
 {
     internal class UrlBuilder
     {
         // todo: refactor, since I don't like this logic. At least use string builder
-        // todo: add unit tests
+        // todo: UrlEncode when necessary
         public static string FormatRestApiUrl(string restUrl, RequestOptions requestOptions = null, params string[] inputs)
         {
             StringParamsValidator(inputs.Length, inputs);
 
-            string resultingUrl = String.Format(restUrl, inputs);
+            string resultingUrl = String.Format(restUrl, UrlEscapeParams(inputs));
 
             if (requestOptions != null)
             {
@@ -48,5 +49,15 @@ namespace Atlassian.Stash.Api.Helpers
                 throw new ArgumentException(string.Format("Wrong number of parameters passed, expecting exactly '{0}' parameters", validParamCount));
         }
 
+        private static string[] UrlEscapeParams(string[] inputs)
+        {
+            string[] result = new string[inputs.Length];
+
+            for (int i = 0; i < inputs.Length; i++)
+                result[i] = HttpUtility.UrlEncode(inputs[i]);
+
+
+            return result;
+        }
     }
 }

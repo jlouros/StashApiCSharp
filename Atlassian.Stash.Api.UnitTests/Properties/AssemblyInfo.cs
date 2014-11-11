@@ -1,16 +1,16 @@
 ﻿using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Atlassian.Stash.Api")]
-[assembly: AssemblyDescription("C# API wrapper for Atlassian Stash")]
+[assembly: AssemblyTitle("Atlassian.Stash.Api.UnitTests")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("John Louros")]
-[assembly: AssemblyProduct("Atlassian.Stash.Api")]
-[assembly: AssemblyCopyright("Copyright © John Louros 2014")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Atlassian.Stash.Api.UnitTests")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.CompilerServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("85ea71d7-190f-4890-b259-089129d7f652")]
+[assembly: Guid("76abc2e5-d863-4c1e-ac2c-f19b2b131b16")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,9 +32,5 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.1.2.0")]
-[assembly: AssemblyFileVersion("0.1.2.0")]
-[assembly: AssemblyInformationalVersion("0.1.2-alpha")]
-
-// Expose internals to UnitTests project
-[assembly: InternalsVisibleTo("Atlassian.Stash.Api.UnitTests")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
