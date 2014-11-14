@@ -257,6 +257,16 @@ namespace Atlassian.Stash.Api.IntegrationTests
             Assert.AreEqual(requestLimit, changes.ListOfChanges.Count());
         }
 
+        [TestMethod]
+        public void Can_SetBranchPermissions()
+        {
+            var branchPermissions = new BranchPermission { type = "PATTERN", value = "**", groups = new string[] { "Null Group" }, users = new string[] { } };
+            var result = _stashClient.Branches.SetPermissions(EXISTING_PROJECT, EXISTING_REPOSITORY, branchPermissions).Result;
+
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(BranchPermission));
+        }
+
         #region Feature tests
 
         [TestMethod]
