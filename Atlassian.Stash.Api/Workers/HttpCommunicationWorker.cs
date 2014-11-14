@@ -56,12 +56,12 @@ namespace Atlassian.Stash.Api.Workers
             {
                 HttpResponseMessage httpResponse = await httpClient.GetAsync(requestUrl);
 
-                string json = await httpResponse.Content.ReadAsStringAsync();
+            string json = await httpResponse.Content.ReadAsStringAsync();
 
-                T response = JsonConvert.DeserializeObject<T>(json);
+            T response = JsonConvert.DeserializeObject<T>(json);
 
-                return response;
-            }
+            return response;
+        }
         }
 
         public async Task<T> PostAsync<T>(string requestUrl, T data)
@@ -70,17 +70,17 @@ namespace Atlassian.Stash.Api.Workers
             {
                 HttpResponseMessage httpResponse = await httpClient.PostAsync<T>(requestUrl, data, new JsonMediaTypeFormatter());
 
-                if (httpResponse.StatusCode != HttpStatusCode.Created)
-                {
-                    throw new Exception(string.Format("POST operation unsuccessful. Got HTTP status code '{0}'", httpResponse.StatusCode));
-                }
-
-                string json = await httpResponse.Content.ReadAsStringAsync();
-
-                T response = JsonConvert.DeserializeObject<T>(json);
-
-                return response;
+            if (httpResponse.StatusCode != HttpStatusCode.Created && httpResponse.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception(string.Format("POST operation unsuccessful. Got HTTP status code '{0}'", httpResponse.StatusCode));
             }
+
+            string json = await httpResponse.Content.ReadAsStringAsync();
+
+            T response = JsonConvert.DeserializeObject<T>(json);
+
+            return response;
+        }
         }
 
         public async Task DeleteAsync(string requestUrl)
@@ -89,31 +89,31 @@ namespace Atlassian.Stash.Api.Workers
             {
                 HttpResponseMessage httpResponse = await httpClient.DeleteAsync(requestUrl);
 
-                if (httpResponse.StatusCode != HttpStatusCode.NoContent && httpResponse.StatusCode != HttpStatusCode.Accepted)
-                {
-                    throw new Exception(string.Format("DELETE operation unsuccessful! Got HTTP status code '{0}'", httpResponse.StatusCode));
-                }
+            if (httpResponse.StatusCode != HttpStatusCode.NoContent && httpResponse.StatusCode != HttpStatusCode.Accepted)
+            {
+                throw new Exception(string.Format("DELETE operation unsuccessful! Got HTTP status code '{0}'", httpResponse.StatusCode));
             }
+        }
         }
 
         public async Task DeleteAsyncWithJsonContent<T>(string requestUrl, T data)
         {
             using (HttpClient httpClient = CreateHttpClient())
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Delete, requestUrl);
+            var requestMessage = new HttpRequestMessage(HttpMethod.Delete, requestUrl);
 
-                string jsonData = JsonConvert.SerializeObject(data);
+            string jsonData = JsonConvert.SerializeObject(data);
 
-                requestMessage.Content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+            requestMessage.Content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
 
                 HttpResponseMessage httpResponse = await httpClient.SendAsync(requestMessage);
+            
 
-
-                if (httpResponse.StatusCode != HttpStatusCode.NoContent && httpResponse.StatusCode != HttpStatusCode.Accepted)
-                {
-                    throw new Exception(string.Format("DELETE operation unsuccessful! Got HTTP status code '{0}'", httpResponse.StatusCode));
-                }
+            if (httpResponse.StatusCode != HttpStatusCode.NoContent && httpResponse.StatusCode != HttpStatusCode.Accepted)
+            {
+                throw new Exception(string.Format("DELETE operation unsuccessful! Got HTTP status code '{0}'", httpResponse.StatusCode));
             }
         }
     }
+}
 }

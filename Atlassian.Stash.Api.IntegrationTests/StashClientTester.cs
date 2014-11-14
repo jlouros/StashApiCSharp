@@ -2,6 +2,7 @@
 using Atlassian.Stash.Api.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 
 namespace Atlassian.Stash.Api.IntegrationTests
@@ -9,28 +10,30 @@ namespace Atlassian.Stash.Api.IntegrationTests
     [TestClass]
     public class StashClientTester
     {
-        // data required to run this tests
-        // please review this variables before you run this tests
-        private const string EXISTING_PROJECT = "test";
-        private const string EXISTING_REPOSITORY = "testrepository";
-        private const string EXISTING_FILE = "test.txt";
-        private const string EXISTING_COMMIT = "86486c762e901ea5efef1b7d287514b7f2cc0c82";
-        private const string EXISTING_OLDER_COMMIT = "9b533044d39811db518250b441d472ece955b0e3";
-        private const string EXISTING_BRANCH_REFERENCE = "refs/heads/master";
+        // data required to run this tests, please check App.config and modify the values to mapping to your local stash instance
+        private readonly string BASE_URL = ConfigurationManager.AppSettings.Get("base-url");
+        private readonly string USERNAME = ConfigurationManager.AppSettings.Get("username");
+        private readonly string PASSWORD = ConfigurationManager.AppSettings.Get("password");
+        private readonly string EXISTING_PROJECT = ConfigurationManager.AppSettings.Get("existing-project");
+        private readonly string EXISTING_REPOSITORY = ConfigurationManager.AppSettings.Get("existing-repository");
+        private readonly string EXISTING_FILE = ConfigurationManager.AppSettings.Get("existing-file");
+        private readonly string EXISTING_COMMIT = ConfigurationManager.AppSettings.Get("existing-commit");
+        private readonly string EXISTING_OLDER_COMMIT = ConfigurationManager.AppSettings.Get("existing-older-commit");
+        private readonly string EXISTING_BRANCH_REFERENCE = ConfigurationManager.AppSettings.Get("existing-branch-reference");
+        private readonly string EXISTING_GROUP = ConfigurationManager.AppSettings.Get("existing-group");
 
-        private StashClient _stashClient;
+        private StashClient stashClient;
 
         [TestInitialize]
         public void Initialize()
         {
-            // WARNING: requires a real Stash instance and real User credentials
-            _stashClient = new StashClient("http://ptr-vcs:7990/", "TestUser", "password");
+            stashClient = new StashClient(BASE_URL, USERNAME, PASSWORD);
         }
 
         [TestMethod]
         public void Can_GetFileContents()
         {
-            var response = _stashClient.Repositories.GetFileContents(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_FILE).Result;
+            var response = stashClient.Repositories.GetFileContents(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_FILE).Result;
 
             Assert.IsNotNull(response);
             Assert.IsTrue(response.FileContents.Count > 0);
@@ -39,7 +42,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetBranchesForCommit()
         {
-            var response = _stashClient.Branches.GetByCommitId(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT).Result;
+            var response = stashClient.Branches.GetByCommitId(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT).Result;
 
             Assert.IsNotNull(response);
             Assert.IsTrue(response.Values.Any(x => x.Id.Equals(EXISTING_BRANCH_REFERENCE)));
@@ -48,7 +51,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetAllProjects()
         {
-            var response = _stashClient.Projects.Get().Result;
+            var response = stashClient.Projects.Get().Result;
             var projects = response.Values;
 
             Assert.IsNotNull(projects);
@@ -60,7 +63,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         public void Can_GetAllProjects_WithRequestOptions()
         {
             int requestLimit = 1;
-            var response = _stashClient.Projects.Get(new RequestOptions { Limit = requestLimit, Start = 1 }).Result;
+            var response = stashClient.Projects.Get(new RequestOptions { Limit = requestLimit, Start = 1 }).Result;
             var projects = response.Values;
 
             Assert.IsNotNull(projects);
@@ -71,7 +74,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetByIdProject()
         {
-            var project = _stashClient.Projects.GetById(EXISTING_PROJECT).Result;
+            var project = stashClient.Projects.GetById(EXISTING_PROJECT).Result;
 
             Assert.IsNotNull(project);
             Assert.IsInstanceOfType(project, typeof(Project));
@@ -81,7 +84,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetAllRepositories()
         {
-            var response = _stashClient.Repositories.Get(EXISTING_PROJECT).Result;
+            var response = stashClient.Repositories.Get(EXISTING_PROJECT).Result;
             var repositories = response.Values;
 
             Assert.IsNotNull(repositories);
@@ -93,7 +96,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         public void Can_GetAllRepositories_WithRequestOptions()
         {
             int requestLimit = 2;
-            var response = _stashClient.Repositories.Get(EXISTING_PROJECT, new RequestOptions { Limit = requestLimit }).Result;
+            var response = stashClient.Repositories.Get(EXISTING_PROJECT, new RequestOptions { Limit = requestLimit }).Result;
             var repositories = response.Values;
 
             Assert.IsNotNull(repositories);
@@ -104,7 +107,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetByIdRepository()
         {
-            var repository = _stashClient.Repositories.GetById(EXISTING_PROJECT, EXISTING_REPOSITORY).Result;
+            var repository = stashClient.Repositories.GetById(EXISTING_PROJECT, EXISTING_REPOSITORY).Result;
 
             Assert.IsNotNull(repository);
             Assert.IsInstanceOfType(repository, typeof(Repository));
@@ -114,7 +117,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetAllTags()
         {
-            var response = _stashClient.Repositories.GetTags(EXISTING_PROJECT, EXISTING_REPOSITORY).Result;
+            var response = stashClient.Repositories.GetTags(EXISTING_PROJECT, EXISTING_REPOSITORY).Result;
             var tags = response.Values;
 
             Assert.IsNotNull(tags);
@@ -126,7 +129,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         public void Can_GetAllTags_WithRequestOptions()
         {
             int requestLimit = 1;
-            var response = _stashClient.Repositories.GetTags(EXISTING_PROJECT, EXISTING_REPOSITORY, new RequestOptions { Limit = requestLimit }).Result;
+            var response = stashClient.Repositories.GetTags(EXISTING_PROJECT, EXISTING_REPOSITORY, new RequestOptions { Limit = requestLimit }).Result;
             var tags = response.Values;
 
             Assert.IsNotNull(tags);
@@ -137,7 +140,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetAllFiles()
         {
-            var response = _stashClient.Repositories.GetFiles(EXISTING_PROJECT, EXISTING_REPOSITORY).Result;
+            var response = stashClient.Repositories.GetFiles(EXISTING_PROJECT, EXISTING_REPOSITORY).Result;
             var files = response.Values;
 
             Assert.IsNotNull(files);
@@ -149,7 +152,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         public void Can_GetAllFiles_WithRequestOptions()
         {
             int requestLimit = 1;
-            var response = _stashClient.Repositories.GetFiles(EXISTING_PROJECT, EXISTING_REPOSITORY, new RequestOptions { Limit = requestLimit }).Result;
+            var response = stashClient.Repositories.GetFiles(EXISTING_PROJECT, EXISTING_REPOSITORY, new RequestOptions { Limit = requestLimit }).Result;
             var files = response.Values;
 
             Assert.IsNotNull(files);
@@ -160,7 +163,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetAllBranches()
         {
-            var response = _stashClient.Branches.GetAll(EXISTING_PROJECT, EXISTING_REPOSITORY).Result;
+            var response = stashClient.Branches.GetAll(EXISTING_PROJECT, EXISTING_REPOSITORY).Result;
             var branches = response.Values;
 
             Assert.IsNotNull(branches);
@@ -172,7 +175,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         public void Can_GetAllBranches_WithRequestOptions()
         {
             int requestLimit = 1;
-            var response = _stashClient.Branches.GetAll(EXISTING_PROJECT, EXISTING_REPOSITORY, new RequestOptions { Limit = requestLimit }).Result;
+            var response = stashClient.Branches.GetAll(EXISTING_PROJECT, EXISTING_REPOSITORY, new RequestOptions { Limit = requestLimit }).Result;
             var branches = response.Values;
 
             Assert.IsNotNull(branches);
@@ -183,7 +186,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetAllCommits()
         {
-            var response = _stashClient.Commits.GetAll(EXISTING_PROJECT, EXISTING_REPOSITORY).Result;
+            var response = stashClient.Commits.GetAll(EXISTING_PROJECT, EXISTING_REPOSITORY).Result;
             var commits = response.Values;
 
             Assert.IsNotNull(commits);
@@ -195,7 +198,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         public void Can_GetAllCommits_WithRequestOptions()
         {
             int requestLimit = 2;
-            var response = _stashClient.Commits.GetAll(EXISTING_PROJECT, EXISTING_REPOSITORY, new RequestOptions { Limit = requestLimit }).Result;
+            var response = stashClient.Commits.GetAll(EXISTING_PROJECT, EXISTING_REPOSITORY, new RequestOptions { Limit = requestLimit }).Result;
             var commits = response.Values;
 
             Assert.IsNotNull(commits);
@@ -206,7 +209,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetByIdCommit()
         {
-            var commit = _stashClient.Commits.GetById(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT).Result;
+            var commit = stashClient.Commits.GetById(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT).Result;
 
             Assert.IsNotNull(commit);
             Assert.IsInstanceOfType(commit, typeof(Commit));
@@ -216,7 +219,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetChangesUntil()
         {
-            var changes = _stashClient.Commits.GetChanges(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT).Result;
+            var changes = stashClient.Commits.GetChanges(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT).Result;
 
             Assert.IsNotNull(changes);
             Assert.IsInstanceOfType(changes, typeof(Changes));
@@ -227,7 +230,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         public void Can_GetChangesUntil_WithRequestOptions()
         {
             int requestLimit = 1;
-            var changes = _stashClient.Commits.GetChanges(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT, null, new RequestOptions { Limit = requestLimit }).Result;
+            var changes = stashClient.Commits.GetChanges(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT, null, new RequestOptions { Limit = requestLimit }).Result;
 
             Assert.IsNotNull(changes);
             Assert.IsInstanceOfType(changes, typeof(Changes));
@@ -238,7 +241,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public void Can_GetChangesUntil_And_Since()
         {
-            var changes = _stashClient.Commits.GetChanges(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT, EXISTING_OLDER_COMMIT).Result;
+            var changes = stashClient.Commits.GetChanges(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT, EXISTING_OLDER_COMMIT).Result;
 
             Assert.IsNotNull(changes);
             Assert.IsInstanceOfType(changes, typeof(Changes));
@@ -249,7 +252,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         public void Can_GetChangesUntil_And_Since_WithRequestOptions()
         {
             int requestLimit = 1;
-            var changes = _stashClient.Commits.GetChanges(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT, EXISTING_OLDER_COMMIT, new RequestOptions { Limit = requestLimit }).Result;
+            var changes = stashClient.Commits.GetChanges(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT, EXISTING_OLDER_COMMIT, new RequestOptions { Limit = requestLimit }).Result;
 
             Assert.IsNotNull(changes);
             Assert.IsInstanceOfType(changes, typeof(Changes));
@@ -260,36 +263,80 @@ namespace Atlassian.Stash.Api.IntegrationTests
         #region Feature tests
 
         [TestMethod]
+        public void Can_SetBranchPermissions_Than_DeleteBranchPermissions()
+        {
+            var setBranchPerm = new BranchPermission
+            {
+                Type = BranchPermissionType.BRANCH,
+                Value = "master",
+                Groups = new string[] { EXISTING_GROUP },
+                Users = new string[] { }
+            };
+
+            var response = stashClient.Branches.SetPermissions(EXISTING_PROJECT, EXISTING_REPOSITORY, setBranchPerm).Result;
+
+            Assert.IsNotNull(response);
+            Assert.IsInstanceOfType(response, typeof(BranchPermission));
+            Assert.AreEqual(setBranchPerm.Type, response.Type);
+            Assert.AreEqual(setBranchPerm.Value, response.Value);
+            Assert.IsTrue(response.Id > 0);
+
+            stashClient.Branches.DeletePermissions(EXISTING_PROJECT, EXISTING_REPOSITORY, response.Id).Wait();
+        }
+
+        [TestMethod]
+        public void Can_SetBranchPermissions_Than_DeleteBranchPermissions_Using_Pattern()
+        {
+            var setBranchPerm = new BranchPermission
+            {
+                Type = BranchPermissionType.PATTERN,
+                Value = "**",
+                Groups = new string[] { EXISTING_GROUP },
+                Users = new string[] { }
+            };
+
+            var response = stashClient.Branches.SetPermissions(EXISTING_PROJECT, EXISTING_REPOSITORY, setBranchPerm).Result;
+
+            Assert.IsNotNull(response);
+            Assert.IsInstanceOfType(response, typeof(BranchPermission));
+            Assert.AreEqual(setBranchPerm.Type, response.Type);
+            Assert.AreEqual(setBranchPerm.Value, response.Value);
+            Assert.IsTrue(response.Id > 0);
+
+            stashClient.Branches.DeletePermissions(EXISTING_PROJECT, EXISTING_REPOSITORY, response.Id).Wait();
+        }
+
+        [TestMethod]
         public void Can_CreateProject_Than_DeleteProject()
         {
             Project newProject = new Project { Key = "ZTEST", Name = "Project of Integration tests", Description = "Project created by integration tests, please delete!" };
-            var createdProject = _stashClient.Projects.Create(newProject).Result;
+            var createdProject = stashClient.Projects.Create(newProject).Result;
 
             Assert.IsNotNull(createdProject);
             Assert.IsInstanceOfType(createdProject, typeof(Project));
             Assert.AreEqual(newProject.Key.ToLower(), createdProject.Key.ToLower());
 
-            _stashClient.Projects.Delete(newProject.Key).Wait();
+            stashClient.Projects.Delete(newProject.Key).Wait();
         }
 
         [TestMethod]
         public void Can_CreateRepository_Than_DeleteRepository()
         {
             Repository newRepository = new Repository { Name = "Repository of Integration tests" };
-            var createdRepository = _stashClient.Repositories.Create(EXISTING_PROJECT, newRepository).Result;
+            var createdRepository = stashClient.Repositories.Create(EXISTING_PROJECT, newRepository).Result;
 
             Assert.IsNotNull(createdRepository);
             Assert.IsInstanceOfType(createdRepository, typeof(Repository));
             Assert.AreEqual(newRepository.Name.ToLower(), createdRepository.Name.ToLower());
 
-            _stashClient.Repositories.Delete(EXISTING_PROJECT, createdRepository.Slug).Wait();
+            stashClient.Repositories.Delete(EXISTING_PROJECT, createdRepository.Slug).Wait();
         }
 
         [TestMethod]
         public void Can_CreateBranch_Than_DeleteBranch()
         {
             Branch newBranch = new Branch { Name = "test-repo", StartPoint = EXISTING_BRANCH_REFERENCE };
-            var createdBranch = _stashClient.Branches.Create(EXISTING_PROJECT, EXISTING_REPOSITORY, newBranch).Result;
+            var createdBranch = stashClient.Branches.Create(EXISTING_PROJECT, EXISTING_REPOSITORY, newBranch).Result;
 
             Assert.IsNotNull(createdBranch);
             Assert.IsInstanceOfType(createdBranch, typeof(Branch));
@@ -298,7 +345,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
 
             Branch deleteBranch = new Branch { Name = newBranch.Name, DryRun = false };
 
-            _stashClient.Branches.Delete(EXISTING_PROJECT, EXISTING_REPOSITORY, deleteBranch).Wait();
+            stashClient.Branches.Delete(EXISTING_PROJECT, EXISTING_REPOSITORY, deleteBranch).Wait();
         }
 
         #endregion
