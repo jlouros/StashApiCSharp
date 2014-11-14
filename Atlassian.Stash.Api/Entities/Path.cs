@@ -7,6 +7,6 @@ namespace Atlassian.Stash.Api.Entities
         public string Parent { get; set; }
         public string Name { get; set; }
         public string Extension { get; set; }
-        public string ToString { get; set; }
+        public new string ToString { get; set; }
     }
 }
