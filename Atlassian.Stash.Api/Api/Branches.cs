@@ -20,7 +20,7 @@ namespace Atlassian.Stash.Api.Api
             _httpWorker = httpWorker;
         }
 
-        public async Task<ResponseWrapper<Branch>> GetAll(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
+        public async Task<ResponseWrapper<Branch>> Get(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_BRANCHES, requestOptions, projectKey, repositorySlug);
 
@@ -53,7 +53,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANAGE_BRANCHES, null, projectKey, repositorySlug);
 
-            await _httpWorker.DeleteAsyncWithJsonContent(requestUrl, branch);
+            await _httpWorker.DeleteWithRequestContentAsync(requestUrl, branch);
         }
 
         public async Task<BranchPermission> SetPermissions(string projectKey, string repositorySlug, BranchPermission permissions) 

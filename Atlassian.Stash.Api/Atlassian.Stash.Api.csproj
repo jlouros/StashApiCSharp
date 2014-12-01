@@ -62,6 +62,7 @@
     <Compile Include="Entities\Clone.cs" />
     <Compile Include="Entities\Commit.cs" />
     <Compile Include="Entities\File.cs" />
+    <Compile Include="Entities\Hook.cs" />
     <Compile Include="Entities\Link.cs" />
     <Compile Include="Entities\Links.cs" />
     <Compile Include="Entities\Parent.cs" />

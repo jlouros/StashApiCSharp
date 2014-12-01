@@ -22,6 +22,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         private readonly string EXISTING_OLDER_COMMIT = ConfigurationManager.AppSettings.Get("existing-older-commit");
         private readonly string EXISTING_BRANCH_REFERENCE = ConfigurationManager.AppSettings.Get("existing-branch-reference");
         private readonly string EXISTING_GROUP = ConfigurationManager.AppSettings.Get("existing-group");
+        private readonly string EXISTING_HOOK = ConfigurationManager.AppSettings.Get("existing-hook");
 
         private StashClient stashClient;
 
@@ -164,7 +165,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public async Task Can_GetAllBranches()
         {
-            var response = await stashClient.Branches.GetAll(EXISTING_PROJECT, EXISTING_REPOSITORY);
+            var response = await stashClient.Branches.Get(EXISTING_PROJECT, EXISTING_REPOSITORY);
             var branches = response.Values;
 
             Assert.IsNotNull(branches);
@@ -176,7 +177,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         public async Task Can_GetAllBranches_WithRequestOptions()
         {
             int requestLimit = 1;
-            var response = await stashClient.Branches.GetAll(EXISTING_PROJECT, EXISTING_REPOSITORY, new RequestOptions { Limit = requestLimit });
+            var response = await stashClient.Branches.Get(EXISTING_PROJECT, EXISTING_REPOSITORY, new RequestOptions { Limit = requestLimit });
             var branches = response.Values;
 
             Assert.IsNotNull(branches);
@@ -187,7 +188,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         [TestMethod]
         public async Task Can_GetAllCommits()
         {
-            var response = await stashClient.Commits.GetAll(EXISTING_PROJECT, EXISTING_REPOSITORY);
+            var response = await stashClient.Commits.Get(EXISTING_PROJECT, EXISTING_REPOSITORY);
             var commits = response.Values;
 
             Assert.IsNotNull(commits);
@@ -199,7 +200,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         public async Task Can_GetAllCommits_WithRequestOptions()
         {
             int requestLimit = 2;
-            var response = await stashClient.Commits.GetAll(EXISTING_PROJECT, EXISTING_REPOSITORY, new RequestOptions { Limit = requestLimit });
+            var response = await stashClient.Commits.Get(EXISTING_PROJECT, EXISTING_REPOSITORY, new RequestOptions { Limit = requestLimit });
             var commits = response.Values;
 
             Assert.IsNotNull(commits);
@@ -259,6 +260,39 @@ namespace Atlassian.Stash.Api.IntegrationTests
             Assert.IsInstanceOfType(changes, typeof(Changes));
             Assert.AreEqual(EXISTING_COMMIT.ToLower(), changes.ToHash.ToLower());
             Assert.AreEqual(requestLimit, changes.ListOfChanges.Count());
+        }
+
+        [TestMethod]
+        public async Task Can_GetRepository_Hooks()
+        {
+            var response = await stashClient.Repositories.GetHooks(EXISTING_PROJECT, EXISTING_REPOSITORY);
+            var hooks = response.Values;
+
+            Assert.IsNotNull(hooks);
+            Assert.IsInstanceOfType(hooks, typeof(IEnumerable<Hook>));
+            Assert.IsTrue(hooks.Any());
+        }
+
+        [TestMethod]
+        public async Task Can_GetRepository_Hooks_WithRequestOptions()
+        {
+            int requestLimit = 1;
+            var response = await stashClient.Repositories.GetHooks(EXISTING_PROJECT, EXISTING_REPOSITORY, new RequestOptions { Limit = requestLimit });
+            var hooks = response.Values;
+
+            Assert.IsNotNull(hooks);
+            Assert.IsInstanceOfType(hooks, typeof(IEnumerable<Hook>));
+            Assert.AreEqual(requestLimit, hooks.Count());
+        }
+
+        [TestMethod]
+        public async Task Can_GetRepository_Hook_ById()
+        {
+            var response = await stashClient.Repositories.GetHookById(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_HOOK);
+
+            Assert.IsNotNull(response);
+            Assert.IsInstanceOfType(response, typeof(Hook));
+            Assert.AreEqual(EXISTING_HOOK, response.Details.Key);
         }
 
         #region Feature tests
@@ -349,6 +383,24 @@ namespace Atlassian.Stash.Api.IntegrationTests
             await stashClient.Branches.Delete(EXISTING_PROJECT, EXISTING_REPOSITORY, deleteBranch);
         }
 
+        [TestMethod]
+        public async Task Can_Get_Enable_And_Disable_Hook()
+        {
+            var enableHook = await stashClient.Repositories.EnableHook(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_HOOK);
+
+            Assert.IsNotNull(enableHook);
+            Assert.IsTrue(enableHook.Enabled);
+            Assert.IsInstanceOfType(enableHook, typeof(Hook));
+            Assert.AreEqual(EXISTING_HOOK, enableHook.Details.Key);
+
+            var disableHook = await stashClient.Repositories.DisableHook(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_HOOK);
+
+            Assert.IsNotNull(disableHook);
+            Assert.IsFalse(disableHook.Enabled);
+            Assert.IsInstanceOfType(disableHook, typeof(Hook));
+            Assert.AreEqual(EXISTING_HOOK, disableHook.Details.Key);
+        }
+        
         #endregion
     }
 }

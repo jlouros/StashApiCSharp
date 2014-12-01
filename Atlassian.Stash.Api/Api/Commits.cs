@@ -19,7 +19,7 @@ namespace Atlassian.Stash.Api.Api
             _httpWorker = httpWorker;
         }
 
-        public async Task<ResponseWrapper<Commit>> GetAll(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
+        public async Task<ResponseWrapper<Commit>> Get(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_COMMITS, requestOptions, projectKey, repositorySlug);
 

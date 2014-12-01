@@ -12,6 +12,10 @@ namespace Atlassian.Stash.Api.Api
         private const string MANY_TAGS = "/rest/api/1.0/projects/{0}/repos/{1}/tags";
         private const string MANY_FILES = "/rest/api/1.0/projects/{0}/repos/{1}/files";
         private const string ONE_FILE = "/rest/api/1.0/projects/{0}/repos/{1}/browse/{2}";
+        private const string MANY_HOOKS = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks";
+        private const string ONE_HOOK = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}";
+        private const string HOOK_ENABLE = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}/enabled";
+        //private const string HOOK_SETTINGS = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}/settings";
 
         private HttpCommunicationWorker _httpWorker;
 
@@ -35,6 +39,22 @@ namespace Atlassian.Stash.Api.Api
             Repository response = await _httpWorker.GetAsync<Repository>(requestUrl);
 
             return response;
+        }
+
+        public async Task<Repository> Create(string projectKey, Repository repository)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_REPOSITORIES, null, projectKey);
+
+            Repository response = await _httpWorker.PostAsync<Repository>(requestUrl, repository);
+
+            return response;
+        }
+
+        public async Task Delete(string projectKey, string repositorySlug)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_REPOSITORY, null, projectKey, repositorySlug);
+
+            await _httpWorker.DeleteAsync(requestUrl);
         }
 
         public async Task<ResponseWrapper<Tag>> GetTags(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
@@ -63,20 +83,43 @@ namespace Atlassian.Stash.Api.Api
             return response;
         }
 
-        public async Task<Repository> Create(string projectKey, Repository repository)
+        public async Task<ResponseWrapper<Hook>> GetHooks(string projectKey, string repositorySlug,RequestOptions requestOptions = null)
         {
-            string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_REPOSITORIES, null, projectKey);
+            string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_HOOKS, requestOptions, projectKey, repositorySlug);
 
-            Repository response = await _httpWorker.PostAsync<Repository>(requestUrl, repository);
+            ResponseWrapper<Hook> response = await _httpWorker.GetAsync<ResponseWrapper<Hook>>(requestUrl);
 
             return response;
         }
 
-        public async Task Delete(string projectKey, string repositorySlug)
+        public async Task<Hook> GetHookById(string projectKey, string repositorySlug, string hookKey)
         {
-            string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_REPOSITORY, null, projectKey, repositorySlug);
+            string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_HOOK, null, projectKey, repositorySlug, hookKey);
 
-            await _httpWorker.DeleteAsync(requestUrl);
+            Hook response = await _httpWorker.GetAsync<Hook>(requestUrl);
+
+            return response;
         }
+
+        // todo: extend with hook settings
+        public async Task<Hook> EnableHook(string projectKey, string repositorySlug, string hookKey)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(HOOK_ENABLE, null, projectKey, repositorySlug, hookKey);
+
+            Hook response = await _httpWorker.PutAsync<Hook>(requestUrl, null);
+
+            return response;
+        }
+
+        public async Task<Hook> DisableHook(string projectKey, string repositorySlug, string hookKey)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(HOOK_ENABLE, null, projectKey, repositorySlug, hookKey);
+
+            Hook response = await _httpWorker.DeleteWithResponseContentAsync<Hook>(requestUrl);
+
+            return response;
+        }
+
+        // todo: add get/set hook settings
     }
 }
