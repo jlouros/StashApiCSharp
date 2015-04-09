@@ -23,6 +23,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
         private readonly string EXISTING_BRANCH_REFERENCE = ConfigurationManager.AppSettings.Get("existing-branch-reference");
         private readonly string EXISTING_GROUP = ConfigurationManager.AppSettings.Get("existing-group");
         private readonly string EXISTING_HOOK = ConfigurationManager.AppSettings.Get("existing-hook");
+        private readonly int EXISTING_NUMBER_OF_CHANGES = 3; // TODO: update to actual number of changes in test repo
 
         private StashClient stashClient;
 
@@ -263,6 +264,17 @@ namespace Atlassian.Stash.Api.IntegrationTests
         }
 
         [TestMethod]
+        public async Task Can_GetChangesUntil_And_Since_MoreThanOneResult()
+        {
+            var changes = await stashClient.Commits.GetChanges(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT, EXISTING_OLDER_COMMIT);
+
+            Assert.IsNotNull(changes);
+            Assert.IsInstanceOfType(changes, typeof(Changes));
+            Assert.AreEqual(EXISTING_COMMIT, changes.ToHash, ignoreCase: true);
+            Assert.AreEqual(EXISTING_NUMBER_OF_CHANGES, changes.ListOfChanges.Count());
+        }
+
+        [TestMethod]
         public async Task Can_GetRepository_Hooks()
         {
             var response = await stashClient.Repositories.GetHooks(EXISTING_PROJECT, EXISTING_REPOSITORY);
@@ -400,7 +412,7 @@ namespace Atlassian.Stash.Api.IntegrationTests
             Assert.IsInstanceOfType(disableHook, typeof(Hook));
             Assert.AreEqual(EXISTING_HOOK, disableHook.Details.Key);
         }
-        
+
         #endregion
     }
 }

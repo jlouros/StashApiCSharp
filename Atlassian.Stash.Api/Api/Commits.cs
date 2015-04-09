@@ -44,7 +44,7 @@ namespace Atlassian.Stash.Api.Api
             if (string.IsNullOrWhiteSpace(sinceCommit))
                 requestUrl = UrlBuilder.FormatRestApiUrl(CHANGES_UNTIL, requestOptions, projectKey, repositorySlug, untilCommit);
             else
-                requestUrl = UrlBuilder.FormatRestApiUrl(CHANGES_UNTIL, requestOptions, projectKey, repositorySlug, untilCommit, sinceCommit);
+                requestUrl = UrlBuilder.FormatRestApiUrl(CHANGES_UNTIL_AND_SINCE, requestOptions, projectKey, repositorySlug, untilCommit, sinceCommit);
 
             Changes response = await _httpWorker.GetAsync<Changes>(requestUrl);
 
