@@ -9,8 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlassian.Stash.Api.Integra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DA59DCAC-4432-4D87-AE3A-72B57F704013}"
 	ProjectSection(SolutionItems) = preProject
+		CreateAndPublishNuGetPackage.ps1 = CreateAndPublishNuGetPackage.ps1
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlassian.Stash.Api.UnitTests", "Atlassian.Stash.Api.UnitTests\Atlassian.Stash.Api.UnitTests.csproj", "{E7A7BD1F-BBBE-4662-9A65-66931979B57E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +29,10 @@ Global
 		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7A7BD1F-BBBE-4662-9A65-66931979B57E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7A7BD1F-BBBE-4662-9A65-66931979B57E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7A7BD1F-BBBE-4662-9A65-66931979B57E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7A7BD1F-BBBE-4662-9A65-66931979B57E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

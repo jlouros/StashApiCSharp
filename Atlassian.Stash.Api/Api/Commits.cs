@@ -19,7 +19,7 @@ namespace Atlassian.Stash.Api.Api
             _httpWorker = httpWorker;
         }
 
-        public async Task<ResponseWrapper<Commit>> GetAll(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
+        public async Task<ResponseWrapper<Commit>> Get(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_COMMITS, requestOptions, projectKey, repositorySlug);
 
@@ -44,7 +44,7 @@ namespace Atlassian.Stash.Api.Api
             if (string.IsNullOrWhiteSpace(sinceCommit))
                 requestUrl = UrlBuilder.FormatRestApiUrl(CHANGES_UNTIL, requestOptions, projectKey, repositorySlug, untilCommit);
             else
-                requestUrl = UrlBuilder.FormatRestApiUrl(CHANGES_UNTIL, requestOptions, projectKey, repositorySlug, untilCommit, sinceCommit);
+                requestUrl = UrlBuilder.FormatRestApiUrl(CHANGES_UNTIL_AND_SINCE, requestOptions, projectKey, repositorySlug, untilCommit, sinceCommit);
 
             Changes response = await _httpWorker.GetAsync<Changes>(requestUrl);
 

@@ -1,3 +1,8 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/e3wnmyfoklqc306u?svg=true)](https://ci.appveyor.com/project/jlouros/stashapicsharp)
+
+[![NuGet](https://img.shields.io/nuget/v/Atlassian.Stash.Api.svg)](https://www.nuget.org/packages/Atlassian.Stash.Api/)
+
+
 Atlassian Stash API .Net
 =================
 
@@ -12,8 +17,6 @@ There are 2 ways to use this library:
 * Install-Package Atlassian.Stash.Api -Pre (via Nuget)
 * Download source code and compile
  
-##NuGet
-https://www.nuget.org/packages/Atlassian.Stash.Api/
 
 ##Sample Usage
 
