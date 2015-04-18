@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/e3wnmyfoklqc306u/branch/master?svg=true)](https://ci.appveyor.com/project/jlouros/stashapicsharp/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/e3wnmyfoklqc306u?svg=true)](https://ci.appveyor.com/project/jlouros/stashapicsharp)
 
 [![NuGet](https://img.shields.io/nuget/v/Atlassian.Stash.Api.svg)](https://www.nuget.org/packages/Atlassian.Stash.Api/)
 
