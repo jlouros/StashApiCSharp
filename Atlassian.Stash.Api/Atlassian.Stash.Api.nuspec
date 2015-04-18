@@ -11,22 +11,22 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>$description$</description>
 		<releaseNotes>
-			Features:
-			- manage Stash 'Projects' (get information, create and delete capabilities)
-			- manage Stash 'Repositories' (get information, create and delete capabilities)
-			- manage Stash 'Branches' (get information, create and delete capabilities)
-			- get information about 'repository files'
-			- get information about 'Commits' and 'commit changes'
-			- get information about 'Tags'
-
-			Norm MacLennan contribution:
-			- get branches by commit id
-			- get file contents
-		</releaseNotes>
+      Features:
+      - manage Stash 'Projects' (get information, create and delete capabilities)
+      - manage Stash 'Repositories' (get information, create and delete capabilities)
+      - manage Stash 'Branches' (get information, create, delete and set permissions capabilities)
+      - get information about 'repository files'
+      - get information about 'Commits' and 'commit changes'
+      - get information about 'Tags'
+      - get information about 'Hooks'
+      - get branches by commit id
+      - get file contents
+    </releaseNotes>
 		<copyright>Copyright John Louros 2014</copyright>
 		<tags>Atlassian Stash API-Wrapper</tags>
 	<dependencies>
-		<dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.2" />
+		<dependency id="Newtonsoft.Json" version="6.0.8" />
+    <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
 	</dependencies>
 	</metadata>
 </package>
