@@ -54,9 +54,9 @@ namespace Atlassian.Stash.Api.Workers
         {
             using (HttpClient httpClient = CreateHttpClient())
             {
-                HttpResponseMessage httpResponse = await httpClient.GetAsync(requestUrl);
+                HttpResponseMessage httpResponse = await httpClient.GetAsync(requestUrl).ConfigureAwait(false);
 
-                string json = await httpResponse.Content.ReadAsStringAsync();
+                string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 T response = JsonConvert.DeserializeObject<T>(json);
 
@@ -68,14 +68,14 @@ namespace Atlassian.Stash.Api.Workers
         {
             using (HttpClient httpClient = CreateHttpClient())
             {
-                HttpResponseMessage httpResponse = await httpClient.PostAsync<T>(requestUrl, data, new JsonMediaTypeFormatter());
+                HttpResponseMessage httpResponse = await httpClient.PostAsync<T>(requestUrl, data, new JsonMediaTypeFormatter()).ConfigureAwait(false);
 
                 if (httpResponse.StatusCode != HttpStatusCode.Created && httpResponse.StatusCode != HttpStatusCode.OK)
                 {
                     throw new Exception(string.Format("POST operation unsuccessful. Got HTTP status code '{0}'", httpResponse.StatusCode));
                 }
 
-                string json = await httpResponse.Content.ReadAsStringAsync();
+                string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 T response = JsonConvert.DeserializeObject<T>(json);
 
@@ -88,15 +88,15 @@ namespace Atlassian.Stash.Api.Workers
             using (HttpClient httpClient = CreateHttpClient())
             {
                 HttpResponseMessage httpResponse = (data != null) ?
-                                        await httpClient.PutAsync<T>(requestUrl, data, new JsonMediaTypeFormatter()) :
-                                        await httpClient.PutAsync(requestUrl, null);
+                                        await httpClient.PutAsync<T>(requestUrl, data, new JsonMediaTypeFormatter()).ConfigureAwait(false) :
+                                        await httpClient.PutAsync(requestUrl, null).ConfigureAwait(false);
 
                 if (httpResponse.StatusCode != HttpStatusCode.Created && httpResponse.StatusCode != HttpStatusCode.OK)
                 {
                     throw new Exception(string.Format("POST operation unsuccessful. Got HTTP status code '{0}'", httpResponse.StatusCode));
                 }
 
-                string json = await httpResponse.Content.ReadAsStringAsync();
+                string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 T response = JsonConvert.DeserializeObject<T>(json);
 
@@ -108,7 +108,7 @@ namespace Atlassian.Stash.Api.Workers
         {
             using (HttpClient httpClient = CreateHttpClient())
             {
-                HttpResponseMessage httpResponse = await httpClient.DeleteAsync(requestUrl);
+                HttpResponseMessage httpResponse = await httpClient.DeleteAsync(requestUrl).ConfigureAwait(false);
 
                 if (httpResponse.StatusCode != HttpStatusCode.NoContent && httpResponse.StatusCode != HttpStatusCode.Accepted)
                 {
@@ -124,7 +124,7 @@ namespace Atlassian.Stash.Api.Workers
                 var requestMessage = new HttpRequestMessage(HttpMethod.Delete, requestUrl);
 
 
-                HttpResponseMessage httpResponse = await httpClient.SendAsync(requestMessage);
+                HttpResponseMessage httpResponse = await httpClient.SendAsync(requestMessage).ConfigureAwait(false);
 
 
                 if (httpResponse.StatusCode != HttpStatusCode.NoContent && httpResponse.StatusCode != HttpStatusCode.Accepted && httpResponse.StatusCode != HttpStatusCode.OK)
@@ -132,7 +132,7 @@ namespace Atlassian.Stash.Api.Workers
                     throw new Exception(string.Format("DELETE operation unsuccessful! Got HTTP status code '{0}'", httpResponse.StatusCode));
                 }
 
-                string json = await httpResponse.Content.ReadAsStringAsync();
+                string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 T response = JsonConvert.DeserializeObject<T>(json);
 
@@ -150,7 +150,7 @@ namespace Atlassian.Stash.Api.Workers
 
                 requestMessage.Content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
 
-                HttpResponseMessage httpResponse = await httpClient.SendAsync(requestMessage);
+                HttpResponseMessage httpResponse = await httpClient.SendAsync(requestMessage).ConfigureAwait(false);
 
 
                 if (httpResponse.StatusCode != HttpStatusCode.NoContent && httpResponse.StatusCode != HttpStatusCode.Accepted)
