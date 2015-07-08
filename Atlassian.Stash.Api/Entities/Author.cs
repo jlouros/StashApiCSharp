@@ -1,8 +1,11 @@
 ﻿
+using Newtonsoft.Json;
+
 namespace Atlassian.Stash.Api.Entities
 {
     public class Author
     {
+        [JsonProperty("name")]
         public string Name { get; set; }
         public string EmailAddress { get; set; }
         public int Id { get; set; }
