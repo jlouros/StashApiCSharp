@@ -24,7 +24,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_BRANCHES, requestOptions, projectKey, repositorySlug);
 
-            ResponseWrapper<Branch> response = await _httpWorker.GetAsync<ResponseWrapper<Branch>>(requestUrl);
+            ResponseWrapper<Branch> response = await _httpWorker.GetAsync<ResponseWrapper<Branch>>(requestUrl).ConfigureAwait(false);
 
             return response;
         }
@@ -34,7 +34,7 @@ namespace Atlassian.Stash.Api.Api
             string requestUrl = UrlBuilder.FormatRestApiUrl(BRANCHES_FOR_COMMIT, requestOptions, projectKey, repositorySlug,
                 commitId);
 
-            ResponseWrapper<Branch> response = await _httpWorker.GetAsync<ResponseWrapper<Branch>>(requestUrl);
+            ResponseWrapper<Branch> response = await _httpWorker.GetAsync<ResponseWrapper<Branch>>(requestUrl).ConfigureAwait(false);
 
             return response;
         }
@@ -44,7 +44,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANAGE_BRANCHES, null, projectKey, repositorySlug);
 
-            Branch response = await _httpWorker.PostAsync(requestUrl, branch);
+            Branch response = await _httpWorker.PostAsync(requestUrl, branch).ConfigureAwait(false);
 
             return response;
         }
@@ -53,14 +53,14 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANAGE_BRANCHES, null, projectKey, repositorySlug);
 
-            await _httpWorker.DeleteWithRequestContentAsync(requestUrl, branch);
+            await _httpWorker.DeleteWithRequestContentAsync(requestUrl, branch).ConfigureAwait(false);
         }
 
         public async Task<BranchPermission> SetPermissions(string projectKey, string repositorySlug, BranchPermission permissions) 
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(BRANCH_PERMISSIONS, null, projectKey, repositorySlug);
 
-            BranchPermission response = await _httpWorker.PostAsync(requestUrl, permissions);
+            BranchPermission response = await _httpWorker.PostAsync(requestUrl, permissions).ConfigureAwait(false);
 
             return response;
         }
@@ -69,7 +69,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(BRANCH_DELETE_PERMISSIONS, null, projectKey, repositorySlug, permissionsId.ToString());
 
-            await _httpWorker.DeleteAsync(requestUrl);
+            await _httpWorker.DeleteAsync(requestUrl).ConfigureAwait(false);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_COMMITS, requestOptions, projectKey, repositorySlug);
 
-            ResponseWrapper<Commit> response = await _httpWorker.GetAsync<ResponseWrapper<Commit>>(requestUrl);
+            ResponseWrapper<Commit> response = await _httpWorker.GetAsync<ResponseWrapper<Commit>>(requestUrl).ConfigureAwait(false);
 
             return response;
         }
@@ -32,7 +32,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_COMMIT, null, projectKey, repositorySlug, commitId);
 
-            Commit response = await _httpWorker.GetAsync<Commit>(requestUrl);
+            Commit response = await _httpWorker.GetAsync<Commit>(requestUrl).ConfigureAwait(false);
 
             return response;
         }
@@ -46,7 +46,7 @@ namespace Atlassian.Stash.Api.Api
             else
                 requestUrl = UrlBuilder.FormatRestApiUrl(CHANGES_UNTIL_AND_SINCE, requestOptions, projectKey, repositorySlug, untilCommit, sinceCommit);
 
-            Changes response = await _httpWorker.GetAsync<Changes>(requestUrl);
+            Changes response = await _httpWorker.GetAsync<Changes>(requestUrl).ConfigureAwait(false);
 
             return response;
         }

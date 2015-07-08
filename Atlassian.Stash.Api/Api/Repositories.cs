@@ -27,7 +27,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_REPOSITORIES, requestOptions, projectKey);
 
-            ResponseWrapper<Repository> response = await _httpWorker.GetAsync<ResponseWrapper<Repository>>(requestUrl);
+            ResponseWrapper<Repository> response = await _httpWorker.GetAsync<ResponseWrapper<Repository>>(requestUrl).ConfigureAwait(false);
 
             return response;
         }
@@ -36,7 +36,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_REPOSITORY, null, projectKey, repositorySlug);
 
-            Repository response = await _httpWorker.GetAsync<Repository>(requestUrl);
+            Repository response = await _httpWorker.GetAsync<Repository>(requestUrl).ConfigureAwait(false);
 
             return response;
         }
@@ -45,7 +45,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_REPOSITORIES, null, projectKey);
 
-            Repository response = await _httpWorker.PostAsync<Repository>(requestUrl, repository);
+            Repository response = await _httpWorker.PostAsync<Repository>(requestUrl, repository).ConfigureAwait(false);
 
             return response;
         }
@@ -54,14 +54,14 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_REPOSITORY, null, projectKey, repositorySlug);
 
-            await _httpWorker.DeleteAsync(requestUrl);
+            await _httpWorker.DeleteAsync(requestUrl).ConfigureAwait(false);
         }
 
         public async Task<ResponseWrapper<Tag>> GetTags(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_TAGS, requestOptions, projectKey, repositorySlug);
 
-            ResponseWrapper<Tag> response = await _httpWorker.GetAsync<ResponseWrapper<Tag>>(requestUrl);
+            ResponseWrapper<Tag> response = await _httpWorker.GetAsync<ResponseWrapper<Tag>>(requestUrl).ConfigureAwait(false);
 
             return response;
         }
@@ -70,7 +70,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_FILES, requestOptions, projectKey, repositorySlug);
 
-            ResponseWrapper<string> response = await _httpWorker.GetAsync<ResponseWrapper<string>>(requestUrl);
+            ResponseWrapper<string> response = await _httpWorker.GetAsync<ResponseWrapper<string>>(requestUrl).ConfigureAwait(false);
 
             return response;
         }
@@ -78,7 +78,7 @@ namespace Atlassian.Stash.Api.Api
         public async Task<File> GetFileContents(string projectKey, string repositorySlug, string path, RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_FILE, requestOptions, projectKey, repositorySlug, path);
-            File response = await _httpWorker.GetAsync<File>(requestUrl);
+            File response = await _httpWorker.GetAsync<File>(requestUrl).ConfigureAwait(false);
 
             return response;
         }
@@ -87,7 +87,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_HOOKS, requestOptions, projectKey, repositorySlug);
 
-            ResponseWrapper<Hook> response = await _httpWorker.GetAsync<ResponseWrapper<Hook>>(requestUrl);
+            ResponseWrapper<Hook> response = await _httpWorker.GetAsync<ResponseWrapper<Hook>>(requestUrl).ConfigureAwait(false);
 
             return response;
         }
@@ -96,7 +96,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_HOOK, null, projectKey, repositorySlug, hookKey);
 
-            Hook response = await _httpWorker.GetAsync<Hook>(requestUrl);
+            Hook response = await _httpWorker.GetAsync<Hook>(requestUrl).ConfigureAwait(false);
 
             return response;
         }
@@ -106,7 +106,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(HOOK_ENABLE, null, projectKey, repositorySlug, hookKey);
 
-            Hook response = await _httpWorker.PutAsync<Hook>(requestUrl, null);
+            Hook response = await _httpWorker.PutAsync<Hook>(requestUrl, null).ConfigureAwait(false);
 
             return response;
         }
@@ -115,7 +115,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(HOOK_ENABLE, null, projectKey, repositorySlug, hookKey);
 
-            Hook response = await _httpWorker.DeleteWithResponseContentAsync<Hook>(requestUrl);
+            Hook response = await _httpWorker.DeleteWithResponseContentAsync<Hook>(requestUrl).ConfigureAwait(false);
 
             return response;
         }

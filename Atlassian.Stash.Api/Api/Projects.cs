@@ -21,7 +21,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_PROJECTS, requestOptions);
 
-            ResponseWrapper<Project> response = await _httpWorker.GetAsync<ResponseWrapper<Project>>(requestUrl);
+            ResponseWrapper<Project> response = await _httpWorker.GetAsync<ResponseWrapper<Project>>(requestUrl).ConfigureAwait(false);
 
             return response;
         }
@@ -30,7 +30,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_PROJECT, null, projectKey);
 
-            Project response = await _httpWorker.GetAsync<Project>(requestUrl);
+            Project response = await _httpWorker.GetAsync<Project>(requestUrl).ConfigureAwait(false);
 
             return response;
         }
@@ -39,7 +39,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_PROJECTS);
 
-            Project response = await _httpWorker.PostAsync<Project>(requestUrl, project);
+            Project response = await _httpWorker.PostAsync<Project>(requestUrl, project).ConfigureAwait(false);
 
             return response;
         }
@@ -48,7 +48,7 @@ namespace Atlassian.Stash.Api.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_PROJECT, null, projectKey);
 
-            await _httpWorker.DeleteAsync(requestUrl);
+            await _httpWorker.DeleteAsync(requestUrl).ConfigureAwait(false);
         }
     }
 }
