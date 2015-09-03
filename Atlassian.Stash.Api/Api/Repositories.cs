@@ -15,7 +15,7 @@ namespace Atlassian.Stash.Api.Api
         private const string MANY_HOOKS = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks";
         private const string ONE_HOOK = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}";
         private const string HOOK_ENABLE = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}/enabled";
-        //private const string HOOK_SETTINGS = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}/settings";
+        private const string HOOK_SETTINGS = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}/settings";
 
         private HttpCommunicationWorker _httpWorker;
 
@@ -120,6 +120,22 @@ namespace Atlassian.Stash.Api.Api
             return response;
         }
 
-        // todo: add get/set hook settings
+        public async Task<string> ConfigureHook(string projectKey, string repositorySlug, string hookKey)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(HOOK_ENABLE, null, projectKey, repositorySlug, hookKey);
+
+            string response = await _httpWorker.GetAsync<string>(requestUrl).ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<string> ConfigureHook(string projectKey, string repositorySlug, string hookKey, string settings)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(HOOK_ENABLE, null, projectKey, repositorySlug, hookKey);
+
+            string response = await _httpWorker.PutAsync<string>(requestUrl, settings).ConfigureAwait(false);
+
+            return response;
+        }
     }
 }
