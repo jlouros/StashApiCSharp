@@ -2,6 +2,7 @@
 using Atlassian.Stash.Api.Helpers;
 using Atlassian.Stash.Api.Workers;
 using System.Threading.Tasks;
+using System;
 
 namespace Atlassian.Stash.Api.Api
 {
@@ -9,6 +10,8 @@ namespace Atlassian.Stash.Api.Api
     {
         private const string MANY_PROJECTS = "/rest/api/1.0/projects";
         private const string ONE_PROJECT = "/rest/api/1.0/projects/{0}";
+        private const string GRANT_GROUP_PERMISSION = ONE_PROJECT + "/permissions/groups?permission={1}&name={2}";
+        private const string REVOKE_USER_PERMISSION = ONE_PROJECT + "/permissions/users?name={1}";
 
         private HttpCommunicationWorker _httpWorker;
 
@@ -47,6 +50,20 @@ namespace Atlassian.Stash.Api.Api
         public async Task Delete(string projectKey)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_PROJECT, null, projectKey);
+
+            await _httpWorker.DeleteAsync(requestUrl).ConfigureAwait(false);
+        }
+        
+        public async Task GrantGroup(string projectKey, string group, string permission)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(GRANT_GROUP_PERMISSION, null, projectKey, permission, group);
+
+            await _httpWorker.PutAsync<Object>(requestUrl, new Object()).ConfigureAwait(false);
+        }
+
+        public async Task RevokeUser(string projectKey, string user)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(REVOKE_USER_PERMISSION, null, projectKey, user);
 
             await _httpWorker.DeleteAsync(requestUrl).ConfigureAwait(false);
         }

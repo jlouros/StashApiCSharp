@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Api\Branches.cs" />
     <Compile Include="Api\Commits.cs" />
+    <Compile Include="Api\Groups.cs" />
     <Compile Include="Api\Projects.cs" />
     <Compile Include="Api\PullRequests.cs" />
     <Compile Include="Api\Repositories.cs" />

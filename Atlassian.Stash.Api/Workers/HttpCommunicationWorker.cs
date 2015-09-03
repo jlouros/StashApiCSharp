@@ -91,7 +91,7 @@ namespace Atlassian.Stash.Api.Workers
                                         await httpClient.PutAsync<T>(requestUrl, data, new JsonMediaTypeFormatter()).ConfigureAwait(false) :
                                         await httpClient.PutAsync(requestUrl, null).ConfigureAwait(false);
 
-                if (httpResponse.StatusCode != HttpStatusCode.Created && httpResponse.StatusCode != HttpStatusCode.OK)
+                if (httpResponse.StatusCode != HttpStatusCode.Created && httpResponse.StatusCode != HttpStatusCode.OK && httpResponse.StatusCode != HttpStatusCode.NoContent)
                 {
                     throw new Exception(string.Format("POST operation unsuccessful. Got HTTP status code '{0}'", httpResponse.StatusCode));
                 }
