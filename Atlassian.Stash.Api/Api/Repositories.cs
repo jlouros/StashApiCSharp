@@ -60,9 +60,9 @@ namespace Atlassian.Stash.Api.Api
             await _httpWorker.DeleteAsync(requestUrl).ConfigureAwait(false);
         }
 
-        public async Task GrantGroup(string projectKey, string repository, string group, string permission)
+        public async Task GrantGroup(string projectKey, string repository, string group, RepositoryPermissions permission)
         {
-            string requestUrl = UrlBuilder.FormatRestApiUrl(PERMISSION_GRANT_GROUP, null, projectKey, repository, permission, group);
+            string requestUrl = UrlBuilder.FormatRestApiUrl(PERMISSION_GRANT_GROUP, null, projectKey, repository, permission.ToString(), group);
 
             await _httpWorker.PutAsync<Object>(requestUrl, new Object()).ConfigureAwait(false);
         }
@@ -154,5 +154,12 @@ namespace Atlassian.Stash.Api.Api
 
             return response;
         }
+    }
+
+    public enum RepositoryPermissions
+    {
+        REPO_READ,
+        REPO_WRITE,
+        REPO_ADMIN
     }
 }
