@@ -17,8 +17,10 @@ namespace Atlassian.Stash.Api.Api
         private const string ONE_HOOK = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}";
         private const string HOOK_ENABLE = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}/enabled";
         private const string HOOK_SETTINGS = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}/settings";
-        private const string PERMISSION_GRANT_GROUP = ONE_REPOSITORY + "/permissions/groups?permission={1}&name={2}";
-        private const string PERMISSION_REVOKE_USER = ONE_REPOSITORY + "/permissions/users?name={2}";
+        private const string PERMISSION_GROUPS = ONE_REPOSITORY + "/permissions/groups";
+        private const string PERMISSION_GRANT_GROUP = PERMISSION_GROUPS + "?permission={2}&name={3}";
+        private const string PERMISSION_USERS = ONE_REPOSITORY + "/permissions/users";
+        private const string PERMISSION_REVOKE_USER = PERMISSION_USERS + "?name={2}";
 
         private HttpCommunicationWorker _httpWorker;
 
@@ -60,11 +62,29 @@ namespace Atlassian.Stash.Api.Api
             await _httpWorker.DeleteAsync(requestUrl).ConfigureAwait(false);
         }
 
+        public async Task<ResponseWrapper<Permission>> GetGroups(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(PERMISSION_GROUPS, requestOptions, projectKey, repositorySlug);
+
+            ResponseWrapper<Permission> response = await _httpWorker.GetAsync<ResponseWrapper<Permission>>(requestUrl).ConfigureAwait(false);
+
+            return response;
+        }
+
         public async Task GrantGroup(string projectKey, string repository, string group, RepositoryPermissions permission)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(PERMISSION_GRANT_GROUP, null, projectKey, repository, permission.ToString(), group);
 
             await _httpWorker.PutAsync<Object>(requestUrl, new Object()).ConfigureAwait(false);
+        }
+
+        public async Task<ResponseWrapper<Permission>> GetUsers(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(PERMISSION_USERS, requestOptions, projectKey, repositorySlug);
+
+            ResponseWrapper<Permission> response = await _httpWorker.GetAsync<ResponseWrapper<Permission>>(requestUrl).ConfigureAwait(false);
+
+            return response;
         }
 
         public async Task RevokeUser(string projectKey, string repository, string user)
@@ -139,18 +159,18 @@ namespace Atlassian.Stash.Api.Api
 
         public async Task<string> ConfigureHook(string projectKey, string repositorySlug, string hookKey)
         {
-            string requestUrl = UrlBuilder.FormatRestApiUrl(HOOK_ENABLE, null, projectKey, repositorySlug, hookKey);
+            string requestUrl = UrlBuilder.FormatRestApiUrl(HOOK_SETTINGS, null, projectKey, repositorySlug, hookKey);
 
-            string response = await _httpWorker.GetAsync<string>(requestUrl).ConfigureAwait(false);
+            string response = await _httpWorker.GetAsync(requestUrl).ConfigureAwait(false);
 
             return response;
         }
 
         public async Task<string> ConfigureHook(string projectKey, string repositorySlug, string hookKey, string settings)
         {
-            string requestUrl = UrlBuilder.FormatRestApiUrl(HOOK_ENABLE, null, projectKey, repositorySlug, hookKey);
+            string requestUrl = UrlBuilder.FormatRestApiUrl(HOOK_SETTINGS, null, projectKey, repositorySlug, hookKey);
 
-            string response = await _httpWorker.PutAsync<string>(requestUrl, settings).ConfigureAwait(false);
+            string response = await _httpWorker.PutAsync(requestUrl, settings).ConfigureAwait(false);
 
             return response;
         }
