@@ -22,6 +22,7 @@ namespace Atlassian.Stash.Api
         private void InjectDependencies()
         {
             this.Projects = new Projects(_httpWorker);
+            this.Groups = new Groups(_httpWorker);
             this.Repositories = new Repositories(_httpWorker);
             this.Branches = new Branches(_httpWorker);
             this.Commits = new Commits(_httpWorker);
@@ -29,6 +30,7 @@ namespace Atlassian.Stash.Api
         }
 
         public Projects Projects { get; private set; }
+        public Groups Groups { get; set; }
         public Repositories Repositories { get; private set; }
         public Branches Branches { get; private set; }
         public Commits Commits { get; private set; }

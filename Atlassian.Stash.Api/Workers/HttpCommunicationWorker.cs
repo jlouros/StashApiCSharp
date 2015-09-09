@@ -64,6 +64,18 @@ namespace Atlassian.Stash.Api.Workers
             }
         }
 
+        public async Task<string> GetAsync(string requestUrl)
+        {
+            using (HttpClient httpClient = CreateHttpClient())
+            {
+                HttpResponseMessage httpResponse = await httpClient.GetAsync(requestUrl).ConfigureAwait(false);
+
+                string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                return json;
+            }
+        }
+
         public async Task<T> PostAsync<T>(string requestUrl, T data)
         {
             using (HttpClient httpClient = CreateHttpClient())
@@ -91,7 +103,7 @@ namespace Atlassian.Stash.Api.Workers
                                         await httpClient.PutAsync<T>(requestUrl, data, new JsonMediaTypeFormatter()).ConfigureAwait(false) :
                                         await httpClient.PutAsync(requestUrl, null).ConfigureAwait(false);
 
-                if (httpResponse.StatusCode != HttpStatusCode.Created && httpResponse.StatusCode != HttpStatusCode.OK)
+                if (httpResponse.StatusCode != HttpStatusCode.Created && httpResponse.StatusCode != HttpStatusCode.OK && httpResponse.StatusCode != HttpStatusCode.NoContent)
                 {
                     throw new Exception(string.Format("POST operation unsuccessful. Got HTTP status code '{0}'", httpResponse.StatusCode));
                 }
@@ -101,6 +113,25 @@ namespace Atlassian.Stash.Api.Workers
                 T response = JsonConvert.DeserializeObject<T>(json);
 
                 return response;
+            }
+        }
+
+        public async Task<string> PutAsync(string requestUrl, string data)
+        {
+            using (HttpClient httpClient = CreateHttpClient())
+            {
+                HttpResponseMessage httpResponse = (data != null) ?
+                                        await httpClient.PutAsync(requestUrl, new StringContent(data, Encoding.UTF8, "application/json")).ConfigureAwait(false) :
+                                        await httpClient.PutAsync(requestUrl, null).ConfigureAwait(false);
+
+                if (httpResponse.StatusCode != HttpStatusCode.Created && httpResponse.StatusCode != HttpStatusCode.OK && httpResponse.StatusCode != HttpStatusCode.NoContent)
+                {
+                    throw new Exception(string.Format("POST operation unsuccessful. Got HTTP status code '{0}'", httpResponse.StatusCode));
+                }
+
+                string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                return json;
             }
         }
 
