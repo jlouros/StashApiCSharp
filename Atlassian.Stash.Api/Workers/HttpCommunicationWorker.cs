@@ -12,7 +12,7 @@ namespace Atlassian.Stash.Api.Workers
     internal class HttpCommunicationWorker
     {
         private Uri baseUrl;
-        private AuthenticationHeaderValue authenticationHeader;
+        private AuthenticationHeaderValue authenticationHeader = null;
 
         public HttpCommunicationWorker(string baseUrl, string base64Auth)
         {
@@ -45,7 +45,11 @@ namespace Atlassian.Stash.Api.Workers
         {
             HttpClient httpClient = new HttpClient();
             httpClient.BaseAddress = this.baseUrl;
-            httpClient.DefaultRequestHeaders.Authorization = this.authenticationHeader;
+
+            if (this.authenticationHeader != null)
+            {
+                httpClient.DefaultRequestHeaders.Authorization = this.authenticationHeader;
+            }
 
             return httpClient;
         }

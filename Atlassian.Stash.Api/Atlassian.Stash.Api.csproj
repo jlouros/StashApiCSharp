@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Api\Branches.cs" />
     <Compile Include="Api\Commits.cs" />
+    <Compile Include="Api\Forks.cs" />
     <Compile Include="Api\Groups.cs" />
     <Compile Include="Api\Projects.cs" />
     <Compile Include="Api\PullRequests.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Entities\ApplicationProperties.cs" />
     <Compile Include="Entities\Author.cs" />
     <Compile Include="Entities\AuthorWrapper.cs" />
+    <Compile Include="Entities\Fork.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Group.cs" />
     <Compile Include="Entities\Branch.cs" />
