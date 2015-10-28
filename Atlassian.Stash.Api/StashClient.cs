@@ -7,7 +7,7 @@ namespace Atlassian.Stash.Api
     {
         private HttpCommunicationWorker _httpWorker;
 
-        public StashClient(string baseUrl, string base64Auth)
+        public StashClient(string baseUrl, string base64Auth = null)
         {
             _httpWorker = new HttpCommunicationWorker(baseUrl, base64Auth);
             InjectDependencies();
@@ -27,6 +27,7 @@ namespace Atlassian.Stash.Api
             this.Branches = new Branches(_httpWorker);
             this.Commits = new Commits(_httpWorker);
             this.PullRequests = new PullRequests(_httpWorker);
+            this.Forks = new Forks(_httpWorker);
         }
 
         public Projects Projects { get; private set; }
@@ -35,6 +36,7 @@ namespace Atlassian.Stash.Api
         public Branches Branches { get; private set; }
         public Commits Commits { get; private set; }
         public PullRequests PullRequests { get; private set; }
+        public Forks Forks { get; private set; }
 
     }
 }
