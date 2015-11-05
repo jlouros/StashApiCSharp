@@ -9,7 +9,7 @@ namespace Atlassian.Stash.Api.Helpers {
 	{
 		private const string InvalidUnixEpochErrorMessage = "Unix epoc starts January 1st, 1970";
 
-		private static DateTime m_epoch = new DateTime(1970, 1, 1);
+		private static DateTime m_epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
 		public static DateTime FromTimestamp(this long timestamp)
 		{
@@ -23,7 +23,7 @@ namespace Atlassian.Stash.Api.Helpers {
 				return 0;
 			}
 
-			var delta = dateTime - m_epoch;
+			var delta = dateTime.ToUniversalTime() - m_epoch;
 
 			if (delta.TotalMilliseconds < 0) throw new ArgumentOutOfRangeException(InvalidUnixEpochErrorMessage);
 
