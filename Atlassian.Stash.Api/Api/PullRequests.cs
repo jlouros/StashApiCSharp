@@ -27,8 +27,5 @@ namespace Atlassian.Stash.Api.Api
 
             return pr;
         }
-
-
-
     }
 }
