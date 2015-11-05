@@ -19,8 +19,7 @@ namespace Atlassian.Stash.Api.Api
             _httpWorker = httpWorker;
         }
 
-        public async Task<PullRequest> Create(string projectKey, string repositorySlug,
-            PullRequest pullRequest)
+        public async Task<PullRequest> Create(string projectKey, string repositorySlug, PullRequest pullRequest)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(PULL_REQUEST, null, projectKey, repositorySlug);
 
@@ -28,5 +27,8 @@ namespace Atlassian.Stash.Api.Api
 
             return pr;
         }
+
+
+
     }
 }

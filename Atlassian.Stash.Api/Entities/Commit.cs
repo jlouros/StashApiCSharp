@@ -1,4 +1,8 @@
 ﻿
+using System;
+using Atlassian.Stash.Api.Converters;
+using Newtonsoft.Json;
+
 namespace Atlassian.Stash.Api.Entities
 {
     public class Commit
@@ -6,7 +10,8 @@ namespace Atlassian.Stash.Api.Entities
         public string Id { get; set; }
         public string DisplayId { get; set; }
         public Author Author { get; set; }
-        public long AuthorTimestamp { get; set; }
+		[JsonConverter(typeof(TimestampConverter))]
+        public DateTime AuthorTimestamp { get; set; }
         public string Message { get; set; }
         public Parent[] Parents { get; set; }
     }

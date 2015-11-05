@@ -12,7 +12,7 @@ namespace Atlassian.Stash.Api.Entities
         public string Name { get; set; }
         [JsonProperty("description")]
         public string Description { get; set; }
-        public bool @Public { get; set; }
+        public bool Public { get; set; }
         public string Type { get; set; }
         public Link Link { get; set; }
         public Links Links { get; set; }
