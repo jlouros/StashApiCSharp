@@ -56,6 +56,7 @@
     <Compile Include="Api\Projects.cs" />
     <Compile Include="Api\PullRequests.cs" />
     <Compile Include="Api\Repositories.cs" />
+    <Compile Include="Converters\TimestampConverter.cs" />
     <Compile Include="Entities\ApplicationProperties.cs" />
     <Compile Include="Entities\Author.cs" />
     <Compile Include="Entities\AuthorWrapper.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Self.cs" />
     <Compile Include="Entities\Tag.cs" />
+    <Compile Include="Helpers\DateTimeHelpers.cs" />
     <Compile Include="Helpers\UrlBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StashClient.cs" />
