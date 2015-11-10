@@ -174,7 +174,29 @@ namespace Atlassian.Stash.Api.IntegrationTests
             Assert.IsTrue(branches.Any());
         }
 
-        [TestMethod]
+	    [TestMethod]
+	    public async Task GetPullRequest_RetrieveAllPullRequests_ReturnsSomePullRequests()
+	    {
+		    var response = await stashClient.PullRequests.Get(EXISTING_PROJECT, EXISTING_REPOSITORY, state: PullRequestState.ALL);
+		    var pullRequests = response.Values;
+
+			Assert.IsNotNull(pullRequests);
+			Assert.IsInstanceOfType(pullRequests, typeof(IEnumerable<PullRequest>));
+			Assert.IsTrue(pullRequests.Any());
+	    }
+
+		[TestMethod]
+		public async Task GetPullRequest_WithRequestOptions_ReturnsSomePullRequests()
+		{
+			var response = await stashClient.PullRequests.Get(EXISTING_PROJECT, EXISTING_REPOSITORY, new RequestOptions {Limit = 1}, state: PullRequestState.ALL);
+			var pullRequests = response.Values;
+
+			Assert.IsNotNull(pullRequests);
+			Assert.IsInstanceOfType(pullRequests, typeof(IEnumerable<PullRequest>));
+			Assert.IsTrue(pullRequests.Any());
+		}
+
+		[TestMethod]
         public async Task Can_GetAllBranches_WithRequestOptions()
         {
             int requestLimit = 1;
