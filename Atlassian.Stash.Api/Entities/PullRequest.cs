@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Collections.Generic;
 
 namespace Atlassian.Stash.Api.Entities
 {
 
-	public enum PullRequestState
-	{
-		OPEN,
-		DECLINED,
-		MERGED,
-		ALL
-	}
+    public enum PullRequestState
+    {
+        OPEN,
+        DECLINED,
+        MERGED,
+        ALL
+    }
 
-	public class PullRequest
+    public class PullRequest
     {
         public string Id { get; set; }
         public string Version { get; set; }
@@ -27,7 +23,7 @@ namespace Atlassian.Stash.Api.Entities
         [JsonProperty("description")]
         public string Description { get; set; }
         [JsonProperty("state")]
-		[JsonConverter(typeof(StringEnumConverter))]
+        [JsonConverter(typeof(StringEnumConverter))]
         public PullRequestState State { get; set; }
         [JsonProperty("open")]
         public bool Open { get; set; }

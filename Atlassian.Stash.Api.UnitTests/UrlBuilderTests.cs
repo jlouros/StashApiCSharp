@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Atlassian.Stash.Api.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Atlassian.Stash.Api.Helpers;
+using System;
 
 namespace Atlassian.Stash.Api.UnitTests
 {

@@ -1,34 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Atlassian.Stash.Api.Helpers {
-	public static class DateTimeHelpers
-	{
-		private const string InvalidUnixEpochErrorMessage = "Unix epoc starts January 1st, 1970";
+namespace Atlassian.Stash.Api.Helpers
+{
+    public static class DateTimeHelpers
+    {
+        private const string InvalidUnixEpochErrorMessage = "Unix epoc starts January 1st, 1970";
 
-		private static DateTime m_epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static DateTime m_epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-		public static DateTime FromTimestamp(this long timestamp)
-		{
-			return m_epoch.AddMilliseconds(timestamp);
-		}
+        public static DateTime FromTimestamp(this long timestamp)
+        {
+            return m_epoch.AddMilliseconds(timestamp);
+        }
 
-		public static long ToTimestamp(this DateTime dateTime)
-		{
-			if (dateTime == DateTime.MinValue)
-			{
-				return 0;
-			}
+        public static long ToTimestamp(this DateTime dateTime)
+        {
+            if (dateTime == DateTime.MinValue)
+            {
+                return 0;
+            }
 
-			var delta = dateTime.ToUniversalTime() - m_epoch;
+            var delta = dateTime.ToUniversalTime() - m_epoch;
 
-			if (delta.TotalMilliseconds < 0) throw new ArgumentOutOfRangeException(InvalidUnixEpochErrorMessage);
+            if (delta.TotalMilliseconds < 0) throw new ArgumentOutOfRangeException(InvalidUnixEpochErrorMessage);
 
-			return (long)delta.TotalMilliseconds;
-		}
+            return (long)delta.TotalMilliseconds;
+        }
 
-	}
+    }
 }

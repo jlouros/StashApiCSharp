@@ -28,6 +28,7 @@ namespace Atlassian.Stash.Api.Api
         {
             _httpWorker = httpWorker;
         }
+
         public async Task<ResponseWrapper<Repository>> Get(string projectKey, RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_REPOSITORIES, requestOptions, projectKey);

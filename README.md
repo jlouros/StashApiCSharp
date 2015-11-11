@@ -3,20 +3,24 @@
 [![NuGet](https://img.shields.io/nuget/v/Atlassian.Stash.Api.svg)](https://www.nuget.org/packages/Atlassian.Stash.Api/)
 
 
-Atlassian Stash API .Net
-=================
+Bitbucket Server (previously known as Stash) API wrapper for .Net
+============================================================================
 
-C# API wrapper for Atlassian Stash
-
-For more information on TeamCity visit: https://www.atlassian.com/software/stash
+C# API wrapper for Atlassian Bitbucket Server (previously known as Stash)
+For more information about Bitbucket Server visit: https://www.atlassian.com/software/bitbucket/server
+API documentation can be found here: https://developer.atlassian.com/bitbucket/server/docs/latest/
+Versions 2.0.0 and above of this project target Bitbucket Server version 4.1 and above.
+If you are using a older version of Bitbucket Server (below version 4.0), please download any 1.0.* version from NuGet
 
 
 ##Installation
+
 There are 2 ways to use this library:
 
-* Install-Package Atlassian.Stash.Api -Pre (via Nuget)
+* Install-Package Atlassian.Stash.Api (via Nuget)
 * Download source code and compile
  
+
 
 ##Sample Usage
 

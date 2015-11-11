@@ -12,7 +12,7 @@ namespace Atlassian.Stash.Api.Helpers
         public int? NextPageStart { get; set; }
     }
 
-    #warning JSON Response error
+#warning JSON Response error
     public class ErrorResponse
     {
         public Error[] errors { get; set; }
@@ -25,5 +25,5 @@ namespace Atlassian.Stash.Api.Helpers
         public object ExceptionName { get; set; }
     }
 
-    #warning Missing HTTP error message handlers (use unknown Content-Type header)
+#warning Missing HTTP error message handlers (use unknown Content-Type header)
 }

@@ -1,6 +1,5 @@
-﻿
+﻿using Newtonsoft.Json;
 
-using Newtonsoft.Json;
 namespace Atlassian.Stash.Api.Entities
 {
     public class Repository

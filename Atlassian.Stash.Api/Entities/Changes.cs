@@ -1,6 +1,6 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+
 namespace Atlassian.Stash.Api.Entities
 {
     public class Changes

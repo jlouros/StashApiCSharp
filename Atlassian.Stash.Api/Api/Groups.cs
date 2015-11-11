@@ -1,10 +1,6 @@
 ﻿using Atlassian.Stash.Api.Entities;
 using Atlassian.Stash.Api.Helpers;
 using Atlassian.Stash.Api.Workers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Atlassian.Stash.Api.Api

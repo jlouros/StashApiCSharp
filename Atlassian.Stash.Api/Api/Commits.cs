@@ -19,9 +19,12 @@ namespace Atlassian.Stash.Api.Api
             _httpWorker = httpWorker;
         }
 
-        public async Task<ResponseWrapper<Commit>> Get(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
+        /// <summary>
+        /// Get one or many commits
+        /// </summary>
+        public async Task<ResponseWrapper<Commit>> Get(string projectKey, string repositorySlug, RequestOptions requestOptions = null, RequestOptionsForCommits commitRequestOptions = null)
         {
-            string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_COMMITS, requestOptions, projectKey, repositorySlug);
+            string requestUrl = UrlBuilder.FormatRestApiUrlWithCommitOptions(MANY_COMMITS, requestOptions, commitRequestOptions, projectKey, repositorySlug);
 
             ResponseWrapper<Commit> response = await _httpWorker.GetAsync<ResponseWrapper<Commit>>(requestUrl).ConfigureAwait(false);
 
