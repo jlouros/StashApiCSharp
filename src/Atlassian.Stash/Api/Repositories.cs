@@ -8,15 +8,15 @@ namespace Atlassian.Stash.Api
 {
     public class Repositories
     {
-        private const string MANY_REPOSITORIES = "/rest/api/1.0/projects/{0}/repos";
-        private const string ONE_REPOSITORY = "/rest/api/1.0/projects/{0}/repos/{1}";
-        private const string MANY_TAGS = "/rest/api/1.0/projects/{0}/repos/{1}/tags";
-        private const string MANY_FILES = "/rest/api/1.0/projects/{0}/repos/{1}/files";
-        private const string ONE_FILE = "/rest/api/1.0/projects/{0}/repos/{1}/browse/{2}";
-        private const string MANY_HOOKS = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks";
-        private const string ONE_HOOK = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}";
-        private const string HOOK_ENABLE = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}/enabled";
-        private const string HOOK_SETTINGS = "/rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}/settings";
+        private const string MANY_REPOSITORIES = "rest/api/1.0/projects/{0}/repos";
+        private const string ONE_REPOSITORY = "rest/api/1.0/projects/{0}/repos/{1}";
+        private const string MANY_TAGS = "rest/api/1.0/projects/{0}/repos/{1}/tags";
+        private const string MANY_FILES = "rest/api/1.0/projects/{0}/repos/{1}/files";
+        private const string ONE_FILE = "rest/api/1.0/projects/{0}/repos/{1}/browse/{2}";
+        private const string MANY_HOOKS = "rest/api/1.0/projects/{0}/repos/{1}/settings/hooks";
+        private const string ONE_HOOK = "rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}";
+        private const string HOOK_ENABLE = "rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}/enabled";
+        private const string HOOK_SETTINGS = "rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}/settings";
         private const string PERMISSION_GROUPS = ONE_REPOSITORY + "/permissions/groups";
         private const string PERMISSION_GRANT_GROUP = PERMISSION_GROUPS + "?permission={2}&name={3}";
         private const string PERMISSION_USERS = ONE_REPOSITORY + "/permissions/users";

@@ -7,10 +7,10 @@ namespace Atlassian.Stash.Api
 {
     public class Commits
     {
-        private const string MANY_COMMITS = "/rest/api/1.0/projects/{0}/repos/{1}/commits";
-        private const string ONE_COMMIT = "/rest/api/1.0/projects/{0}/repos/{1}/commits/{2}";
-        private const string CHANGES_UNTIL = "/rest/api/1.0/projects/{0}/repos/{1}/changes?until={2}";
-        private const string CHANGES_UNTIL_AND_SINCE = "/rest/api/1.0/projects/{0}/repos/{1}/changes?until={2}&since={3}";
+        private const string MANY_COMMITS = "rest/api/1.0/projects/{0}/repos/{1}/commits";
+        private const string ONE_COMMIT = "rest/api/1.0/projects/{0}/repos/{1}/commits/{2}";
+        private const string CHANGES_UNTIL = "rest/api/1.0/projects/{0}/repos/{1}/changes?until={2}";
+        private const string CHANGES_UNTIL_AND_SINCE = "rest/api/1.0/projects/{0}/repos/{1}/changes?until={2}&since={3}";
 
         private HttpCommunicationWorker _httpWorker;
 

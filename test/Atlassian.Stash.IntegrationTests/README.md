@@ -22,10 +22,37 @@ Modify 'App.config' with your local configuration settings.
  * push the new tag to the server using => git push origin --tags
  * check all commits http://localhost:7990/projects/TEST/repos/testrepository/commits and modify 'App.config' to set the commits information
  * Go to http://localhost:7990/plugins/servlet/branch-permissions/TEST/testrepository and enable 'branch permissions'
- * 'Add branch permission' to prevent 'master' branch deletion for everyone
+ * 'Add branch permission' to prevent 'master' branch deletion for everyone (leave 'Limit write access to' blank)
  * create a new branch locally
- * make another change in 'text.txt'; commit and push this change to the server (you should have 2 branches now)
+ * make another change in 'test.txt'; commit and push this change to the server (you should have 2 branches now)
  * create a pull request from the new branch targeting master
+
+
+	REM script.bat! Trying to automate the steps described above with in a batch script
+
+	cd c:\Atlassian\code\
+
+	mkdir TestRepository
+	cd TestRepository
+	echo.initial set of text>test.txt
+
+	git init
+	git add --all
+	git commit -m "Initial Commit"
+	git remote add origin http://TestUser@localhost:7990/scm/test/testrepository.git
+	git push -u origin master
+
+	git tag -a TestTag -m "my test tag"
+	git push origin --tags
+
+	git branch develop
+	git checkout develop
+
+	echo.more text>>test.txt
+	git add --all
+	git commit -m "small change"
+	git push --set-upstream origin develop
+
 
  
 ## To be done

@@ -20,7 +20,7 @@ namespace Atlassian.Stash.Api
             OUTGOING
         }
 
-        private const string PULL_REQUEST = "/rest/api/1.0/projects/{0}/repos/{1}/pull-requests";
+        private const string PULL_REQUEST = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests";
         private HttpCommunicationWorker _httpWorker;
 
         internal PullRequests(HttpCommunicationWorker httpWorker)

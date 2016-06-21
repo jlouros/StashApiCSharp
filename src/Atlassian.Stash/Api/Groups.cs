@@ -7,7 +7,7 @@ namespace Atlassian.Stash.Api
 {
     public class Groups
     {
-        private const string MANY_GROUPS = "/rest/api/1.0/admin/groups";
+        private const string MANY_GROUPS = "rest/api/1.0/admin/groups";
 
         private HttpCommunicationWorker _httpWorker;
 

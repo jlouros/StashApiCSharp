@@ -7,7 +7,7 @@ namespace Atlassian.Stash.Api
 {
     public class Forks
     {
-        private const string MANY_FORKS = "/rest/api/1.0/projects/{0}/repos/{1}/forks";
+        private const string MANY_FORKS = "rest/api/1.0/projects/{0}/repos/{1}/forks";
 
         private HttpCommunicationWorker _httpWorker;
 
