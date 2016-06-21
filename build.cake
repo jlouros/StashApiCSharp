@@ -5,6 +5,7 @@
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var msBuildVerbosity = Argument<Verbosity>("msBuildVerbosity", Verbosity.Normal);
+var packageVersion = Argument<string>("packageVersion", "");
 
 
 //////////////////////////////////////////////////////////////////////
@@ -47,27 +48,40 @@ Task("Build")
     }
 });
 
-Task("Create-NuGet-Package")
+Task("Run-Unit-Tests")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    var net40DirOutput = Directory("./src/Atlassian.Stash.Net40/bin/" + configuration);
-	var net45DirOutput = Directory("./src/Atlassian.Stash.Net45/bin/" + configuration);
+    MSTest("./test/**/bin/**/*.UnitTests.dll");
+});
 
+Task("Prepare-NuGet-Package")
+    .IsDependentOn("Run-Unit-Tests")
+    .Does(() =>
+{
+    var net40Files = GetFiles("./src/Atlassian.Stash.Net40/bin/" + configuration + "/Atlassian.Stash.*");
+    var net45Files = GetFiles("./src/Atlassian.Stash.Net45/bin/" + configuration + "/Atlassian.Stash.*");
 
     CleanDirectory("./buildOutput/");
 
     CreateDirectory("./buildOutput/lib/net40/");
     CreateDirectory("./buildOutput/lib/net45/");
 
-    CopyDirectory(net40DirOutput, "./buildOutput/lib/net40/");
-    CopyDirectory(net45DirOutput, "./buildOutput/lib/net45/");
+    CopyFiles(net40Files, "./buildOutput/lib/net40/");
+    CopyFiles(net45Files, "./buildOutput/lib/net45/");
 
     CopyFileToDirectory("./.nuspec/Atlassian.Stash.nuspec", "./buildOutput/");
+});
 
+Task("Create-NuGet-Package")
+    .IsDependentOn("Prepare-NuGet-Package")
+    .Does(() =>
+{
+
+    // remember to set 'packageVersion' argument, otherwise the next step will fail
     var nuGetPackSettings = new NuGetPackSettings 
     { 
-        Version = "3.0",
+        Version = packageVersion,
         OutputDirectory = "./buildOutput"
     };
 
@@ -75,14 +89,12 @@ Task("Create-NuGet-Package")
     
 });
 
-
-
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("Create-NuGet-Package");
+    .IsDependentOn("Prepare-NuGet-Package");
 
 
 //////////////////////////////////////////////////////////////////////
