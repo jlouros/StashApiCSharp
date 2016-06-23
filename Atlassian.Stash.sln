@@ -1,0 +1,75 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlassian.Stash.Net45", "src\Atlassian.Stash.Net45\Atlassian.Stash.Net45.csproj", "{7D240671-3DA9-47A8-9B6C-620721A2F92A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlassian.Stash.Net40", "src\Atlassian.Stash.Net40\Atlassian.Stash.Net40.csproj", "{1EACBEFB-9384-41CA-9E5A-BD6E446AF528}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlassian.Stash.IntegrationTests", "test\Atlassian.Stash.IntegrationTests\Atlassian.Stash.IntegrationTests.csproj", "{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Atlassian.Stash", "src\Atlassian.Stash\Atlassian.Stash.shproj", "{5F0023AE-5F95-4244-B56B-46259A5FB649}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlassian.Stash.UnitTests", "test\Atlassian.Stash.UnitTests\Atlassian.Stash.UnitTests.csproj", "{E7A7BD1F-BBBE-4662-9A65-66931979B57E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{DEEDD21F-DF73-4F31-ADBB-ABA389142ED1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F61C74C-4030-4280-80F2-3202F17DC024}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuspec", ".nuspec", "{649E6F16-4128-4081-A6C0-3F0F69CF0446}"
+	ProjectSection(SolutionItems) = preProject
+		.nuspec\Atlassian.Stash.nuspec = .nuspec\Atlassian.Stash.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{2D5087AB-5AF4-434A-B0F1-3BED761C9118}"
+	ProjectSection(SolutionItems) = preProject
+		build.cake = build.cake
+		build.ps1 = build.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".docs", ".docs", "{6D9B80C2-22CF-41C8-86AD-62C30C146BB1}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Atlassian.Stash\Atlassian.Stash.projitems*{7d240671-3da9-47a8-9b6c-620721a2f92a}*SharedItemsImports = 4
+		src\Atlassian.Stash\Atlassian.Stash.projitems*{1eacbefb-9384-41ca-9e5a-bd6e446af528}*SharedItemsImports = 4
+		src\Atlassian.Stash\Atlassian.Stash.projitems*{5f0023ae-5f95-4244-b56b-46259a5fb649}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D240671-3DA9-47A8-9B6C-620721A2F92A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D240671-3DA9-47A8-9B6C-620721A2F92A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D240671-3DA9-47A8-9B6C-620721A2F92A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D240671-3DA9-47A8-9B6C-620721A2F92A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EACBEFB-9384-41CA-9E5A-BD6E446AF528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EACBEFB-9384-41CA-9E5A-BD6E446AF528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EACBEFB-9384-41CA-9E5A-BD6E446AF528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EACBEFB-9384-41CA-9E5A-BD6E446AF528}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7A7BD1F-BBBE-4662-9A65-66931979B57E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7A7BD1F-BBBE-4662-9A65-66931979B57E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7A7BD1F-BBBE-4662-9A65-66931979B57E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7A7BD1F-BBBE-4662-9A65-66931979B57E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7D240671-3DA9-47A8-9B6C-620721A2F92A} = {2F61C74C-4030-4280-80F2-3202F17DC024}
+		{1EACBEFB-9384-41CA-9E5A-BD6E446AF528} = {2F61C74C-4030-4280-80F2-3202F17DC024}
+		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278} = {DEEDD21F-DF73-4F31-ADBB-ABA389142ED1}
+		{5F0023AE-5F95-4244-B56B-46259A5FB649} = {2F61C74C-4030-4280-80F2-3202F17DC024}
+		{E7A7BD1F-BBBE-4662-9A65-66931979B57E} = {DEEDD21F-DF73-4F31-ADBB-ABA389142ED1}
+	EndGlobalSection
+EndGlobal

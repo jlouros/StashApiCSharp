@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>Atlassian.Stash.Api</id>
+		<authors>John Louros</authors>
+		<owners>John Louros</owners>
+		<iconUrl>https://bitbucket-assetroot.s3.amazonaws.com/c/photos/2013/Feb/11/jetbrains-bitbucket-connector-logo-640104250-0_avatar.png</iconUrl>
+		<licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+		<projectUrl>https://github.com/jlouros/StashApiCSharp</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>C# API wrapper for Atlassian BitBucket Server (previously know as Stash)</description>
+		<releaseNotes>
+      Features:
+      - manage Stash 'Projects' (get information, create and delete capabilities)
+      - manage Stash 'Repositories' (get information, create and delete capabilities)
+      - manage Stash 'Branches' (get information, create, delete and set permissions capabilities)
+      - get information about 'repository files'
+      - get information about 'Commits' and 'commit changes'
+      - get information about 'Tags'
+      - get information about 'Hooks'
+      - get branches by commit id
+      - get file contents
+    </releaseNotes>
+		<copyright>Copyright John Louros 2016</copyright>
+		<tags>Atlassian BitBucket Server Stash API-Wrapper</tags>
+	<dependencies>
+    	<group targetFramework=".NETFramework4.5">
+			<dependency id="Newtonsoft.Json" version="6.0.4" />
+		</group>
+		<group targetFramework=".NETFramework4.0">
+			<dependency id="Newtonsoft.Json" version="6.0.4" />
+			<dependency id="Microsoft.Bcl.Async" version="1.0.168" />
+		</group>
+	</dependencies>
+	</metadata>
+</package>

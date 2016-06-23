@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>5f0023ae-5f95-4244-b56b-46259a5fb649</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Atlassian.Stash.Api</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Api\Branches.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\Commits.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\Forks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\Groups.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\Projects.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\PullRequests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\Repositories.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\Users.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\TimestampConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\ApplicationProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Author.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\AuthorWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Branch.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\BranchPermission.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Change.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Changes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Clone.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Commit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\File.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Fork.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Group.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Hook.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Link.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Links.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Parent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Path.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Permission.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Project.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\PullRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Ref.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Repository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Self.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Tag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\User.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\DateTimeHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\RequestOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\RequestOptionsForCommits.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ResponseWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\UrlBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StashClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workers\HttpCommunicationWorker.cs" />
+  </ItemGroup>
+</Project>
