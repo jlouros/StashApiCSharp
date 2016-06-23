@@ -87,9 +87,14 @@ namespace Atlassian.Stash.Workers
             using (HttpClient httpClient = CreateHttpClient())
             using (HttpResponseMessage httpResponse = await httpClient.PostAsync<T>(requestUrl, data, new JsonMediaTypeFormatter()).ConfigureAwait(false))
             {
-                if (httpResponse.StatusCode != HttpStatusCode.Created && httpResponse.StatusCode != HttpStatusCode.OK)
+                if (httpResponse.StatusCode != HttpStatusCode.Created && httpResponse.StatusCode != HttpStatusCode.OK && httpResponse.StatusCode != HttpStatusCode.NoContent)
                 {
                     throw new Exception(string.Format("POST operation unsuccessful. Got HTTP status code '{0}'", httpResponse.StatusCode));
+                }
+
+                if (httpResponse.StatusCode == HttpStatusCode.NoContent)
+                {
+                    return default(T);
                 }
 
                 string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -111,6 +116,11 @@ namespace Atlassian.Stash.Workers
                 if (httpResponse.StatusCode != HttpStatusCode.Created && httpResponse.StatusCode != HttpStatusCode.OK && httpResponse.StatusCode != HttpStatusCode.NoContent)
                 {
                     throw new Exception(string.Format("PUT operation unsuccessful. Got HTTP status code '{0}'", httpResponse.StatusCode));
+                }
+
+                if (httpResponse.StatusCode == HttpStatusCode.NoContent)
+                {
+                    return default(T);
                 }
 
                 string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
