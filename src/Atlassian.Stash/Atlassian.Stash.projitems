@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Api\Projects.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Api\PullRequests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Api\Repositories.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\Users.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\TimestampConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\ApplicationProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Author.cs" />

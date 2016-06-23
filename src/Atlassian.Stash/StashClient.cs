@@ -23,6 +23,7 @@ namespace Atlassian.Stash
         {
             this.Projects = new Projects(_httpWorker);
             this.Groups = new Groups(_httpWorker);
+            this.Users = new Users(_httpWorker);
             this.Repositories = new Repositories(_httpWorker);
             this.Branches = new Branches(_httpWorker);
             this.Commits = new Commits(_httpWorker);
@@ -32,6 +33,7 @@ namespace Atlassian.Stash
 
         public Projects Projects { get; private set; }
         public Groups Groups { get; set; }
+        public Users Users { get; private set; }
         public Repositories Repositories { get; private set; }
         public Branches Branches { get; private set; }
         public Commits Commits { get; private set; }
