@@ -6,6 +6,7 @@ var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var msBuildVerbosity = Argument<Verbosity>("msBuildVerbosity", Verbosity.Normal);
 var packageVersion = Argument<string>("packageVersion", "");
+var nugetApiKey = Argument<string>("nugetApiKey", "");
 
 
 //////////////////////////////////////////////////////////////////////
@@ -86,6 +87,23 @@ Task("Create-NuGet-Package")
     };
 
     NuGetPack("./buildOutput/Atlassian.Stash.nuspec", nuGetPackSettings);
+    
+});
+
+Task("Publish-NuGet-Package")
+    .IsDependentOn("Create-NuGet-Package")
+    .Does(() =>
+{
+
+    // Get the path to the package.
+    var package = "./buildOutput/Atlassian.Stash.Api." + packageVersion +".nupkg";
+                
+    // Push the package.
+    NuGetPush(package, new NuGetPushSettings 
+    {
+        Source = "https://www.nuget.org/",
+        ApiKey = nugetApiKey
+    });
     
 });
 
