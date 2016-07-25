@@ -11,6 +11,7 @@ namespace Atlassian.Stash.Api
         private const string MANY_REPOSITORIES = "rest/api/1.0/projects/{0}/repos";
         private const string ONE_REPOSITORY = "rest/api/1.0/projects/{0}/repos/{1}";
         private const string MANY_TAGS = "rest/api/1.0/projects/{0}/repos/{1}/tags";
+        private const string ONE_TAG = "rest/git/1.0/projects/{0}/repos/{1}/tags/{2}";
         private const string MANY_FILES = "rest/api/1.0/projects/{0}/repos/{1}/files";
         private const string ONE_FILE = "rest/api/1.0/projects/{0}/repos/{1}/browse/{2}";
         private const string MANY_HOOKS = "rest/api/1.0/projects/{0}/repos/{1}/settings/hooks";
@@ -102,6 +103,22 @@ namespace Atlassian.Stash.Api
             ResponseWrapper<Tag> response = await _httpWorker.GetAsync<ResponseWrapper<Tag>>(requestUrl).ConfigureAwait(false);
 
             return response;
+        }
+
+        public async Task<Tag> CreateTag(string projectKey, string repositorySlug, Tag tag)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_TAGS, null, projectKey, repositorySlug);
+
+            Tag response = await _httpWorker.PostAsync<Tag>(requestUrl, tag, true).ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task DeleteTag(string projectKey, string repositorySlug, string tagName)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_TAG, null, projectKey, repositorySlug, tagName);
+
+            await _httpWorker.DeleteAsync(requestUrl).ConfigureAwait(false);
         }
 
         public async Task<ResponseWrapper<string>> GetFiles(string projectKey, string repositorySlug, RequestOptions requestOptions = null)

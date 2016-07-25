@@ -7,6 +7,7 @@ Modify 'App.config' with your local configuration settings.
 ## Setting up Integrations to run locally
 
  * Local running instance at 'http://localhost:7990/'
+ * (do not use TestUser as an Admin user)
  * Create a new user account using the following credentials 'TestUser':'password'
  * Go to global permissions and add 'Administrator' access to 'TestUser' (need to revisit this)
  * Create a new group named 'TestGroup'
@@ -27,6 +28,11 @@ Modify 'App.config' with your local configuration settings.
  * make another change in 'test.txt'; commit and push this change to the server (you should have 2 branches now)
  * create a pull request from the new branch targeting master
 
+ (to fix)
+ - master needs 2 commits
+ - initial script set branch permissions
+ - create a admin user, do not use TestUser as admin
+
 
 	REM script.bat! Trying to automate the steps described above with in a batch script
 
@@ -45,12 +51,16 @@ Modify 'App.config' with your local configuration settings.
 	git tag -a TestTag -m "my test tag"
 	git push origin --tags
 
-	git branch develop
-	git checkout develop
-
 	echo.more text>>test.txt
 	git add --all
 	git commit -m "small change"
+
+	git branch develop
+	git checkout develop
+
+	echo.even more text>>test.txt
+	git add --all
+	git commit -m "develop change"
 	git push --set-upstream origin develop
 
 

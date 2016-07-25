@@ -2,6 +2,7 @@
 using Atlassian.Stash.Entities;
 using Atlassian.Stash.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -116,6 +117,39 @@ namespace Atlassian.Stash.IntegrationTests
             Assert.IsNotNull(tags);
             Assert.IsInstanceOfType(tags, typeof(IEnumerable<Tag>));
             Assert.AreEqual(requestLimit, tags.Count());
+        }
+
+        [TestMethod]
+        public async Task Can_Create_And_Delete_Tags()
+        {
+            var initialResponse = await stashClient.Repositories.GetTags(EXISTING_PROJECT, EXISTING_REPOSITORY);
+            int initialTagCount = initialResponse.Values.Count();
+
+            // create tag
+            Tag createTag = new Tag
+            {
+                Force = true,
+                Name = "integration-test-tag",
+                Message = "integration test tag",
+                StartPoint = "refs/heads/master",
+                Type = TagType.ANNOTATED
+            };
+            var createResponse = await stashClient.Repositories.CreateTag(EXISTING_PROJECT, EXISTING_REPOSITORY, createTag);
+
+            // mid-step get tags again
+            var midResponse = await stashClient.Repositories.GetTags(EXISTING_PROJECT, EXISTING_REPOSITORY);
+            int midTagCount = midResponse.Values.Count();
+            Assert.AreEqual(initialTagCount + 1, midTagCount);
+            Assert.IsTrue(midResponse.Values.Any(x => x.Id.Contains(createTag.Name)));
+
+            // delete tag
+            await stashClient.Repositories.DeleteTag(EXISTING_PROJECT, EXISTING_REPOSITORY, createTag.Name);
+
+            // final check to ensure the tag count didn't change
+            var finalResponse = await stashClient.Repositories.GetTags(EXISTING_PROJECT, EXISTING_REPOSITORY);
+            int finalTagCount = initialResponse.Values.Count();
+
+            Assert.AreEqual(initialTagCount, finalTagCount);
         }
 
         [TestMethod]
@@ -284,6 +318,69 @@ namespace Atlassian.Stash.IntegrationTests
             Assert.IsInstanceOfType(changes, typeof(Changes));
             Assert.AreEqual(EXISTING_COMMIT, changes.ToHash, ignoreCase: true);
             Assert.AreEqual(EXISTING_NUMBER_OF_CHANGES, changes.ListOfChanges.Count());
+        }
+
+        [TestMethod]
+        public async Task Can_GetCommitsUntil()
+        {
+            var commits = await stashClient.Commits.GetCommits(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT);
+
+            Assert.IsNotNull(commits);
+            Assert.IsInstanceOfType(commits, typeof(ResponseWrapper<Commit>));
+            Assert.IsTrue(commits.Values.Count() > 1);
+            Assert.IsTrue(commits.Values.Any(x => x.Id.Equals(EXISTING_COMMIT, StringComparison.OrdinalIgnoreCase)));
+        }
+
+        [TestMethod]
+        public async Task Can_GetCommitsUntil_WithRequestOptions()
+        {
+            int requestLimit = 1;
+            var commits = await stashClient.Commits.GetCommits(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT, null, new RequestOptions { Limit = requestLimit });
+
+            Assert.IsNotNull(commits);
+            Assert.IsInstanceOfType(commits, typeof(ResponseWrapper<Commit>));
+            Assert.IsTrue(commits.Values.Count() > 0);
+            Assert.IsTrue(commits.Values.Any(x => x.Id.Equals(EXISTING_COMMIT, StringComparison.OrdinalIgnoreCase)));
+        }
+
+        [TestMethod]
+        public async Task Can_GetCommitsUntil_And_Since()
+        {
+            var commits = await stashClient.Commits.GetCommits(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT, EXISTING_OLDER_COMMIT);
+
+            Assert.IsNotNull(commits);
+            Assert.IsInstanceOfType(commits, typeof(ResponseWrapper<Commit>));
+            Assert.IsTrue(commits.Values.Count() > 0);
+            Assert.IsTrue(commits.Values.Any(x => x.Id.Equals(EXISTING_COMMIT, StringComparison.OrdinalIgnoreCase)));
+            // excluside call (excludes 'since' commit)
+            Assert.IsFalse(commits.Values.Any(x => x.Id.Equals(EXISTING_OLDER_COMMIT, StringComparison.OrdinalIgnoreCase)));
+        }
+
+        [TestMethod]
+        public async Task Can_GetCommitsUntil_And_Since_WithRequestOptions()
+        {
+            int requestLimit = 1;
+            var commits = await stashClient.Commits.GetCommits(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT, EXISTING_OLDER_COMMIT, new RequestOptions { Limit = requestLimit });
+
+            Assert.IsNotNull(commits);
+            Assert.IsInstanceOfType(commits, typeof(ResponseWrapper<Commit>));
+            Assert.IsTrue(commits.Values.Count() > 0);
+            Assert.IsTrue(commits.Values.Any(x => x.Id.Equals(EXISTING_COMMIT, StringComparison.OrdinalIgnoreCase)));
+            // excluside call (excludes 'since' commit)
+            Assert.IsFalse(commits.Values.Any(x => x.Id.Equals(EXISTING_OLDER_COMMIT, StringComparison.OrdinalIgnoreCase)));
+        }
+
+        [TestMethod]
+        public async Task Can_GetCommitsUntil_And_Since_MoreThanOneResult()
+        {
+            var commits = await stashClient.Commits.GetCommits(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT, EXISTING_OLDER_COMMIT);
+
+            Assert.IsNotNull(commits);
+            Assert.IsInstanceOfType(commits, typeof(ResponseWrapper<Commit>));
+            Assert.IsTrue(commits.Values.Count() > 0);
+            Assert.IsTrue(commits.Values.Any(x => x.Id.Equals(EXISTING_COMMIT, StringComparison.OrdinalIgnoreCase)));
+            // excluside call (excludes 'since' commit)
+            Assert.IsFalse(commits.Values.Any(x => x.Id.Equals(EXISTING_OLDER_COMMIT, StringComparison.OrdinalIgnoreCase)));
         }
 
         [TestMethod]
