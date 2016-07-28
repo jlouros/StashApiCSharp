@@ -13,6 +13,8 @@ namespace Atlassian.Stash.IntegrationTests
         protected readonly string EXISTING_PROJECT = ConfigurationManager.AppSettings.Get("existing-project");
         protected readonly string EXISTING_REPOSITORY = ConfigurationManager.AppSettings.Get("existing-repository");
         protected readonly string EXISTING_FILE = ConfigurationManager.AppSettings.Get("existing-file");
+        protected readonly string EXISTING_FILE_IN_SUBFOLDER = ConfigurationManager.AppSettings.Get("existing-file-in-subfolder");
+        protected readonly string EXISTING_FILE_IN_SUBFOLDER_WITH_SPACES = ConfigurationManager.AppSettings.Get("existing-file-in-subfolder-with-spaces");
         protected readonly string EXISTING_COMMIT = ConfigurationManager.AppSettings.Get("existing-commit");
         protected readonly string EXISTING_OLDER_COMMIT = ConfigurationManager.AppSettings.Get("existing-older-commit");
         protected readonly string EXISTING_BRANCH_REFERENCE = ConfigurationManager.AppSettings.Get("existing-branch-reference");

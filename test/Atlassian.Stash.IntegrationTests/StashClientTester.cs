@@ -19,6 +19,27 @@ namespace Atlassian.Stash.IntegrationTests
 
             Assert.IsNotNull(response);
             Assert.IsTrue(response.FileContents.Count > 0);
+            Assert.AreEqual(1, response.Size);
+        }
+
+        [TestMethod]
+        public async Task Can_GetFileContents_In_SubFolder()
+        {
+            var response = await stashClient.Repositories.GetFileContents(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_FILE_IN_SUBFOLDER);
+
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.FileContents.Count > 0);
+            Assert.AreEqual(1, response.Size);
+        }
+
+        [TestMethod]
+        public async Task Can_GetFileContents_In_SubFolder_With_Spaces()
+        {
+            var response = await stashClient.Repositories.GetFileContents(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_FILE_IN_SUBFOLDER_WITH_SPACES);
+
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.FileContents.Count > 0);
+            Assert.AreEqual(1, response.Size);
         }
 
         [TestMethod]

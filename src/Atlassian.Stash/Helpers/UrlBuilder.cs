@@ -92,9 +92,14 @@ namespace Atlassian.Stash.Helpers
         // todo: UrlEncode when necessary
         public static string FormatRestApiUrl(string restUrl, RequestOptions requestOptions = null, params string[] inputs)
         {
+            return FormatRestApiUrl(restUrl, true, requestOptions, inputs);
+        }
+
+        public static string FormatRestApiUrl(string restUrl, bool escapeUrlData, RequestOptions requestOptions = null, params string[] inputs)
+        {
             StringParamsValidator(inputs.Length, inputs);
 
-            string resultingUrl = String.Format(restUrl, UrlEscapeParams(inputs));
+            string resultingUrl = escapeUrlData ? String.Format(restUrl, UrlEscapeDataParams(inputs)) : String.Format(restUrl, UrlEscapeUriParams(inputs));
 
             if (requestOptions != null)
             {
@@ -172,13 +177,28 @@ namespace Atlassian.Stash.Helpers
             }
         }
 
-        private static string[] UrlEscapeParams(string[] inputs)
+        // todo: Review when it's appropriate to use Uri.EscapeDataString and Uri.EscapeUriString
+
+        private static string[] UrlEscapeDataParams(string[] inputs)
         {
             string[] result = new string[inputs.Length];
 
             for (int i = 0; i < inputs.Length; i++)
             {
                 result[i] = Uri.EscapeDataString(inputs[i]);
+            }
+
+
+            return result;
+        }
+
+        private static string[] UrlEscapeUriParams(string[] inputs)
+        {
+            string[] result = new string[inputs.Length];
+
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                result[i] = Uri.EscapeUriString(inputs[i]);
             }
 
 

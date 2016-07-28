@@ -132,7 +132,9 @@ namespace Atlassian.Stash.Api
 
         public async Task<File> GetFileContents(string projectKey, string repositorySlug, string path, RequestOptions requestOptions = null)
         {
-            string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_FILE, requestOptions, projectKey, repositorySlug, path);
+            // must espace spaces, but can't escape slashes
+
+            string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_FILE, false, requestOptions, projectKey, repositorySlug, path);
             File response = await _httpWorker.GetAsync<File>(requestUrl).ConfigureAwait(false);
 
             return response;

@@ -16,7 +16,9 @@ Modify 'App.config' with your local configuration settings.
  * In 'test' project, create a repository named 'TestRepository'
  * On the repository permission settings add 'TestGroup' 
  * create new local git repository
- * add a file the local repository called 'test.txt'
+ * add a file the local repository called 'test.txt' (and enter some basic text)
+ * create a new folder name "folder" and add a new file called 'test.txt' (and enter some basic text)
+ * create a new folder name "my folder" and add a new file called 'my test.txt' (and enter some basic text)
  * commit and push the changes to your local Bitbucket Server, targeting 'TestRepository'
  * make a change in 'text.txt' file; commit and push this changes (now you should have at least 2 commits)
  * create a new tag using the following command => git tag -a TestTag -m 'my test tag'
@@ -41,6 +43,13 @@ Modify 'App.config' with your local configuration settings.
 	mkdir TestRepository
 	cd TestRepository
 	echo.initial set of text>test.txt
+	mkdir folder
+	cd folder
+	echo.in subfolder>test.txt
+	cd ..
+	mkdir "my folder"
+	cd "my folder"
+	echo.in subfolder with spaces>"my test.txt"
 
 	git init
 	git add --all
