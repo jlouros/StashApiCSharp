@@ -10,5 +10,7 @@ namespace Atlassian.Stash.Entities
         public string Role { get; set; }
         [JsonProperty("user")]
         public Author User { get; set; }
+        [JsonProperty("status")]
+        public string Status { get; set; }
     }
 }
