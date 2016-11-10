@@ -42,6 +42,3 @@ There are 2 ways to use this library:
 
 *Take a look at the integration tests project for more samples.*
 
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/jlouros/stashapicsharp/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-

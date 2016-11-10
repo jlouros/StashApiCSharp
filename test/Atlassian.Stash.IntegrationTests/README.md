@@ -14,8 +14,8 @@ Modify 'App.config' with your local configuration settings.
  * Add user 'TestUser' to group 'TestGroup'
  * Create new project named 'test'
  * In 'test' project, create a repository named 'TestRepository'
- * On the repository permission settings add 'TestGroup' 
- * create new local git repository
+ * On the repository permission settings add 'TestGroup' with "Write" permissions 
+ * create new local git repository {try to use a script after this point}
  * add a file the local repository called 'test.txt' (and enter some basic text)
  * create a new folder name "folder" and add a new file called 'test.txt' (and enter some basic text)
  * create a new folder name "my folder" and add a new file called 'my test.txt' (and enter some basic text)
