@@ -8,6 +8,7 @@ namespace Atlassian.Stash.Api
     public class Branches
     {
         private const string MANY_BRANCHES = "rest/api/1.0/projects/{0}/repos/{1}/branches";
+        private const string MANY_BRANCHES_WITH_FILTER = "rest/api/1.0/projects/{0}/repos/{1}/branches?filterText={2}";
         private const string MANAGE_BRANCHES = "rest/branch-utils/1.0/projects/{0}/repos/{1}/branches";
         private const string BRANCHES_FOR_COMMIT = "rest/branch-utils/1.0/projects/{0}/repos/{1}/branches/info/{2}";
         private const string BRANCH_PERMISSIONS = "rest/branch-permissions/2.0/projects/{0}/repos/{1}/restrictions";
@@ -23,6 +24,15 @@ namespace Atlassian.Stash.Api
         public async Task<ResponseWrapper<Branch>> Get(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_BRANCHES, requestOptions, projectKey, repositorySlug);
+
+            ResponseWrapper<Branch> response = await _httpWorker.GetAsync<ResponseWrapper<Branch>>(requestUrl).ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<ResponseWrapper<Branch>> Get(string projectKey, string repositorySlug, string filterText, RequestOptions requestOptions = null) 
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_BRANCHES_WITH_FILTER, requestOptions, projectKey, repositorySlug, filterText);
 
             ResponseWrapper<Branch> response = await _httpWorker.GetAsync<ResponseWrapper<Branch>>(requestUrl).ConfigureAwait(false);
 
