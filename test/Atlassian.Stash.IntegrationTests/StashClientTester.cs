@@ -43,6 +43,16 @@ namespace Atlassian.Stash.IntegrationTests
         }
 
         [TestMethod]
+        public async Task Can_GetFileContents_From_Branch()
+        {
+            var response = await stashClient.Repositories.GetFileContents(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_FILE, EXISTING_BRANCH_NAME);
+            
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.FileContents.Count > 0);
+            Assert.AreEqual(1, response.Size);
+        }
+        
+        [TestMethod]
         public async Task Can_GetBranchesForCommit()
         {
             var response = await stashClient.Branches.GetByCommitId(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT);
