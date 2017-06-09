@@ -14,6 +14,7 @@ namespace Atlassian.Stash.Api
         private const string ONE_TAG = "rest/git/1.0/projects/{0}/repos/{1}/tags/{2}";
         private const string MANY_FILES = "rest/api/1.0/projects/{0}/repos/{1}/files";
         private const string ONE_FILE = "rest/api/1.0/projects/{0}/repos/{1}/browse/{2}";
+        private const string ONE_FILE_FROM_BRANCH = "rest/api/1.0/projects/{0}/repos/{1}/browse/{2}?at=refs%2Fheads%2F{3}";
         private const string MANY_HOOKS = "rest/api/1.0/projects/{0}/repos/{1}/settings/hooks";
         private const string ONE_HOOK = "rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}";
         private const string HOOK_ENABLE = "rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}/enabled";
@@ -133,10 +134,20 @@ namespace Atlassian.Stash.Api
         public async Task<File> GetFileContents(string projectKey, string repositorySlug, string path, RequestOptions requestOptions = null)
         {
             // must espace spaces, but can't escape slashes
-
+            
             string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_FILE, false, requestOptions, projectKey, repositorySlug, path);
             File response = await _httpWorker.GetAsync<File>(requestUrl).ConfigureAwait(false);
+            
+            return response;
+        }
 
+        public async Task<File> GetFileContents(string projectKey, string repositorySlug, string path, string branch, RequestOptions requestOptions = null)
+        {
+            // must escape spaces, but can't escape slashes
+            
+            string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_FILE_FROM_BRANCH, false, requestOptions, projectKey, repositorySlug, path, branch);
+            File response = await _httpWorker.GetAsync<File>(requestUrl).ConfigureAwait(false);
+            
             return response;
         }
 

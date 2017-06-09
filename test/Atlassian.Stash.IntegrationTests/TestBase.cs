@@ -18,6 +18,7 @@ namespace Atlassian.Stash.IntegrationTests
         protected readonly string EXISTING_COMMIT = ConfigurationManager.AppSettings.Get("existing-commit");
         protected readonly string EXISTING_OLDER_COMMIT = ConfigurationManager.AppSettings.Get("existing-older-commit");
         protected readonly string EXISTING_BRANCH_REFERENCE = ConfigurationManager.AppSettings.Get("existing-branch-reference");
+        protected readonly string EXISTING_BRANCH_NAME = ConfigurationManager.AppSettings.Get("existing-branch-name");
         protected readonly string EXISTING_GROUP = ConfigurationManager.AppSettings.Get("existing-group");
         protected readonly string EXISTING_HOOK = ConfigurationManager.AppSettings.Get("existing-hook");
         protected readonly int EXISTING_NUMBER_OF_CHANGES = int.Parse(ConfigurationManager.AppSettings.Get("existing-number-of-changes"));
