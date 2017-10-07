@@ -8,6 +8,7 @@ namespace Atlassian.Stash.Api
     public class Branches
     {
         private const string MANY_BRANCHES = "rest/api/1.0/projects/{0}/repos/{1}/branches";
+        private const string BRANCHES_DEFAULT = "rest/api/1.0/projects/{0}/repos/{1}/branches/default";
         private const string MANY_BRANCHES_WITH_FILTER = "rest/api/1.0/projects/{0}/repos/{1}/branches?filterText={2}";
         private const string MANAGE_BRANCHES = "rest/branch-utils/1.0/projects/{0}/repos/{1}/branches";
         private const string BRANCHES_FOR_COMMIT = "rest/branch-utils/1.0/projects/{0}/repos/{1}/branches/info/{2}";
@@ -89,6 +90,24 @@ namespace Atlassian.Stash.Api
             string requestUrl = UrlBuilder.FormatRestApiUrl(BRANCH_DELETE_PERMISSIONS, null, projectKey, repositorySlug, permissionsId.ToString());
 
             await _httpWorker.DeleteAsync(requestUrl).ConfigureAwait(false);
+        }
+
+        public async Task<Branch> GetDefault(string projectKey, string repositorySlug)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(BRANCHES_DEFAULT, null, projectKey, repositorySlug);
+
+            Branch response = await _httpWorker.GetAsync<Branch>(requestUrl).ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<Branch> SetDefault(string projectKey, string repositorySlug, Branch branch)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(BRANCHES_DEFAULT, null, projectKey, repositorySlug);
+
+            Branch response = await _httpWorker.PutAsync(requestUrl, branch).ConfigureAwait(false);
+
+            return response;
         }
     }
 }
