@@ -447,7 +447,27 @@ namespace Atlassian.Stash.IntegrationTests
             Assert.AreEqual(EXISTING_HOOK, response.Details.Key);
         }
 
-        #region Feature tests
+        [TestMethod]
+        public async Task Can_SetDefaultBranch_Than_RetrieveIt()
+        {
+            var response = await stashClient.Branches.GetDefault(EXISTING_PROJECT, EXISTING_REPOSITORY);
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual("refs/heads/master", response.Id);
+
+            var defaultBranch = new Branch { Id = "refs/heads/develop" };
+
+            await stashClient.Branches.SetDefault(EXISTING_PROJECT, EXISTING_REPOSITORY, defaultBranch);
+
+            response = await stashClient.Branches.GetDefault(EXISTING_PROJECT, EXISTING_REPOSITORY);
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual("refs/heads/develop", response.Id);
+
+            defaultBranch = new Branch { Id = "refs/heads/master" };
+
+            await stashClient.Branches.SetDefault(EXISTING_PROJECT, EXISTING_REPOSITORY, defaultBranch);
+        }
 
         [TestMethod]
         public async Task Can_GetBranchPermissions()
@@ -606,7 +626,5 @@ namespace Atlassian.Stash.IntegrationTests
             Assert.IsInstanceOfType(deletedUser, typeof(User));
             Assert.AreEqual("tmpTestUser", deletedUser.Name);
         }
-
-        #endregion
     }
 }
