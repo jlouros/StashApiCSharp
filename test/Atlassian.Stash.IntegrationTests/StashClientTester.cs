@@ -207,6 +207,59 @@ namespace Atlassian.Stash.IntegrationTests
         }
 
         [TestMethod]
+        public async Task Can_GetPullRequestSettings()
+        {
+            var response = await stashClient.Repositories.GetPullRequestSettings(EXISTING_PROJECT, EXISTING_REPOSITORY);
+
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.MergeConfig);
+            Assert.IsNotNull(response.MergeConfig.DefaultStrategy);
+            Assert.IsNotNull(response.MergeConfig.Strategies);
+            Assert.IsNotNull(response.MergeConfig.Type = "REPOSITORY");
+            Assert.IsNotNull(response.RequiredApprovers = 0);
+
+        }
+
+        [TestMethod]
+        public async Task Can_SetPullRequestSettings()
+        {
+            var originalSettings = await stashClient.Repositories.GetPullRequestSettings(EXISTING_PROJECT, EXISTING_REPOSITORY);
+
+            var settings = new PullRequestSettings
+            {
+                MergeConfig = new MergeConfig
+                {
+                    DefaultStrategy = new Strategy {Id = StrategyIdType.SQUASH_FAST_FORWARD_ONLY},
+                    Strategies = new List<Strategy>
+                    {
+                        new Strategy {Id = StrategyIdType.SQUASH_FAST_FORWARD_ONLY},
+                        new Strategy {Id = StrategyIdType.NO_FAST_FORWARD}
+                    }
+                },
+                RequiredAllApprovers = false,
+                RequiredAllTasksComplete = false,
+                RequiredApprovers = 2,
+                RequiredSuccessfulBuilds = 1
+            };
+
+            await stashClient.Repositories.SetPullRequestSettings(EXISTING_PROJECT, EXISTING_REPOSITORY, settings);
+
+            var response = await stashClient.Repositories.GetPullRequestSettings(EXISTING_PROJECT, EXISTING_REPOSITORY);
+
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.MergeConfig);
+            Assert.IsNotNull(response.MergeConfig.DefaultStrategy);
+            Assert.IsNotNull(response.MergeConfig.DefaultStrategy.Id = StrategyIdType.SQUASH_FAST_FORWARD_ONLY);
+            Assert.IsNotNull(response.MergeConfig.Strategies);
+            Assert.AreEqual(2, response.MergeConfig.Strategies.Count(s => s.Enabled != null && s.Enabled.Value));
+            Assert.AreEqual(2, response.RequiredApprovers);
+            Assert.AreEqual(1, response.RequiredSuccessfulBuilds);
+
+            await stashClient.Repositories.SetPullRequestSettings(EXISTING_PROJECT, EXISTING_REPOSITORY, originalSettings);
+
+        }
+
+        [TestMethod]
         public async Task Can_GetAllBranches()
         {
             var response = await stashClient.Branches.Get(EXISTING_PROJECT, EXISTING_REPOSITORY);

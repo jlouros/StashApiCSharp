@@ -5,6 +5,7 @@ namespace Atlassian.Stash.Entities
     // todo: Review class, since Create != Get != Delete objects
     public class Branch
     {
+        [JsonProperty("id")]
         public string Id { get; set; }
         public string DisplayId { get; set; }
         public string LatestChangeset { get; set; }
