@@ -16,6 +16,7 @@ namespace Atlassian.Stash.Api
         private const string ONE_FILE = "rest/api/1.0/projects/{0}/repos/{1}/browse/{2}";
         private const string ONE_FILE_FROM_BRANCH = "rest/api/1.0/projects/{0}/repos/{1}/browse/{2}?at=refs%2Fheads%2F{3}";
         private const string MANY_HOOKS = "rest/api/1.0/projects/{0}/repos/{1}/settings/hooks";
+        private const string PULLREQUEST_SETTINGS = "rest/api/1.0/projects/{0}/repos/{1}/settings/pull-requests";
         private const string ONE_HOOK = "rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}";
         private const string HOOK_ENABLE = "rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}/enabled";
         private const string HOOK_SETTINGS = "rest/api/1.0/projects/{0}/repos/{1}/settings/hooks/{2}/settings";
@@ -202,6 +203,24 @@ namespace Atlassian.Stash.Api
             string requestUrl = UrlBuilder.FormatRestApiUrl(HOOK_SETTINGS, null, projectKey, repositorySlug, hookKey);
 
             string response = await _httpWorker.PutAsync(requestUrl, settings).ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<PullRequestSettings> GetPullRequestSettings(string projectKey, string repositorySlug)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(PULLREQUEST_SETTINGS, null, projectKey, repositorySlug);
+
+            PullRequestSettings response = await _httpWorker.GetAsync<PullRequestSettings>(requestUrl).ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<PullRequestSettings> SetPullRequestSettings(string projectKey, string repositorySlug, PullRequestSettings settings)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(PULLREQUEST_SETTINGS, null, projectKey, repositorySlug);
+
+            PullRequestSettings response = await _httpWorker.PostAsync<PullRequestSettings>(requestUrl, settings, true).ConfigureAwait(false);
 
             return response;
         }
