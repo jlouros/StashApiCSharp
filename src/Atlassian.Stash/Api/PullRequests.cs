@@ -21,6 +21,8 @@ namespace Atlassian.Stash.Api
         }
 
         private const string PULL_REQUEST = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests";
+        private const string PULL_REQUEST_MERGE = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests/{2}/MERGE?VERSION={3}";
+
         private HttpCommunicationWorker _httpWorker;
 
         internal PullRequests(HttpCommunicationWorker httpWorker)
@@ -33,6 +35,16 @@ namespace Atlassian.Stash.Api
             string requestUrl = UrlBuilder.FormatRestApiUrl(PULL_REQUEST, null, projectKey, repositorySlug);
 
             PullRequest pr = await _httpWorker.PostAsync(requestUrl, pullRequest);
+
+            return pr;
+        }
+
+        public async Task<PullRequest> Merge(PullRequest pullRequest, string projectKey)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(PULL_REQUEST_MERGE, null, projectKey,
+                pullRequest.FromRef.Repository.Slug, pullRequest.Id, pullRequest.Version);
+
+            PullRequest pr = await _httpWorker.GetAsync<PullRequest>(requestUrl);
 
             return pr;
         }
