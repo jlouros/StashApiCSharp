@@ -2,6 +2,7 @@
 using Atlassian.Stash.Helpers;
 using Atlassian.Stash.Workers;
 using System.Threading.Tasks;
+using Atlassian.Stash.Api.Entities;
 
 namespace Atlassian.Stash.Api
 {
@@ -21,7 +22,8 @@ namespace Atlassian.Stash.Api
         }
 
         private const string PULL_REQUEST = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests";
-        private const string PULL_REQUEST_MERGE = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests/{2}/MERGE?VERSION={3}";
+        private const string PULL_REQUEST_MERGEABLE = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests/{2}/merge";
+        private const string PULL_REQUEST_MERGE = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests/{2}/merge?version={3}";
 
         private HttpCommunicationWorker _httpWorker;
 
@@ -39,12 +41,22 @@ namespace Atlassian.Stash.Api
             return pr;
         }
 
+        public async Task<PullRequestStatus> Status(PullRequest pullRequest, string projectKey)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(PULL_REQUEST_MERGEABLE, null, projectKey,
+                pullRequest.FromRef.Repository.Slug, pullRequest.Id);
+
+            PullRequestStatus pr = await _httpWorker.GetAsync<PullRequestStatus>(requestUrl).ConfigureAwait(false);
+
+            return pr;
+        }
+
         public async Task<PullRequest> Merge(PullRequest pullRequest, string projectKey)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(PULL_REQUEST_MERGE, null, projectKey,
                 pullRequest.FromRef.Repository.Slug, pullRequest.Id, pullRequest.Version);
 
-            PullRequest pr = await _httpWorker.GetAsync<PullRequest>(requestUrl);
+            PullRequest pr = await _httpWorker.PostAsync<PullRequest>(requestUrl,null).ConfigureAwait(false);
 
             return pr;
         }

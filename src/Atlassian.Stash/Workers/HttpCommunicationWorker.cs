@@ -64,10 +64,15 @@ namespace Atlassian.Stash.Workers
             using (HttpResponseMessage httpResponse = await httpClient.GetAsync(requestUrl).ConfigureAwait(false))
             {
                 string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                T response = JsonConvert.DeserializeObject<T>(json);
-
-                return response;
+                try
+                {
+                    return JsonConvert.DeserializeObject<T>(json);
+                }
+                catch (Exception ex)
+                {
+                    ex.Data["json"] = json;
+                    throw;
+                }
             }
         }
 
