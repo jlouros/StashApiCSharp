@@ -684,7 +684,7 @@ namespace Atlassian.Stash.IntegrationTests
         }
 
         [TestMethod]
-        public async Task Can_Get_Pull_Request_Status()
+        public async Task Can_GetPullRequestStatus()
         {
             var pullrequests = await stashClient.PullRequests.Get(EXISTING_PROJECT, EXISTING_REPOSITORY);
             var request = pullrequests.Values.First();
