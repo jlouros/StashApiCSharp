@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlassian.Stash.Net45", "src\Atlassian.Stash.Net45\Atlassian.Stash.Net45.csproj", "{7D240671-3DA9-47A8-9B6C-620721A2F92A}"
 EndProject
@@ -36,9 +36,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".docs", ".docs", "{6D9B80C2
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		src\Atlassian.Stash\Atlassian.Stash.projitems*{7d240671-3da9-47a8-9b6c-620721a2f92a}*SharedItemsImports = 4
 		src\Atlassian.Stash\Atlassian.Stash.projitems*{1eacbefb-9384-41ca-9e5a-bd6e446af528}*SharedItemsImports = 4
 		src\Atlassian.Stash\Atlassian.Stash.projitems*{5f0023ae-5f95-4244-b56b-46259a5fb649}*SharedItemsImports = 13
+		src\Atlassian.Stash\Atlassian.Stash.projitems*{7d240671-3da9-47a8-9b6c-620721a2f92a}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

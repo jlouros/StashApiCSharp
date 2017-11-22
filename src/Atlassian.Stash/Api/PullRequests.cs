@@ -1,8 +1,11 @@
-﻿using Atlassian.Stash.Entities;
+﻿using System;
+using Atlassian.Stash.Entities;
 using Atlassian.Stash.Helpers;
 using Atlassian.Stash.Workers;
 using System.Threading.Tasks;
 using Atlassian.Stash.Api.Entities;
+using Newtonsoft.Json;
+using Atlassian.Stash.Api.Exceptions;
 
 namespace Atlassian.Stash.Api
 {
@@ -55,10 +58,20 @@ namespace Atlassian.Stash.Api
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(PULL_REQUEST_MERGE, null, projectKey,
                 pullRequest.FromRef.Repository.Slug, pullRequest.Id, pullRequest.Version);
-
-            PullRequest pr = await _httpWorker.PostAsync<PullRequest>(requestUrl,null).ConfigureAwait(false);
-
-            return pr;
+            try
+            { 
+                PullRequest pr = await _httpWorker.PostAsync<PullRequest>(requestUrl,null).ConfigureAwait(false);
+                return pr;
+            }
+            catch (Exception ex)
+            {
+                if (ex.Data["json"] != null)
+                {
+                    MergeErrorResponse error = JsonConvert.DeserializeObject<MergeErrorResponse>((string)ex.Data["json"]);
+                    throw new StashMergeException("Merge failure",ex, error);
+                }
+                throw;
+            }
         }
 
         public async Task<ResponseWrapper<PullRequest>> Get(string projectKey, string repositorySlug, RequestOptions options = null, Direction direction = Direction.INCOMING,
