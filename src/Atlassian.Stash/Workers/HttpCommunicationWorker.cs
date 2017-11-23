@@ -6,6 +6,8 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Atlassian.Stash.Api.Entities;
+using Atlassian.Stash.Api.Exceptions;
 
 namespace Atlassian.Stash.Workers
 {
@@ -64,10 +66,15 @@ namespace Atlassian.Stash.Workers
             using (HttpResponseMessage httpResponse = await httpClient.GetAsync(requestUrl).ConfigureAwait(false))
             {
                 string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                T response = JsonConvert.DeserializeObject<T>(json);
-
-                return response;
+                try
+                {
+                    return JsonConvert.DeserializeObject<T>(json);
+                }
+                catch (Exception ex)
+                {
+                    ex.Data["json"] = json;
+                    throw;
+                }
             }
         }
 
@@ -93,17 +100,18 @@ namespace Atlassian.Stash.Workers
             using (HttpClient httpClient = CreateHttpClient())
             using (HttpResponseMessage httpResponse = await httpClient.PostAsync(requestUrl, contentToPost))
             {
+                string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 if (httpResponse.StatusCode != HttpStatusCode.Created && httpResponse.StatusCode != HttpStatusCode.OK && httpResponse.StatusCode != HttpStatusCode.NoContent)
                 {
-                    throw new Exception(string.Format("POST operation unsuccessful. Got HTTP status code '{0}'", httpResponse.StatusCode));
+                    var exc = new Exception(string.Format("POST operation unsuccessful. Got HTTP status code '{0}'", httpResponse.StatusCode));
+                    exc.Data["json"] = json;
+                    throw exc;
                 }
 
                 if (httpResponse.StatusCode == HttpStatusCode.NoContent)
                 {
                     return default(T);
                 }
-
-                string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 T response = JsonConvert.DeserializeObject<T>(json);
 

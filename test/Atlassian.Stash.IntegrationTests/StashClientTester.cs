@@ -4,8 +4,11 @@ using Atlassian.Stash.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Atlassian.Stash.Api.Entities;
+using Atlassian.Stash.Api.Exceptions;
 
 namespace Atlassian.Stash.IntegrationTests
 {
@@ -678,6 +681,57 @@ namespace Atlassian.Stash.IntegrationTests
             Assert.IsNotNull(deletedUser);
             Assert.IsInstanceOfType(deletedUser, typeof(User));
             Assert.AreEqual("tmpTestUser", deletedUser.Name);
+        }
+
+        [TestMethod]
+        public async Task Can_GetPullRequestStatus()
+        {
+            var pullrequests = await stashClient.PullRequests.Get(EXISTING_PROJECT, EXISTING_REPOSITORY);
+            var request = pullrequests.Values.First();
+            var status = await stashClient.PullRequests.Status(request, EXISTING_PROJECT);
+
+            Assert.IsNotNull(status);
+        }
+
+        // TO DO: Setup a proper way of creating a testing envrionment for merging pull requests so as to
+        // avoid the weird error handling in this test class due to not knowing if the tester created a mergable pull request.
+        // TO DO: Split this test case up into three seperate test cases
+        [TestMethod]
+        public async Task Merge_PullRequest()
+        {
+            var pullrequests = await stashClient.PullRequests.Get(EXISTING_PROJECT, EXISTING_REPOSITORY);
+            var request = pullrequests.Values.First();
+            var status = await stashClient.PullRequests.Status(request, EXISTING_PROJECT);
+
+            Assert.IsNotNull(status);
+            PullRequest requestMerged = null;
+            MergeErrorResponse stashError = null;
+            try
+            {
+                requestMerged = await stashClient.PullRequests.Merge(request, EXISTING_PROJECT);
+            }
+            catch (StashMergeException exc)
+            {
+                stashError = exc.ErrorResponse;
+            }
+
+            if (stashError == null)
+            {
+                Console.WriteLine("Pull Request Merged");
+                Assert.IsNotNull(requestMerged);
+                Assert.AreEqual(true, status.CanMerge);
+                Assert.AreEqual(status.CanMerge, requestMerged.State == PullRequestState.MERGED);
+            }
+            else
+            {
+                Console.WriteLine("Pull Request failed to merge");
+                Assert.AreEqual(false, status.CanMerge);
+                foreach (var error in stashError.Errors)
+                {
+                    Assert.AreEqual(true,error.Conflicted);
+                }
+            }
+            
         }
     }
 }

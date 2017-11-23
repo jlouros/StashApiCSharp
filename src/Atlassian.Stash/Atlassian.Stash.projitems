@@ -27,6 +27,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Changes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Clone.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Commit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\MergeErrorResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\File.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Fork.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Group.cs" />
@@ -39,11 +40,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Project.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\PullRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\PullRequestSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\PullRequestStatus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Ref.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Repository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Self.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Tag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\User.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\StashMergeException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DateTimeHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\RequestOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\RequestOptionsForCommits.cs" />
