@@ -95,6 +95,33 @@ namespace Atlassian.Stash.Helpers
             return FormatRestApiUrl(restUrl, true, requestOptions, inputs);
         }
 
+        public static string FormatRestApiUrl(string restUrl, bool escapeUrlData, FileContentsOptions requestOptions, params string[] inputs)
+        {
+            string resultingUrl = FormatRestApiUrl(restUrl, escapeUrlData, requestOptions as RequestOptions, inputs);
+
+            if (requestOptions != null)
+            {
+                string partialUrl = "";
+                bool urlHasQueryParams = resultingUrl.IndexOf('?') > -1;
+
+                if (requestOptions.Blame == true)
+                {
+                    partialUrl += string.IsNullOrWhiteSpace(partialUrl) && !urlHasQueryParams ? "?" : "&";
+                    partialUrl += nameof(requestOptions.Blame).ToLower();
+                }
+
+                if (requestOptions.Content == true)
+                {
+                    partialUrl += string.IsNullOrWhiteSpace(partialUrl) && !urlHasQueryParams ? "?" : "&";
+                    partialUrl += nameof(requestOptions.Content).ToLower();
+                }
+
+                resultingUrl += partialUrl;
+            }
+
+            return resultingUrl;
+        }
+
         public static string FormatRestApiUrl(string restUrl, bool escapeUrlData, RequestOptions requestOptions = null, params string[] inputs)
         {
             StringParamsValidator(inputs.Length, inputs);

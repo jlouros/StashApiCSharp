@@ -22,6 +22,8 @@ namespace Atlassian.Stash.Entities
         {
             get { return ListOfLines.Select(x=>x.Text).ToList(); }
         }
+
+        public IEnumerable<Blame> Blame { get; set; }
     }
 
     public class FileLine

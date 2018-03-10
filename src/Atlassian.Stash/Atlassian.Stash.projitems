@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Entities\ApplicationProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Author.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\AuthorWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Blame.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Branch.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\BranchPermission.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Change.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Entities\User.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\StashMergeException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DateTimeHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\FileContentsOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\RequestOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\RequestOptionsForCommits.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ResponseWrapper.cs" />
