@@ -142,6 +142,14 @@ namespace Atlassian.Stash.Api
             return response;
         }
 
+        public async Task<File> GetFileContents(string projectKey, string repositorySlug, string path, FileContentsOptions requestOptions)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_FILE, false, requestOptions, projectKey, repositorySlug, path);
+            File response = await _httpWorker.GetAsync<File>(requestUrl).ConfigureAwait(false);
+
+            return response;
+        }
+
         public async Task<File> GetFileContents(string projectKey, string repositorySlug, string path, string branch, RequestOptions requestOptions = null)
         {
             // must escape spaces, but can't escape slashes
@@ -149,6 +157,16 @@ namespace Atlassian.Stash.Api
             string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_FILE_FROM_BRANCH, false, requestOptions, projectKey, repositorySlug, path, branch);
             File response = await _httpWorker.GetAsync<File>(requestUrl).ConfigureAwait(false);
             
+            return response;
+        }
+
+        public async Task<File> GetFileContents(string projectKey, string repositorySlug, string path, string branch, FileContentsOptions requestOptions)
+        {
+            // must escape spaces, but can't escape slashes
+
+            string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_FILE_FROM_BRANCH, false, requestOptions, projectKey, repositorySlug, path, branch);
+            File response = await _httpWorker.GetAsync<File>(requestUrl).ConfigureAwait(false);
+
             return response;
         }
 

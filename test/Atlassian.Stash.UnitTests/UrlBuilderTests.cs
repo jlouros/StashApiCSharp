@@ -129,5 +129,45 @@ namespace Atlassian.Stash.UnitTests
 
             Assert.IsTrue(result.Equals("url/f%242%25%3D1%2B1?t=%7B2nd%7D", StringComparison.InvariantCultureIgnoreCase));
         }
+
+        [TestMethod]
+        public void FormatRestApiUrl_FileContentsOptions_IncludeBlame()
+        {
+            string actual = UrlBuilder.FormatRestApiUrl("none", true, new FileContentsOptions { Blame = true });
+
+            Assert.AreEqual("none?blame", actual);
+        }
+
+        [TestMethod]
+        public void FormatRestApiUrl_FileContentsOptions_WithLimitAndStart_IncludeBlame()
+        {
+            string actual = UrlBuilder.FormatRestApiUrl("none", true, new FileContentsOptions { Limit = 100, Start = 0, Blame = true });
+
+            Assert.AreEqual("none?limit=100&start=0&blame", actual);
+        }
+
+        [TestMethod]
+        public void FormatRestApiUrl_FileContentsOptions_IncludeContent()
+        {
+            string actual = UrlBuilder.FormatRestApiUrl("none", true, new FileContentsOptions { Content = true });
+
+            Assert.AreEqual("none?content", actual);
+        }
+
+        [TestMethod]
+        public void FormatRestApiUrl_FileContentsOptions_IncludeBlame_IncludeContent()
+        {
+            string actual = UrlBuilder.FormatRestApiUrl("none", true, new FileContentsOptions { Blame = true, Content = true });
+
+            Assert.AreEqual("none?blame&content", actual);
+        }
+
+        [TestMethod]
+        public void FormatRestApiUrl_FileContentsOptions()
+        {
+            string actual = UrlBuilder.FormatRestApiUrl("none", true, new FileContentsOptions());
+
+            Assert.AreEqual("none", actual);
+        }
     }
 }
