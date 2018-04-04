@@ -263,3 +263,4 @@ buildOutput/
 # used by Cake build (automatic download)
 tools/Cake/
 tools/nuget.exe
+tools/packages.config.md5sum

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlassian.Stash.Net45", "src\Atlassian.Stash.Net45\Atlassian.Stash.Net45.csproj", "{7D240671-3DA9-47A8-9B6C-620721A2F92A}"
 EndProject
@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".docs", ".docs", "{6D9B80C2
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlassian.Stash.NetCore", "src\Atlassian.Stash.NetCore\Atlassian.Stash.NetCore.csproj", "{5822DA67-F0DB-428F-9762-22BA52EBE4CD}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\Atlassian.Stash\Atlassian.Stash.projitems*{1eacbefb-9384-41ca-9e5a-bd6e446af528}*SharedItemsImports = 4
@@ -61,6 +63,10 @@ Global
 		{E7A7BD1F-BBBE-4662-9A65-66931979B57E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7A7BD1F-BBBE-4662-9A65-66931979B57E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7A7BD1F-BBBE-4662-9A65-66931979B57E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5822DA67-F0DB-428F-9762-22BA52EBE4CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5822DA67-F0DB-428F-9762-22BA52EBE4CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5822DA67-F0DB-428F-9762-22BA52EBE4CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5822DA67-F0DB-428F-9762-22BA52EBE4CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,5 +77,9 @@ Global
 		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278} = {DEEDD21F-DF73-4F31-ADBB-ABA389142ED1}
 		{5F0023AE-5F95-4244-B56B-46259A5FB649} = {2F61C74C-4030-4280-80F2-3202F17DC024}
 		{E7A7BD1F-BBBE-4662-9A65-66931979B57E} = {DEEDD21F-DF73-4F31-ADBB-ABA389142ED1}
+		{5822DA67-F0DB-428F-9762-22BA52EBE4CD} = {2F61C74C-4030-4280-80F2-3202F17DC024}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3D26ED84-6183-4703-AC49-8468ED260E25}
 	EndGlobalSection
 EndGlobal

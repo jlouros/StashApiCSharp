@@ -2,12 +2,9 @@
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Atlassian.Stash.Api.Entities;
-using Atlassian.Stash.Api.Exceptions;
 
 namespace Atlassian.Stash.Workers
 {
@@ -119,14 +116,19 @@ namespace Atlassian.Stash.Workers
             }
         }
 
-        public async Task<T> PutAsync<T>(string requestUrl, T data)
+        public async Task<T> PutAsync<T>(string requestUrl, T data, bool ignoreNullFields = false)
         {
+            string strData = JsonConvert.SerializeObject(data, new JsonSerializerSettings
+            {
+                NullValueHandling = ignoreNullFields ? NullValueHandling.Ignore : NullValueHandling.Include
+            });
+            HttpContent contentToPut = new StringContent(strData, Encoding.UTF8, "application/json");
+
             using (HttpClient httpClient = CreateHttpClient())
             using (HttpResponseMessage httpResponse = (data != null) ?
-                                    await httpClient.PutAsync<T>(requestUrl, data, new JsonMediaTypeFormatter()).ConfigureAwait(false) :
+                                    await httpClient.PutAsync(requestUrl, contentToPut) :
                                     await httpClient.PutAsync(requestUrl, null).ConfigureAwait(false))
             {
-
                 if (httpResponse.StatusCode != HttpStatusCode.Created && httpResponse.StatusCode != HttpStatusCode.OK && httpResponse.StatusCode != HttpStatusCode.NoContent)
                 {
                     throw new Exception(string.Format("PUT operation unsuccessful. Got HTTP status code '{0}'", httpResponse.StatusCode));
