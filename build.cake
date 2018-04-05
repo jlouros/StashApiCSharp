@@ -24,10 +24,7 @@ var mainSln = "./Atlassian.Stash.sln";
 Task("Restore-NuGet-Packages")
     .Does(() =>
 {
-    NuGetRestore(mainSln, new NuGetRestoreSettings 
-    { 
-        MSBuildVersion = NuGetMSBuildVersion.MSBuild14
-    });
+    NuGetRestore(mainSln);
 });
 
 Task("Build")
@@ -62,14 +59,17 @@ Task("Prepare-NuGet-Package")
 {
     var net40Files = GetFiles("./src/Atlassian.Stash.Net40/bin/" + configuration + "/Atlassian.Stash.*");
     var net45Files = GetFiles("./src/Atlassian.Stash.Net45/bin/" + configuration + "/Atlassian.Stash.*");
+    var netCoreFiles = GetFiles("./src/Atlassian.Stash.NetCore/bin/" + configuration + "/netstandard2.0/Atlassian.Stash.NetCore.dll");
 
     CleanDirectory("./buildOutput/");
 
     CreateDirectory("./buildOutput/lib/net40/");
     CreateDirectory("./buildOutput/lib/net45/");
+    CreateDirectory("./buildOutput/lib/netstandard2.0/");
 
     CopyFiles(net40Files, "./buildOutput/lib/net40/");
     CopyFiles(net45Files, "./buildOutput/lib/net45/");
+    CopyFiles(netCoreFiles, "./buildOutput/lib/netstandard2.0/");
 
     CopyFileToDirectory("./.nuspec/Atlassian.Stash.nuspec", "./buildOutput/");
 });
