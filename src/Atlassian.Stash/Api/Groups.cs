@@ -8,6 +8,7 @@ namespace Atlassian.Stash.Api
     public class Groups
     {
         private const string MANY_GROUPS = "rest/api/1.0/admin/groups";
+        private const string SINGLE_GROUP = MANY_GROUPS + "?name={0}";
 
         private HttpCommunicationWorker _httpWorker;
 
@@ -16,22 +17,39 @@ namespace Atlassian.Stash.Api
             _httpWorker = httpWorker;
         }
 
-        public async Task<ResponseWrapper<Project>> Get(RequestOptions requestOptions = null)
+        public async Task<ResponseWrapper<Group>> Get(RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_GROUPS, requestOptions);
 
-            ResponseWrapper<Project> response = await _httpWorker.GetAsync<ResponseWrapper<Project>>(requestUrl).ConfigureAwait(false);
+            ResponseWrapper<Group> response = await _httpWorker.GetAsync<ResponseWrapper<Group>>(requestUrl).ConfigureAwait(false);
 
             return response;
         }
 
-        public async Task<ResponseWrapper<Project>> Get(string filter, RequestOptions requestOptions = null)
+        public async Task<ResponseWrapper<Group>> Get(string filter, RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_GROUPS + "?filter={0}", requestOptions, filter);
 
-            ResponseWrapper<Project> response = await _httpWorker.GetAsync<ResponseWrapper<Project>>(requestUrl).ConfigureAwait(false);
+            ResponseWrapper<Group> response = await _httpWorker.GetAsync<ResponseWrapper<Group>>(requestUrl).ConfigureAwait(false);
 
             return response;
+        }
+
+        public async Task<Group> Create(string name)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(SINGLE_GROUP, null, name);
+
+            Group response = await _httpWorker.PostAsync<Group>(requestUrl, null).ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task Delete(string name)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(SINGLE_GROUP, null, name);
+
+            await _httpWorker.DeleteAsync(requestUrl).ConfigureAwait(false);
+            
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Atlassian.Stash.Entities;
 using Atlassian.Stash.Helpers;
 using Atlassian.Stash.Workers;
+using System.Dynamic;
 using System.Threading.Tasks;
 
 namespace Atlassian.Stash.Api
@@ -12,6 +13,7 @@ namespace Atlassian.Stash.Api
         private const string CREATE_USER_SILENT = ADMIN_USERS + "?name={0}&displayName={1}&emailAddress={2}&addToDefaultGroup=false&notify=false&password={3}";
         //private const string CREATE_USER_NOTIFY = ADMIN_USERS + "?name={0}&displayName={1}&emailAddress={2}&addToDefaultGroup=false&notify=true";
         private const string DELETE_USER = ADMIN_USERS + "?name={0}";
+        private const string ADD_TO_GROUPS = "/rest/api/1.0/admin/users/add-groups";
 
         private HttpCommunicationWorker _httpWorker;
 
@@ -20,7 +22,7 @@ namespace Atlassian.Stash.Api
             _httpWorker = httpWorker;
         }
 
-        
+
         public async Task<ResponseWrapper<User>> Get(string filter, RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(GET_USERS, requestOptions, filter);
@@ -44,5 +46,17 @@ namespace Atlassian.Stash.Api
             User response = await _httpWorker.DeleteWithResponseContentAsync<User>(requestUrl).ConfigureAwait(false);
             return response;
         }
+
+        public async Task AddToGroups(string username, params string[] groups)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(ADD_TO_GROUPS);
+
+            dynamic postData = new ExpandoObject();
+            postData.user = username;
+            postData.groups = groups;
+            
+            await _httpWorker.PostAsync(requestUrl, postData);
+        }
+        
     }
 }

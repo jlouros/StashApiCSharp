@@ -7,5 +7,7 @@ namespace Atlassian.Stash.Entities
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("deletable")]
+        public bool? Deletable { get; set; }
     }
 }

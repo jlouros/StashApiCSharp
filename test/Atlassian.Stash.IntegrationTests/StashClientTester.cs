@@ -1,14 +1,13 @@
 ﻿using Atlassian.Stash.Api;
+using Atlassian.Stash.Api.Entities;
+using Atlassian.Stash.Api.Exceptions;
 using Atlassian.Stash.Entities;
 using Atlassian.Stash.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Atlassian.Stash.Api.Entities;
-using Atlassian.Stash.Api.Exceptions;
 
 namespace Atlassian.Stash.IntegrationTests
 {
@@ -658,6 +657,50 @@ namespace Atlassian.Stash.IntegrationTests
             Assert.IsFalse(disableHook.Enabled);
             Assert.IsInstanceOfType(disableHook, typeof(Hook));
             Assert.AreEqual(EXISTING_HOOK, disableHook.Details.Key);
+        }
+
+        [TestMethod]
+        public async Task Can_Create_Group_Then_Delete_Group()
+        {
+            #region Setup/Clean up
+            var existingTestGroups = await stashClient.Groups.Get("tempTestGroup");
+
+            foreach (var existingGroup in existingTestGroups.Values)
+            {
+                await stashClient.Groups.Delete(existingGroup.Name);
+            }
+            #endregion
+
+            var group = await stashClient.Groups.Create("tempTestGroup");
+
+            await stashClient.Groups.Delete(group.Name);
+
+            var finalSetOfTestGroups = await stashClient.Groups.Get("tempTestGroup");
+
+            Assert.AreEqual(0, finalSetOfTestGroups.Values.Count());
+        }
+
+        [TestMethod]
+        public async Task Can_Create_User_Then_AddTogroup_Then_Delete_User()
+        {
+            #region Setup/Clean up
+            var existingTestUsers = await stashClient.Users.Get("tmpTestUser");
+
+            foreach (var existingUser in existingTestUsers.Values)
+            {
+                await stashClient.Users.Delete(existingUser.Name);
+            }
+            #endregion
+
+            await stashClient.Users.Create("tmpTestUser", "Temporary test user", "tmpUser@company.com", "password");
+
+            await stashClient.Users.AddToGroups("tmpTestUser", EXISTING_GROUP);
+
+            var deletedUser = await stashClient.Users.Delete("tmpTestUser");
+
+            Assert.IsNotNull(deletedUser);
+            Assert.IsInstanceOfType(deletedUser, typeof(User));
+            Assert.AreEqual("tmpTestUser", deletedUser.Name);
         }
 
         [TestMethod]
