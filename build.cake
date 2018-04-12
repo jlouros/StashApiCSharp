@@ -15,6 +15,7 @@ var nugetApiKey = Argument<string>("nugetApiKey", "");
 
 // Define directories.
 var mainSln = "./Atlassian.Stash.sln";
+var netCorePrj = File("./src/Atlassian.Stash.NetCore/Atlassian.Stash.NetCore.csproj");
 
 
 //////////////////////////////////////////////////////////////////////
@@ -33,11 +34,15 @@ Task("Build")
 {
     if(IsRunningOnWindows())
     {
+        Information("building .Net 4.0 and .Net 4.5 projects using MSBuild...");
         MSBuild(mainSln, new MSBuildSettings 
         {
             Configuration = configuration,
             Verbosity = msBuildVerbosity,
         });
+
+        Information("building .Net Core project...");
+        DotNetCoreBuild(netCorePrj, new DotNetCoreBuildSettings { Configuration = configuration });
     }
     else
     {

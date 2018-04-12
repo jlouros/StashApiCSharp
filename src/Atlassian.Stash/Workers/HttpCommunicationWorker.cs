@@ -170,7 +170,7 @@ namespace Atlassian.Stash.Workers
             using (HttpClient httpClient = CreateHttpClient())
             using (HttpResponseMessage httpResponse = await httpClient.DeleteAsync(requestUrl).ConfigureAwait(false))
             {
-                if (httpResponse.StatusCode != HttpStatusCode.NoContent && httpResponse.StatusCode != HttpStatusCode.Accepted)
+                if (httpResponse.StatusCode != HttpStatusCode.NoContent && httpResponse.StatusCode != HttpStatusCode.Accepted && httpResponse.StatusCode != HttpStatusCode.OK)
                 {
                     throw new Exception(string.Format("DELETE operation unsuccessful! Got HTTP status code '{0}'", httpResponse.StatusCode));
                 }
