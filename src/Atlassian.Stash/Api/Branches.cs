@@ -67,9 +67,9 @@ namespace Atlassian.Stash.Api
             await _httpWorker.DeleteWithRequestContentAsync(requestUrl, branch).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWrapper<BranchPermission>> GetPermissions(string projectKey, string repositorySlug)
+        public async Task<ResponseWrapper<BranchPermission>> GetPermissions(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
         {
-            string requestUrl = UrlBuilder.FormatRestApiUrl(BRANCH_PERMISSIONS, null, projectKey, repositorySlug);
+            string requestUrl = UrlBuilder.FormatRestApiUrl(BRANCH_PERMISSIONS, requestOptions, projectKey, repositorySlug);
 
             ResponseWrapper<BranchPermission> response = await _httpWorker.GetAsync<ResponseWrapper<BranchPermission>>(requestUrl).ConfigureAwait(false);
 
