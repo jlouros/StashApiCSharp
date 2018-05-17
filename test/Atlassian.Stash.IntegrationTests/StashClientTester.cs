@@ -186,6 +186,17 @@ namespace Atlassian.Stash.IntegrationTests
         }
 
         [TestMethod]
+        public async Task Can_GetFilesInSubFolder()
+        {
+            var response = await stashClient.Repositories.GetFiles(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_FOLDER);
+            var files = response.Values;
+
+            Assert.IsNotNull(files);
+            Assert.IsInstanceOfType(files, typeof(IEnumerable<string>));
+            Assert.IsTrue(files.Any());
+        }
+
+        [TestMethod]
         public async Task Can_GetAllFiles()
         {
             var response = await stashClient.Repositories.GetFiles(EXISTING_PROJECT, EXISTING_REPOSITORY);

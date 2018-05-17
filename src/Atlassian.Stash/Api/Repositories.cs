@@ -13,6 +13,7 @@ namespace Atlassian.Stash.Api
         private const string MANY_TAGS = "rest/api/1.0/projects/{0}/repos/{1}/tags";
         private const string ONE_TAG = "rest/git/1.0/projects/{0}/repos/{1}/tags/{2}";
         private const string MANY_FILES = "rest/api/1.0/projects/{0}/repos/{1}/files";
+        private const string MANY_FILES_FROM_PATH = "rest/api/1.0/projects/{0}/repos/{1}/files/{2}";
         private const string ONE_FILE = "rest/api/1.0/projects/{0}/repos/{1}/browse/{2}";
         private const string ONE_FILE_FROM_BRANCH = "rest/api/1.0/projects/{0}/repos/{1}/browse/{2}?at=refs%2Fheads%2F{3}";
         private const string MANY_HOOKS = "rest/api/1.0/projects/{0}/repos/{1}/settings/hooks";
@@ -121,6 +122,15 @@ namespace Atlassian.Stash.Api
             string requestUrl = UrlBuilder.FormatRestApiUrl(ONE_TAG, null, projectKey, repositorySlug, tagName);
 
             await _httpWorker.DeleteAsync(requestUrl).ConfigureAwait(false);
+        }
+
+        public async Task<ResponseWrapper<string>> GetFiles(string projectKey, string repositorySlug, string path, RequestOptions requestOptions = null)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(MANY_FILES_FROM_PATH, false, requestOptions, projectKey, repositorySlug, path);
+
+            ResponseWrapper<string> response = await _httpWorker.GetAsync<ResponseWrapper<string>>(requestUrl).ConfigureAwait(false);
+
+            return response;
         }
 
         public async Task<ResponseWrapper<string>> GetFiles(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
