@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Atlassian.Stash.Api.Enums;
 
 namespace Atlassian.Stash.Workers
 {
@@ -12,32 +13,32 @@ namespace Atlassian.Stash.Workers
     {
         private Uri baseUrl;
         private AuthenticationHeaderValue authenticationHeader = null;
-
+		
         public HttpCommunicationWorker(string baseUrl, string base64Auth)
         {
             this.baseUrl = new Uri(baseUrl);
 
-            SetBasicAuthentication(base64Auth);
+            SetBasicAuthentication(base64Auth, AuthScheme.Bearer);
         }
 
         public HttpCommunicationWorker(string baseUrl, string username, string password)
         {
             this.baseUrl = new Uri(baseUrl);
 
-            SetBasicAuthentication(username, password);
+            SetBasicAuthentication(username, password, AuthScheme.Basic);
         }
 
-        public void SetBasicAuthentication(string base64Auth)
+        public void SetBasicAuthentication(string base64Auth, AuthScheme schemeToUse)
         {
-            this.authenticationHeader = new AuthenticationHeaderValue("Basic", base64Auth);
+            this.authenticationHeader = new AuthenticationHeaderValue(schemeToUse.ToString(), base64Auth);
         }
 
-        public void SetBasicAuthentication(string username, string password)
+        public void SetBasicAuthentication(string username, string password, AuthScheme schemeToUse)
         {
             byte[] userPassBytes = Encoding.UTF8.GetBytes(string.Format("{0}:{1}", username, password));
             string userPassBase64 = Convert.ToBase64String(userPassBytes);
 
-            SetBasicAuthentication(userPassBase64);
+            SetBasicAuthentication(userPassBase64, schemeToUse);
         }
 
         /// <summary>
