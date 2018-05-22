@@ -47,6 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Self.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Tag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\User.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\Enums.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\StashMergeException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DateTimeHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\FileContentsOptions.cs" />

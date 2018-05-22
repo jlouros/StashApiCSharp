@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Atlassian.Stash.Api.Enums;
 
 namespace Atlassian.Stash.Workers
 {
@@ -13,11 +14,24 @@ namespace Atlassian.Stash.Workers
         private Uri baseUrl;
         private AuthenticationHeaderValue authenticationHeader = null;
 
-        public HttpCommunicationWorker(string baseUrl, string base64Auth)
+
+        
+        public HttpCommunicationWorker(string baseUrl, string base64Auth, AuthScheme schemeToUse)
         {
             this.baseUrl = new Uri(baseUrl);
 
-            SetBasicAuthentication(base64Auth);
+            switch (schemeToUse)
+            {
+                case AuthScheme.Basic:
+                    SetBasicAuthentication(base64Auth);
+                    break;
+                case AuthScheme.Bearer:
+                    SetBearerAuthentication(base64Auth);
+                    break;
+                default:
+                    throw new ApplicationException("Unsupported authentication scheme");
+
+            }
         }
 
         public HttpCommunicationWorker(string baseUrl, string username, string password)
@@ -27,9 +41,14 @@ namespace Atlassian.Stash.Workers
             SetBasicAuthentication(username, password);
         }
 
+        public void SetBearerAuthentication(string base64Auth)
+        {
+            SetAuthenticationHeader(new AuthenticationHeaderValue(AuthScheme.Bearer.ToString(), base64Auth));
+        }
+
         public void SetBasicAuthentication(string base64Auth)
         {
-            this.authenticationHeader = new AuthenticationHeaderValue("Basic", base64Auth);
+            SetAuthenticationHeader(new AuthenticationHeaderValue(AuthScheme.Basic.ToString(), base64Auth));
         }
 
         public void SetBasicAuthentication(string username, string password)
@@ -38,6 +57,11 @@ namespace Atlassian.Stash.Workers
             string userPassBase64 = Convert.ToBase64String(userPassBytes);
 
             SetBasicAuthentication(userPassBase64);
+        }
+
+        private void SetAuthenticationHeader(AuthenticationHeaderValue header)
+        {
+            this.authenticationHeader = header;
         }
 
         /// <summary>
