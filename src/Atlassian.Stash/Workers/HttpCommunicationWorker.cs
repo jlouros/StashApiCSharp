@@ -15,23 +15,23 @@ namespace Atlassian.Stash.Workers
         private AuthenticationHeaderValue authenticationHeader = null;
 
 
-		
+        
         public HttpCommunicationWorker(string baseUrl, string base64Auth, AuthScheme schemeToUse)
         {
             this.baseUrl = new Uri(baseUrl);
 
-	        switch (schemeToUse)
-	        {
-				case AuthScheme.Basic:
-					SetBasicAuthentication(base64Auth);
-					break;
-				case AuthScheme.Bearer:
-					SetBearerAuthentication(base64Auth);
-					break;
-				default:
-					throw new ApplicationException("Unsupported authentication scheme");
+            switch (schemeToUse)
+            {
+                case AuthScheme.Basic:
+                    SetBasicAuthentication(base64Auth);
+                    break;
+                case AuthScheme.Bearer:
+                    SetBearerAuthentication(base64Auth);
+                    break;
+                default:
+                    throw new ApplicationException("Unsupported authentication scheme");
 
-			}
+            }
         }
 
         public HttpCommunicationWorker(string baseUrl, string username, string password)
@@ -41,10 +41,10 @@ namespace Atlassian.Stash.Workers
             SetBasicAuthentication(username, password);
         }
 
-	    public void SetBearerAuthentication(string base64Auth)
-	    {
-		    SetAuthenticationHeader(new AuthenticationHeaderValue(AuthScheme.Bearer.ToString(), base64Auth));
-	    }
+        public void SetBearerAuthentication(string base64Auth)
+        {
+            SetAuthenticationHeader(new AuthenticationHeaderValue(AuthScheme.Bearer.ToString(), base64Auth));
+        }
 
         public void SetBasicAuthentication(string base64Auth)
         {
@@ -59,10 +59,10 @@ namespace Atlassian.Stash.Workers
             SetBasicAuthentication(userPassBase64);
         }
 
-	    private void SetAuthenticationHeader(AuthenticationHeaderValue header)
-	    {
-		    this.authenticationHeader = header;
-	    }
+        private void SetAuthenticationHeader(AuthenticationHeaderValue header)
+        {
+            this.authenticationHeader = header;
+        }
 
         /// <summary>
         /// Creates a new instance of System.Net.Http.HttpClient
