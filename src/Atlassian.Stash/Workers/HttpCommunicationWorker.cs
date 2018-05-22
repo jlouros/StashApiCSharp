@@ -13,33 +13,56 @@ namespace Atlassian.Stash.Workers
     {
         private Uri baseUrl;
         private AuthenticationHeaderValue authenticationHeader = null;
+
+
 		
-        public HttpCommunicationWorker(string baseUrl, string base64Auth)
+        public HttpCommunicationWorker(string baseUrl, string base64Auth, AuthScheme schemeToUse)
         {
             this.baseUrl = new Uri(baseUrl);
 
-            SetBasicAuthentication(base64Auth, AuthScheme.Bearer);
+	        switch (schemeToUse)
+	        {
+				case AuthScheme.Basic:
+					SetBasicAuthentication(base64Auth);
+					break;
+				case AuthScheme.Bearer:
+					SetBearerAuthentication(base64Auth);
+					break;
+				default:
+					throw new ApplicationException("Unsupported authentication scheme");
+
+			}
         }
 
         public HttpCommunicationWorker(string baseUrl, string username, string password)
         {
             this.baseUrl = new Uri(baseUrl);
 
-            SetBasicAuthentication(username, password, AuthScheme.Basic);
+            SetBasicAuthentication(username, password);
         }
 
-        public void SetBasicAuthentication(string base64Auth, AuthScheme schemeToUse)
+	    public void SetBearerAuthentication(string base64Auth)
+	    {
+		    SetAuthenticationHeader(new AuthenticationHeaderValue(AuthScheme.Bearer.ToString(), base64Auth));
+	    }
+
+        public void SetBasicAuthentication(string base64Auth)
         {
-            this.authenticationHeader = new AuthenticationHeaderValue(schemeToUse.ToString(), base64Auth);
+            SetAuthenticationHeader(new AuthenticationHeaderValue(AuthScheme.Basic.ToString(), base64Auth));
         }
 
-        public void SetBasicAuthentication(string username, string password, AuthScheme schemeToUse)
+        public void SetBasicAuthentication(string username, string password)
         {
             byte[] userPassBytes = Encoding.UTF8.GetBytes(string.Format("{0}:{1}", username, password));
             string userPassBase64 = Convert.ToBase64String(userPassBytes);
 
-            SetBasicAuthentication(userPassBase64, schemeToUse);
+            SetBasicAuthentication(userPassBase64);
         }
+
+	    private void SetAuthenticationHeader(AuthenticationHeaderValue header)
+	    {
+		    this.authenticationHeader = header;
+	    }
 
         /// <summary>
         /// Creates a new instance of System.Net.Http.HttpClient

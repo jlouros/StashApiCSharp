@@ -7,9 +7,13 @@ namespace Atlassian.Stash
     {
         private HttpCommunicationWorker _httpWorker;
 
-        public StashClient(string baseUrl, string base64Auth = null)
+        public StashClient(string baseUrl, string base64Auth = null, bool usePersonalAccessTokenForAuthentication = false)
         {
-            _httpWorker = new HttpCommunicationWorker(baseUrl, base64Auth);
+	        var schemeToUse = usePersonalAccessTokenForAuthentication
+		        ? Api.Enums.AuthScheme.Bearer 
+		        : Api.Enums.AuthScheme.Basic;
+
+            _httpWorker = new HttpCommunicationWorker(baseUrl, base64Auth, schemeToUse);
             InjectDependencies();
         }
 
