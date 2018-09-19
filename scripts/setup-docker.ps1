@@ -8,10 +8,10 @@ Function GetImageAndStartBitbucketServer {
     Push-Location $PSScriptRoot
 
     # get bitbucket-server image
-    docker pull atlassian/bitbucket-server
+    docker pull atlassian/bitbucket-server:5.14.0
 
     # create container
-    docker create --name "my-bitbucket" -u root -v /data/stash:/var/atlassian/application-data/bitbucket -p 7990:7990 atlassian/bitbucket-server
+    docker create --name "my-bitbucket" -u root -v /data/stash:/var/atlassian/application-data/bitbucket -p 7990:7990 atlassian/bitbucket-server:5.14.0
 
     # copy automated setup file
     docker cp bitbucket.properties my-bitbucket:/var/atlassian/application-data/bitbucket

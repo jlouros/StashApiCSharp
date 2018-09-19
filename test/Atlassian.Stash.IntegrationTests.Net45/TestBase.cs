@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
 
-namespace Atlassian.Stash.IntegrationTests
+namespace Atlassian.Stash.IntegrationTests.Net45
 {
     [TestClass]
     public abstract class TestBase

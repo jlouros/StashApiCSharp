@@ -36,4 +36,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("3.0.12.0")]
 
 // Expose internals to UnitTests project
-[assembly: InternalsVisibleTo("Atlassian.Stash.UnitTests")]
+[assembly: InternalsVisibleTo("Atlassian.Stash.UnitTests.Net45")]

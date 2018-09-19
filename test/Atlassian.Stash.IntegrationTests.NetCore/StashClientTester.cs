@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Atlassian.Stash.IntegrationTests
+namespace Atlassian.Stash.IntegrationTests.NetCore
 {
     [TestClass]
     public class StashClientTester : TestBase
@@ -343,7 +343,8 @@ namespace Atlassian.Stash.IntegrationTests
         [TestMethod]
         public async Task Can_GetAllCommits_WithRequestOptionsForCommits()
         {
-            int expectedCommitCount = 1;
+            // possible difference between Stash and Bitbucket. Latest test show that Bitbucket includes referenced commits
+            int expectedCommitCount = 2; 
             var response = await stashClient.Commits.Get(EXISTING_PROJECT, EXISTING_REPOSITORY, null, new RequestOptionsForCommits { Until = EXISTING_COMMIT, Since = EXISTING_OLDER_COMMIT });
             var commits = response.Values;
 

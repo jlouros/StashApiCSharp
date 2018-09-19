@@ -1,0 +1,19 @@
+{
+  "TestSettings": {
+    "base-url": "http://localhost:7990/",
+    "username": "TestUser",
+    "password": "password",
+    "existing-project": "test",
+    "existing-repository": "testrepository",
+    "existing-file": "test.txt",
+    "existing-file-in-subfolder": "folder/test.txt",
+    "existing-file-in-subfolder-with-spaces": "my folder/my test.txt",
+    "existing-folder": "folder",
+    "existing-commit": "52bcafa5c65a9e17b6144fc9dd69d6050ab6fe5c",
+    "existing-older-commit": "7b67206b674b0a64c6840557610a5727107f8e94",
+    "existing-number-of-changes": "1",
+    "existing-branch-reference": "refs/heads/master",
+    "existing-group": "TestGroup",
+    "existing-hook": "com.atlassian.bitbucket.server.bitbucket-bundled-hooks:force-push-hook"
+  }
+}

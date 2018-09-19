@@ -23,7 +23,7 @@ Modify 'App.config' with your local configuration settings.
  * make a change in 'text.txt' file; commit and push this changes (now you should have at least 2 commits)
  * create a new tag using the following command => git tag -a TestTag -m 'my test tag'
  * push the new tag to the server using => git push origin --tags
- * check all commits http://localhost:7990/projects/TEST/repos/testrepository/commits and modify 'App.config' to set the commits information
+ * check all commits http://localhost:7990/projects/TEST/repos/testrepository/commits and modify 'testsettings.json' to set the commits information
  * Go to http://localhost:7990/plugins/servlet/branch-permissions/TEST/testrepository and enable 'branch permissions'
  * 'Add branch permission' to prevent 'master' branch deletion for everyone (leave 'Limit write access to' blank)
  * create a new branch locally

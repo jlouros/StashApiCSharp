@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace Atlassian.Stash.UnitTests
+namespace Atlassian.Stash.UnitTests.NetCore
 {
     [TestClass]
     public class CodeAnalysis

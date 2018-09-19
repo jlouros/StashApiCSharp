@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace Atlassian.Stash.UnitTests
+namespace Atlassian.Stash.UnitTests.Net45
 {
     [TestClass]
     public class UrlBuilderTests
