@@ -169,5 +169,13 @@ namespace Atlassian.Stash.UnitTests
 
             Assert.AreEqual("none", actual);
         }
+
+        [TestMethod]
+        public void FormatRestApiUrl_RequestOptionsForCommits()
+        {
+            string actual = UrlBuilder.FormatRestApiUrlWithCommitOptions("none", new RequestOptions { Limit = 1, Start = 25 }, new RequestOptionsForCommits { Since = "abc", Until = "def" });
+
+            Assert.AreEqual("none?limit=1&start=25&since=abc&until=def", actual);
+        }
     }
 }
