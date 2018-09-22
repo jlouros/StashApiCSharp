@@ -36,6 +36,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlassian.Stash.UnitTests.N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlassian.Stash.IntegrationTests.Net45", "test\Atlassian.Stash.IntegrationTests.Net45\Atlassian.Stash.IntegrationTests.Net45.csproj", "{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{447FBB72-6C77-4E85-B97D-76B5534488AA}"
+	ProjectSection(SolutionItems) = preProject
+		test\README.md = test\README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlassian.Stash.UnitTests.NetCore", "test\Atlassian.Stash.UnitTests.NetCore\Atlassian.Stash.UnitTests.NetCore.csproj", "{6DCA37AE-0204-45F6-A4C7-5FF8FC60F99D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlassian.Stash.IntegrationTests.NetCore", "test\Atlassian.Stash.IntegrationTests.NetCore\Atlassian.Stash.IntegrationTests.NetCore.csproj", "{DA02840F-53AB-4FD6-B554-F262EE6C8794}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\Atlassian.Stash\Atlassian.Stash.projitems*{1eacbefb-9384-41ca-9e5a-bd6e446af528}*SharedItemsImports = 4
@@ -67,6 +76,14 @@ Global
 		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DCA37AE-0204-45F6-A4C7-5FF8FC60F99D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DCA37AE-0204-45F6-A4C7-5FF8FC60F99D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DCA37AE-0204-45F6-A4C7-5FF8FC60F99D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DCA37AE-0204-45F6-A4C7-5FF8FC60F99D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA02840F-53AB-4FD6-B554-F262EE6C8794}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA02840F-53AB-4FD6-B554-F262EE6C8794}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA02840F-53AB-4FD6-B554-F262EE6C8794}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA02840F-53AB-4FD6-B554-F262EE6C8794}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +95,9 @@ Global
 		{5822DA67-F0DB-428F-9762-22BA52EBE4CD} = {2F61C74C-4030-4280-80F2-3202F17DC024}
 		{E7A7BD1F-BBBE-4662-9A65-66931979B57E} = {DEEDD21F-DF73-4F31-ADBB-ABA389142ED1}
 		{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278} = {DEEDD21F-DF73-4F31-ADBB-ABA389142ED1}
+		{447FBB72-6C77-4E85-B97D-76B5534488AA} = {6D9B80C2-22CF-41C8-86AD-62C30C146BB1}
+		{6DCA37AE-0204-45F6-A4C7-5FF8FC60F99D} = {DEEDD21F-DF73-4F31-ADBB-ABA389142ED1}
+		{DA02840F-53AB-4FD6-B554-F262EE6C8794} = {DEEDD21F-DF73-4F31-ADBB-ABA389142ED1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D26ED84-6183-4703-AC49-8468ED260E25}

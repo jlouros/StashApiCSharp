@@ -1,5 +1,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/e3wnmyfoklqc306u?svg=true)](https://ci.appveyor.com/project/jlouros/stashapicsharp) [![NuGet](https://img.shields.io/nuget/v/Atlassian.Stash.Api.svg)](https://www.nuget.org/packages/Atlassian.Stash.Api/)
 
+[![Build Status](https://jlouros.visualstudio.com/StashApiCSharp/_apis/build/status/jlouros.StashApiCSharp)](https://jlouros.visualstudio.com/StashApiCSharp/_build/latest?definitionId=1)
+
 # Bitbucket Server (previously known as Stash) API wrapper for .Net
 
 C# API wrapper for Atlassian Bitbucket Server (previously known as Stash)  

@@ -11,7 +11,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   testSelector: 'testAssemblies'
-  testAssemblies: '**/*UnitTests.dll'
+  testAssemblies: '**/*UnitTests.Net*.dll'
 
 steps:
 - task: NuGetToolInstaller@0
@@ -26,9 +26,14 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+# - task: VSTest@2
+#   inputs:
+#     testSelector: '$(testSelector)'
+#     testAssemblyVer2: '$(testAssemblies)'
+#     platform: '$(buildPlatform)'
+#     configuration: '$(buildConfiguration)'
+
+- task: NuGetCommand@2
   inputs:
-    testSelector: '$(testSelector)'
-    testAssemblyVer2: '$(testAssemblies)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: pack
+    packagesToPack: 'src/Atlassian.Stash.Net*/*.csproj'

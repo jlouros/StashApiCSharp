@@ -51,7 +51,12 @@ Task("Run-Unit-Tests")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    MSTest("./test/**/bin/**/*.UnitTests.dll");
+    MSTest("./test/**/bin/**/*.UnitTests*.dll");
+    var netCoreTestProjs = GetFiles("./test/**/*.UnitTests.NetCore.csproj");
+    foreach(var prj in netCoreTestProjs)
+    {
+        DotNetCoreTest(prj.FullPath);
+    }
 });
 
 Task("Prepare-NuGet-Package")

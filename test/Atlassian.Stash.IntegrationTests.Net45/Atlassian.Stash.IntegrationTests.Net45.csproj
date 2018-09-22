@@ -59,7 +59,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Atlassian.Stash.Net45\Atlassian.Stash.Net45.csproj">
