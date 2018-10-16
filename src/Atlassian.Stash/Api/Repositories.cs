@@ -25,6 +25,7 @@ namespace Atlassian.Stash.Api
         private const string PERMISSION_GRANT_GROUP = PERMISSION_GROUPS + "?permission={2}&name={3}";
         private const string PERMISSION_USERS = ONE_REPOSITORY + "/permissions/users";
         private const string PERMISSION_REVOKE_USER = PERMISSION_USERS + "?name={2}";
+        private const string PERMISSION_GRANT_USER = PERMISSION_USERS + "?permission={2}&name={3}";
 
         private HttpCommunicationWorker _httpWorker;
 
@@ -90,6 +91,13 @@ namespace Atlassian.Stash.Api
             ResponseWrapper<Permission> response = await _httpWorker.GetAsync<ResponseWrapper<Permission>>(requestUrl).ConfigureAwait(false);
 
             return response;
+        }
+
+        public async Task GrantUser(string projectKey, string repository, string group, RepositoryPermissions permission)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(PERMISSION_GRANT_USER, null, projectKey, repository, permission.ToString(), group);
+
+            await _httpWorker.PutAsync<Object>(requestUrl, new Object()).ConfigureAwait(false);
         }
 
         public async Task RevokeUser(string projectKey, string repository, string user)

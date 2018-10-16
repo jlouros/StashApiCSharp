@@ -21,6 +21,9 @@ namespace Atlassian.Stash.Entities
 
         [JsonProperty("requiredSuccessfulBuilds")]
         public int RequiredSuccessfulBuilds { get; set; }
+
+        [JsonProperty("unapproveOnUpdate")]
+        public bool UnapproveOnUpdate { get; set; }
     }
 
     public class MergeConfig
@@ -58,14 +61,18 @@ namespace Atlassian.Stash.Entities
     {
         [EnumMember(Value = "no-ff")]
         NO_FAST_FORWARD,
-        [EnumMember(Value = "ff-only")]
-        FAST_FORWARD_ONLY,
-        [EnumMember(Value = "squash-ff-only")]
-        SQUASH_FAST_FORWARD_ONLY,
         [EnumMember(Value = "ff")]
         FAST_FORWARD,
+        [EnumMember(Value = "ff-only")]
+        FAST_FORWARD_ONLY,
+        [EnumMember(Value = "rebase-no-ff")]
+        REBASE_AND_MERGE,
+        [EnumMember(Value = "rebase-ff-only")]
+        REBASE_AND_FAST_FORWARD,
         [EnumMember(Value = "squash")]
         SQUASH,
+        [EnumMember(Value = "squash-ff-only")]
+        SQUASH_FAST_FORWARD_ONLY,
     }
 
 }
