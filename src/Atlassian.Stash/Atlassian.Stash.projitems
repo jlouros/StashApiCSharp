@@ -23,7 +23,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Entities\AuthorWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Blame.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Branch.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\BranchModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\BranchModelConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\BranchModelConfigurationItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\BranchModelItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\BranchPermission.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\BranchPrefix.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Change.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Changes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Clone.cs" />
