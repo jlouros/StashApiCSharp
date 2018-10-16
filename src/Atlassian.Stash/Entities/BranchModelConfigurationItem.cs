@@ -8,6 +8,5 @@ namespace Atlassian.Stash.Entities
         public string RefId { get; set; }
         [JsonProperty("useDefault")]
         public bool UseDefault { get; set; }
-
     }
 }
