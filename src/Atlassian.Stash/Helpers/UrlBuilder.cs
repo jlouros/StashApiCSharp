@@ -164,7 +164,7 @@ namespace Atlassian.Stash.Helpers
             if (commitRequestOptions != null)
             {
                 string partialUrl = "";
-                bool urlHasQueryParams = restUrl.IndexOf('?') > -1;
+                bool urlHasQueryParams = resultingUrl.IndexOf('?') > -1;
 
                 if (!string.IsNullOrWhiteSpace(commitRequestOptions.Path))
                 {
