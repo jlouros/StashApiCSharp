@@ -14,6 +14,7 @@ namespace Atlassian.Stash.Api
         //private const string CREATE_USER_NOTIFY = ADMIN_USERS + "?name={0}&displayName={1}&emailAddress={2}&addToDefaultGroup=false&notify=true";
         private const string DELETE_USER = ADMIN_USERS + "?name={0}";
         private const string ADD_TO_GROUPS = "/rest/api/1.0/admin/users/add-groups";
+        private const string GET_USER_IN_GROUP = "/rest/api/1.0/users?group={0}&filter={1}";
 
         private HttpCommunicationWorker _httpWorker;
 
@@ -26,6 +27,14 @@ namespace Atlassian.Stash.Api
         public async Task<ResponseWrapper<User>> Get(string filter, RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(GET_USERS, requestOptions, filter);
+
+            ResponseWrapper<User> response = await _httpWorker.GetAsync<ResponseWrapper<User>>(requestUrl).ConfigureAwait(false);
+
+            return response;
+        }
+        public async Task<ResponseWrapper<User>> GetByGroup(string group, string filter, RequestOptions requestOptions = null)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(GET_USER_IN_GROUP, requestOptions, group, filter);
 
             ResponseWrapper<User> response = await _httpWorker.GetAsync<ResponseWrapper<User>>(requestUrl).ConfigureAwait(false);
 

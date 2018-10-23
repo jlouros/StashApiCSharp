@@ -66,9 +66,9 @@ namespace Atlassian.Stash.Entities
         [EnumMember(Value = "ff-only")]
         FAST_FORWARD_ONLY,
         [EnumMember(Value = "rebase-no-ff")]
-        REBASE_AND_MERGE,
+        REBASE_NO_FAST_FORWARD,
         [EnumMember(Value = "rebase-ff-only")]
-        REBASE_AND_FAST_FORWARD,
+        REBASE_FAST_FORWARD_ONLY,
         [EnumMember(Value = "squash")]
         SQUASH,
         [EnumMember(Value = "squash-ff-only")]
