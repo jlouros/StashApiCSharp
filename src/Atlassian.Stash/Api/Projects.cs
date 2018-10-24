@@ -14,7 +14,9 @@ namespace Atlassian.Stash.Api
         private const string GRANT_USER_PERMISSION = ONE_PROJECT + "/permissions/users?permission={1}&name={2}";
         private const string REVOKE_USER_PERMISSION = ONE_PROJECT + "/permissions/users?name={1}";
         private const string PERMISSION_GROUPS = ONE_PROJECT + "/permissions/groups";
+        private const string PERMISSION_GROUPS_FILTER = PERMISSION_GROUPS + "?filter={1}";
         private const string PERMISSION_USERS = ONE_PROJECT + "/permissions/users";
+        private const string PERMISSION_USERS_FILTER = PERMISSION_USERS + "?filter={1}";
 
         private HttpCommunicationWorker _httpWorker;
 
@@ -66,6 +68,14 @@ namespace Atlassian.Stash.Api
 
             return response;
         }
+        public async Task<ResponseWrapper<Permission>> GetGroupsFilter(string projectKey, string filter, RequestOptions requestOptions = null)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(PERMISSION_GROUPS_FILTER, requestOptions, projectKey, filter);
+
+            ResponseWrapper<Permission> response = await _httpWorker.GetAsync<ResponseWrapper<Permission>>(requestUrl).ConfigureAwait(false);
+
+            return response;
+        }
 
         public async Task GrantGroup(string projectKey, string group, ProjectPermissions permission)
         {
@@ -77,6 +87,14 @@ namespace Atlassian.Stash.Api
         public async Task<ResponseWrapper<Permission>> GetUsers(string projectKey, RequestOptions requestOptions = null)
         {
             string requestUrl = UrlBuilder.FormatRestApiUrl(PERMISSION_USERS, requestOptions, projectKey);
+
+            ResponseWrapper<Permission> response = await _httpWorker.GetAsync<ResponseWrapper<Permission>>(requestUrl).ConfigureAwait(false);
+
+            return response;
+        }
+        public async Task<ResponseWrapper<Permission>> GetUsersFilter(string projectKey, string filter, RequestOptions requestOptions = null)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(PERMISSION_USERS_FILTER, requestOptions, projectKey, filter);
 
             ResponseWrapper<Permission> response = await _httpWorker.GetAsync<ResponseWrapper<Permission>>(requestUrl).ConfigureAwait(false);
 
