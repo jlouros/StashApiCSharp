@@ -47,7 +47,7 @@ namespace Atlassian.Stash.IntegrationTests
         [TestMethod]
         public async Task Can_GetFileContents_From_Branch()
         {
-            var response = await stashClient.Repositories.GetFileContents(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_FILE, EXISTING_BRANCH_NAME);
+            var response = await stashClient.Repositories.GetFileContents(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_FILE, MASTER_BRANCH_NAME);
             
             Assert.IsNotNull(response);
             Assert.IsTrue(response.FileContents.Count > 0);
@@ -60,7 +60,7 @@ namespace Atlassian.Stash.IntegrationTests
             var response = await stashClient.Branches.GetByCommitId(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_COMMIT);
 
             Assert.IsNotNull(response);
-            Assert.IsTrue(response.Values.Any(x => x.Id.Equals(EXISTING_BRANCH_REFERENCE)));
+            Assert.IsTrue(response.Values.Any(x => x.Id.Equals(MASTER_BRANCH_REFERENCE)));
         }
 
         [TestMethod]
@@ -639,7 +639,7 @@ namespace Atlassian.Stash.IntegrationTests
         [TestMethod]
         public async Task Can_CreateBranch_Than_DeleteBranch()
         {
-            Branch newBranch = new Branch { Name = "test-repo", StartPoint = EXISTING_BRANCH_REFERENCE };
+            Branch newBranch = new Branch { Name = "test-repo", StartPoint = MASTER_BRANCH_REFERENCE };
             var createdBranch = await stashClient.Branches.Create(EXISTING_PROJECT, EXISTING_REPOSITORY, newBranch);
 
             Assert.IsNotNull(createdBranch);
@@ -747,45 +747,81 @@ namespace Atlassian.Stash.IntegrationTests
             Assert.IsNotNull(status);
         }
 
-        // TO DO: Setup a proper way of creating a testing envrionment for merging pull requests so as to
-        // avoid the weird error handling in this test class due to not knowing if the tester created a mergable pull request.
-        // TO DO: Split this test case up into three seperate test cases
         [TestMethod]
-        public async Task Merge_PullRequest()
+        public async Task Create_Update_Decline_Approve_Merge_PullRequest()
         {
-            var pullrequests = await stashClient.PullRequests.Get(EXISTING_PROJECT, EXISTING_REPOSITORY);
-            var request = pullrequests.Values.First();
-            var status = await stashClient.PullRequests.Status(request, EXISTING_PROJECT);
-
-            Assert.IsNotNull(status);
-            PullRequest requestMerged = null;
-            MergeErrorResponse stashError = null;
-            try
+            var newPullRequest = new PullRequest
             {
-                requestMerged = await stashClient.PullRequests.Merge(request, EXISTING_PROJECT);
-            }
-            catch (StashMergeException exc)
-            {
-                stashError = exc.ErrorResponse;
-            }
-
-            if (stashError == null)
-            {
-                Console.WriteLine("Pull Request Merged");
-                Assert.IsNotNull(requestMerged);
-                Assert.AreEqual(true, status.CanMerge);
-                Assert.AreEqual(status.CanMerge, requestMerged.State == PullRequestState.MERGED);
-            }
-            else
-            {
-                Console.WriteLine("Pull Request failed to merge");
-                Assert.AreEqual(false, status.CanMerge);
-                foreach (var error in stashError.Errors)
+                Title = "Automatically Generated Pull Request",
+                Author = new AuthorWrapper
                 {
-                    Assert.AreEqual(true,error.Conflicted);
+                    User = new Author
+                    {
+                        Name = TEST_USERNAME
+                    }
+                },
+                FromRef = new Ref
+                {
+                    Id = DEVELOP_BRANCH_REFERENCE,
+                    Repository = new Repository
+                    {
+                        Slug = EXISTING_REPOSITORY,
+                        Project = new Project
+                        {
+                            Key = EXISTING_PROJECT
+                        }
+                    }
+                },
+                ToRef = new Ref
+                {
+                    Id = MASTER_BRANCH_REFERENCE,
+                    Repository = new Repository
+                    {
+                        Slug = EXISTING_REPOSITORY,
+                        Project = new Project
+                        {
+                            Key = EXISTING_PROJECT
+                        }
+                    }
+                },
+                State = PullRequestState.OPEN
+            };
+
+            newPullRequest = await stashClient.PullRequests.Create(EXISTING_PROJECT, EXISTING_REPOSITORY, newPullRequest);
+
+            Assert.IsTrue(newPullRequest.State != PullRequestState.MERGED);
+            Assert.IsTrue(newPullRequest.Reviewers.Length == 0);
+
+            newPullRequest.Reviewers = new[]
+            {
+                new AuthorWrapper
+                {
+                    User = new Author
+                    {
+                        Name = OTHERTEST_USERNAME
+                    }
                 }
-            }
-            
+            };
+
+            newPullRequest = await stashClient.PullRequests.Update(newPullRequest, EXISTING_PROJECT, EXISTING_REPOSITORY);
+
+            Assert.IsTrue(newPullRequest.Reviewers.Length == 1);
+
+            stashClient.SetBasicAuthentication(OTHERTEST_USERNAME, OTHERTEST_PASSWORD);
+
+            var pullRequestReviewed = await stashClient.PullRequests.Approve(newPullRequest, EXISTING_PROJECT);
+
+            Assert.IsTrue(pullRequestReviewed.Approved);
+
+            pullRequestReviewed = await stashClient.PullRequests.Decline(newPullRequest, EXISTING_PROJECT);
+
+            Assert.IsFalse(pullRequestReviewed.Approved);
+
+            stashClient.SetBasicAuthentication(TEST_USERNAME, TEST_PASSWORD);
+
+            newPullRequest = await stashClient.PullRequests.Merge(newPullRequest, EXISTING_PROJECT);
+
+            Assert.IsTrue(newPullRequest.State == PullRequestState.MERGED);
         }
     }
 }

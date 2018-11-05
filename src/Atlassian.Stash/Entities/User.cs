@@ -8,7 +8,7 @@ namespace Atlassian.Stash.Entities
         public string Name { get; set; }
 
         [JsonProperty("emailAddress")]
-        public string EMail { get; set; }
+        public string Email { get; set; }
 
         [JsonProperty("id")]
         public int Id { get; set; }

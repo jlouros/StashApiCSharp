@@ -35,6 +35,11 @@ namespace Atlassian.Stash
             this.Forks = new Forks(_httpWorker);
         }
 
+        public void SetBasicAuthentication(string username, string password)
+        {
+            _httpWorker.SetBasicAuthentication(username, password);
+        }
+
         public Projects Projects { get; private set; }
         public Groups Groups { get; set; }
         public Users Users { get; private set; }

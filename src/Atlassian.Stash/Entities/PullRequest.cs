@@ -16,6 +16,7 @@ namespace Atlassian.Stash.Entities
     public class PullRequest
     {
         public string Id { get; set; }
+        [JsonProperty("version")]
         public string Version { get; set; }
 
         [JsonProperty("title")]
