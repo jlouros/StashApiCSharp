@@ -3,54 +3,37 @@
 This project is designed to run against a local instance of Bitbucket Server.
 Modify 'App.config' with your local configuration settings.
 
-
 ## Setting up Integrations to run locally
+	
+### Step 1: Setting up Bitbucket instance with Docker containers by running the following commands:
+	1. docker volume create --name bitbucketVolume
+	2. docker run -v bitbucketVolume:/var/atlassian/application-data/bitbucket --name="bitbucket" -d -p 7990:7990 -p 7999:7999 atlassian/bitbucket-server
 
- * Local running instance at 'http://localhost:7990/'
- * (do not use TestUser as an Admin user)
- * Create a new user account using the following credentials 'TestUser':'password'
- * Go to global permissions and add 'Administrator' access to 'TestUser' (need to revisit this)
- * Create a new group named 'TestGroup'
- * Add user 'TestUser' to group 'TestGroup'
- * Create new project named 'test'
- * In 'test' project, create a repository named 'TestRepository'
- * On the repository permission settings add 'TestGroup' with "Write" permissions 
- * create new local git repository {try to use a script after this point}
- * add a file the local repository called 'test.txt' (and enter some basic text)
- * create a new folder name "folder" and add a new file called 'test.txt' (and enter some basic text)
- * create a new folder name "my folder" and add a new file called 'my test.txt' (and enter some basic text)
- * commit and push the changes to your local Bitbucket Server, targeting 'TestRepository'
- * make a change in 'text.txt' file; commit and push this changes (now you should have at least 2 commits)
- * create a new tag using the following command => git tag -a TestTag -m 'my test tag'
- * push the new tag to the server using => git push origin --tags
- * check all commits http://localhost:7990/projects/TEST/repos/testrepository/commits and modify 'App.config' to set the commits information
- * Go to http://localhost:7990/plugins/servlet/branch-permissions/TEST/testrepository and enable 'branch permissions'
- * 'Add branch permission' to prevent 'master' branch deletion for everyone (leave 'Limit write access to' blank)
- * create a new branch locally
- * make another change in 'test.txt'; commit and push this change to the server (you should have 2 branches now)
- * create a pull request from the new branch targeting master
+### Step 2: Setting up Bitbucket for integration tests:
+	1. Setup license for Bitbucket
+	2. Create a new user account using the following credentials 'TestUser':'password'
+	3. Go to global permissions and add 'Administrator' access to 'TestUser' (need to revisit this)
+	4. Create a new group named 'TestGroup'
+	5. Add user 'TestUser' to group 'TestGroup'
+	6. Create new project named 'test'
+	7. In 'test' project, create a repository named 'TestRepository'
+	8. On the repository permission settings add 'TestGroup' with "Write" permissions 
+	9. Create a pullrequest from the 'develop' to the 'master' branch (This pullrequest need to be recreated everytime the 'Merge_PullRequest' test has run)
 
- (to fix)
- - master needs 2 commits
- - initial script set branch permissions
- - create a admin user, do not use TestUser as admin
-
-
-	REM script.bat! Trying to automate the steps described above with in a batch script
-
-	cd c:\Atlassian\code\
-
+### Step 3: Run script for creating a Git repository containing history
+	```
 	mkdir TestRepository
 	cd TestRepository
-	echo.initial set of text>test.txt
+	echo "initial set of text">test.txt
 	mkdir folder
 	cd folder
-	echo.in subfolder>test.txt
+	echo "in subfolder">test.txt
 	cd ..
 	mkdir "my folder"
 	cd "my folder"
-	echo.in subfolder with spaces>"my test.txt"
+	echo "in subfolder with spaces">"my test.txt"
 
+	cd..
 	git init
 	git add --all
 	git commit -m "Initial Commit"
@@ -60,23 +43,28 @@ Modify 'App.config' with your local configuration settings.
 	git tag -a TestTag -m "my test tag"
 	git push origin --tags
 
-	echo.more text>>test.txt
+	echo "more text">test.txt
 	git add --all
 	git commit -m "small change"
+	git push -u origin master
 
 	git branch develop
 	git checkout develop
 
-	echo.even more text>>test.txt
+	echo "even more text">test.txt
 	git add --all
 	git commit -m "develop change"
 	git push --set-upstream origin develop
+	```
 
+### Step 4: Setting up App.config with correct configuration
+	1. Add the last and second last commit SHA into your app.config
 
- 
 ## To be done
-
-Create different groups and users for specific permission access (TestGroup-Read, TestUser-Admin, so on...)
-Automate creation/validation initial setup process.
-Block any test execution if the validation script fails.
-Add more tests.
+	* Create different groups and users for specific permission access (TestGroup-Read, TestUser-Admin, so on...)
+	* Automate creation/validation initial setup process.
+	* Block any test execution if the validation script fails.
+	* Add more tests.
+	* Fix 'Merge_PullRequest' test to create a commit and pullrequest, because this need to be done manually every time the test has ran.
+	* Initial script set branch permissions
+	* Create a admin user, do not use TestUser as admin
