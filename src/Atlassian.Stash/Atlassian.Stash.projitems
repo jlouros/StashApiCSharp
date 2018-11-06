@@ -45,6 +45,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Permission.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Project.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\PullRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\PullRequestReviewed.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\PullRequestSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\PullRequestStatus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Ref.cs" />
