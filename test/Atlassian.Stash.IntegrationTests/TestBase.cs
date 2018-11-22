@@ -26,6 +26,7 @@ namespace Atlassian.Stash.IntegrationTests
         protected readonly string EXISTING_GROUP = ConfigurationManager.AppSettings.Get("existing-group");
         protected readonly string EXISTING_HOOK = ConfigurationManager.AppSettings.Get("existing-hook");
         protected readonly int EXISTING_NUMBER_OF_CHANGES = int.Parse(ConfigurationManager.AppSettings.Get("existing-number-of-changes"));
+        protected readonly string PERSONAL_ACCESS_TOKEN = ConfigurationManager.AppSettings.Get("personal-access-token");
 
         protected StashClient stashClient;
 

@@ -13,12 +13,15 @@ Modify 'App.config' with your local configuration settings.
 	1. Setup license for Bitbucket
 	2. Create a new user account using the following credentials 'TestUser':'password'
 	3. Go to global permissions and add 'Administrator' access to 'TestUser' (need to revisit this)
-	4. Create a new group named 'TestGroup'
-	5. Add user 'TestUser' to group 'TestGroup'
-	6. Create new project named 'test'
-	7. In 'test' project, create a repository named 'TestRepository'
-	8. On the repository permission settings add 'TestGroup' with "Write" permissions 
-	9. Create a pullrequest from the 'develop' to the 'master' branch (This pullrequest need to be recreated everytime the 'Merge_PullRequest' test has run)
+	4. Create a new user account using the following credentials 'OtherTestUser':'password'
+	5. Go to global permissions and add 'Administrator' access to 'OtherTestUser' (need to revisit this)
+	6. Create a new group named 'TestGroup'
+	7. Add user 'TestUser' to group 'TestGroup'
+	8. Login as 'TestUser' and create a personal access token (you need this in Step 4)
+	9. Create new project named 'test'
+	10 In 'test' project, create a repository named 'TestRepository'
+	11. On the repository permission settings add 'TestGroup' with "Write" permissions 
+	12. Create a pullrequest from the 'develop' to the 'master' branch (This pullrequest need to be recreated everytime the 'Merge_PullRequest' test has run)
 
 ### Step 3: Run script for creating a Git repository containing history
 	```
@@ -58,7 +61,8 @@ Modify 'App.config' with your local configuration settings.
 	```
 
 ### Step 4: Setting up App.config with correct configuration
-	1. Add the last and second last commit SHA into your app.config
+	1. Add the last and second last commit SHA as the value for the keys 'existing-commit' and 'existing-older-commit'
+	2. Add the personal access token as the value for 'personal-access-token'
 
 ## To be done
 	* Create different groups and users for specific permission access (TestGroup-Read, TestUser-Admin, so on...)
