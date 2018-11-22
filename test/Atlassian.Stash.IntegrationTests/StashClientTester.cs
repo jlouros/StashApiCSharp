@@ -823,5 +823,18 @@ namespace Atlassian.Stash.IntegrationTests
 
             Assert.IsTrue(newPullRequest.State == PullRequestState.MERGED);
         }
+
+        [TestMethod]
+        public async Task Get_TestUser_User_With_BearAuthenticationToken()
+        {
+            var client = new StashClient(BASE_URL, PERSONAL_ACCESS_TOKEN, true);
+            var response = await client.Users.Get(TEST_USERNAME);
+
+            var users = response.Values;
+
+            Assert.IsNotNull(users);
+            Assert.IsTrue(users.Any());
+            Assert.IsNotNull(users.Single(user => user.Name == TEST_USERNAME));
+        }
     }
 }

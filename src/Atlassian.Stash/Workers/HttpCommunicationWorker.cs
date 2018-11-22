@@ -11,14 +11,29 @@ namespace Atlassian.Stash.Workers
 {
     internal class HttpCommunicationWorker
     {
-        private Uri baseUrl;
-        private AuthenticationHeaderValue authenticationHeader = null;
+        private readonly HttpClient httpClient = new HttpClient();
 
-
-        
+        #region Constructor
         public HttpCommunicationWorker(string baseUrl, string base64Auth, AuthScheme schemeToUse)
         {
-            this.baseUrl = new Uri(baseUrl);
+            SetupHttpClient(baseUrl, base64Auth, schemeToUse);
+        }
+
+        public HttpCommunicationWorker(string baseUrl, string username, string password)
+        {
+            byte[] userPassBytes = Encoding.UTF8.GetBytes($"{username}:{password}");
+            string userPassBase64 = Convert.ToBase64String(userPassBytes);
+
+            SetupHttpClient(baseUrl, userPassBase64, AuthScheme.Basic);
+        }
+
+        /// <summary>
+        /// Creates a new instance of System.Net.Http.HttpClient
+        /// </summary>
+        /// <remarks>Should only be instantiated onces</remarks>
+        private void SetupHttpClient(string baseUrl, string base64Auth, AuthScheme schemeToUse)
+        {
+            httpClient.BaseAddress = new Uri(baseUrl);
 
             switch (schemeToUse)
             {
@@ -30,17 +45,11 @@ namespace Atlassian.Stash.Workers
                     break;
                 default:
                     throw new ApplicationException("Unsupported authentication scheme");
-
             }
         }
+        #endregion
 
-        public HttpCommunicationWorker(string baseUrl, string username, string password)
-        {
-            this.baseUrl = new Uri(baseUrl);
-
-            SetBasicAuthentication(username, password);
-        }
-
+        #region SetAuthentication
         public void SetBearerAuthentication(string base64Auth)
         {
             SetAuthenticationHeader(new AuthenticationHeaderValue(AuthScheme.Bearer.ToString(), base64Auth));
@@ -61,29 +70,13 @@ namespace Atlassian.Stash.Workers
 
         private void SetAuthenticationHeader(AuthenticationHeaderValue header)
         {
-            this.authenticationHeader = header;
+            httpClient.DefaultRequestHeaders.Authorization = header;
         }
+        #endregion
 
-        /// <summary>
-        /// Creates a new instance of System.Net.Http.HttpClient
-        /// </summary>
-        /// <remarks>must be disposed by caller</remarks>
-        private HttpClient CreateHttpClient()
-        {
-            HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = this.baseUrl;
-
-            if (this.authenticationHeader != null)
-            {
-                httpClient.DefaultRequestHeaders.Authorization = this.authenticationHeader;
-            }
-
-            return httpClient;
-        }
-
+        #region HttpMethods
         public async Task<T> GetAsync<T>(string requestUrl)
         {
-            using (HttpClient httpClient = CreateHttpClient())
             using (HttpResponseMessage httpResponse = await httpClient.GetAsync(requestUrl).ConfigureAwait(false))
             {
                 string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -101,7 +94,6 @@ namespace Atlassian.Stash.Workers
 
         public async Task<string> GetAsync(string requestUrl)
         {
-            using (HttpClient httpClient = CreateHttpClient())
             using (HttpResponseMessage httpResponse = await httpClient.GetAsync(requestUrl).ConfigureAwait(false))
             {
                 string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -118,7 +110,6 @@ namespace Atlassian.Stash.Workers
             });
             HttpContent contentToPost = new StringContent(strData, Encoding.UTF8, "application/json");
 
-            using (HttpClient httpClient = CreateHttpClient())
             using (HttpResponseMessage httpResponse = await httpClient.PostAsync(requestUrl, contentToPost))
             {
                 string json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -148,7 +139,6 @@ namespace Atlassian.Stash.Workers
             });
             HttpContent contentToPut = new StringContent(strData, Encoding.UTF8, "application/json");
 
-            using (HttpClient httpClient = CreateHttpClient())
             using (HttpResponseMessage httpResponse = (data != null) ?
                                     await httpClient.PutAsync(requestUrl, contentToPut) :
                                     await httpClient.PutAsync(requestUrl, null).ConfigureAwait(false))
@@ -173,7 +163,6 @@ namespace Atlassian.Stash.Workers
 
         public async Task<string> PutAsync(string requestUrl, string data)
         {
-            using (HttpClient httpClient = CreateHttpClient())
             using (HttpResponseMessage httpResponse = (data != null) ?
                                     await httpClient.PutAsync(requestUrl, new StringContent(data, Encoding.UTF8, "application/json")).ConfigureAwait(false) :
                                     await httpClient.PutAsync(requestUrl, null).ConfigureAwait(false))
@@ -191,7 +180,6 @@ namespace Atlassian.Stash.Workers
 
         public async Task DeleteAsync(string requestUrl)
         {
-            using (HttpClient httpClient = CreateHttpClient())
             using (HttpResponseMessage httpResponse = await httpClient.DeleteAsync(requestUrl).ConfigureAwait(false))
             {
                 if (httpResponse.StatusCode != HttpStatusCode.NoContent && httpResponse.StatusCode != HttpStatusCode.Accepted && httpResponse.StatusCode != HttpStatusCode.OK)
@@ -203,7 +191,6 @@ namespace Atlassian.Stash.Workers
 
         public async Task<T> DeleteWithResponseContentAsync<T>(string requestUrl)
         {
-            using (HttpClient httpClient = CreateHttpClient())
             using (HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Delete, requestUrl))
             using (HttpResponseMessage httpResponse = await httpClient.SendAsync(requestMessage).ConfigureAwait(false))
             {
@@ -222,7 +209,6 @@ namespace Atlassian.Stash.Workers
 
         public async Task DeleteWithRequestContentAsync<T>(string requestUrl, T data)
         {
-            using (HttpClient httpClient = CreateHttpClient())
             using (HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Delete, requestUrl))
             {
                 string jsonData = JsonConvert.SerializeObject(data);
@@ -238,5 +224,6 @@ namespace Atlassian.Stash.Workers
                 }
             }
         }
+        #endregion
     }
 }
