@@ -7,7 +7,7 @@
   <Import Project="..\Atlassian.Stash\Atlassian.Stash.projitems" Label="Shared" />
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
