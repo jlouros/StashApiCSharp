@@ -1,0 +1,47 @@
+name: Build and Deploy
+
+on:
+  pull_request:
+    branches: [ master ]
+
+env:
+  SOLUTION_NAME: Atlassian.Stash.sln     # set this to your application's name
+#   AZURE_WEBAPP_PACKAGE_PATH: 'published'      # set this to the path to your web app project, defaults to the repository root
+
+jobs:
+  build:
+    name: Build and deploy
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup MSBuild path
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1
+      with:
+        nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+        nuget-version: '5.x'
+
+    - name: Restore NuGet packages
+      run: nuget restore ${{ env.SOLUTION_NAME }}
+
+    - name: Build
+      run: msbuild ${{ env.SOLUTION_NAME }} /p:Configuration=Release
+
+    # - name: Publish to folder
+    #   run: msbuild ${{ env.SOLUTION_NAME }} /p:Configuration=Release /p:DeployOnBuild=true /t:WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl=${{ env.AZURE_WEBAPP_PACKAGE_PATH }} /p:PackageAsSingleFile=false
+
+    # - name: Deploy to Azure WebApp
+    #   uses: azure/webapps-deploy@v1
+    #   with:
+    #     app-name: ${{ env.SOLUTION_NAME }}
+    #     publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+    #     package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+    # - name: Publish artifacts
+    #   uses: actions/upload-artifact@v1.0.0
+    #   with:
+    #     name: webapp
+    #     path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}

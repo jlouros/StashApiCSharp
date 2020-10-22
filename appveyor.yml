@@ -1,0 +1,31 @@
+version: 3.1.{build}
+pull_requests:
+  do_not_increment_build_number: true
+image: Visual Studio 2017
+configuration: Release
+platform: Any CPU
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+environment:
+  NuGetApiKey: 23296111-04b2-4ccc-9f83-2e7373e8c213
+nuget:
+  disable_publish_on_pr: true
+build_script:
+- ps: "$branch = $env:APPVEYOR_REPO_BRANCH \n$packageVersion = \"$($env:APPVEYOR_BUILD_VERSION)\"\n\nif($branch -eq \"master\" -and $env:APPVEYOR_PULL_REQUEST_NUMBER -eq $null) {\n	.\\build.ps1 -Target \"Publish-NuGet-Package\" -ScriptArgs @(\"-packageVersion=$packageVersion\", \"-nugetApiKey=$env:NuGetApiKey\")\n} else {\n	.\\build.ps1 -Target \"Create-NuGet-Package\" -ScriptArgs @(\"-packageVersion=$packageVersion\")\n}"
+test:
+  assemblies:
+    only:
+    - '**\bin\$(configuration)\*.UnitTests.dll'
+artifacts:
+- path: buildOutput\*.nupkg
+  name: NuGetPackage
+deploy:
+- provider: NuGet
+  api_key:
+    secure: THIS_WAS_NUGET_API_KEY
+  on:
+    branch: master
