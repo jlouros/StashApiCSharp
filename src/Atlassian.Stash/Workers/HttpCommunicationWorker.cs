@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -21,7 +21,7 @@ namespace Atlassian.Stash.Workers
 
         public HttpCommunicationWorker(string baseUrl, string username, string password)
         {
-            byte[] userPassBytes = Encoding.UTF8.GetBytes($"{username}:{password}");
+            byte[] userPassBytes = Encoding.UTF8.GetBytes(string.Format("{0}:{1}", username, password));
             string userPassBase64 = Convert.ToBase64String(userPassBytes);
 
             SetupHttpClient(baseUrl, userPassBase64, AuthScheme.Basic);
