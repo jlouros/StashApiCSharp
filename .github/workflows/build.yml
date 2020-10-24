@@ -28,7 +28,7 @@ jobs:
       run: nuget restore ${{ env.SOLUTION_NAME }}
 
     - name: Build
-      run: msbuild ${{ env.SOLUTION_NAME }} /p:Configuration=Release
+      run: dotnet build ${{ env.SOLUTION_NAME }} /p:Configuration=Release
 
     # - name: Publish to folder
     #   run: msbuild ${{ env.SOLUTION_NAME }} /p:Configuration=Release /p:DeployOnBuild=true /t:WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl=${{ env.AZURE_WEBAPP_PACKAGE_PATH }} /p:PackageAsSingleFile=false

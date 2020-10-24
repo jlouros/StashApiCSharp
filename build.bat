@@ -1,1 +1,0 @@
-msbuild.exe Atlassian.Stash.sln -r
