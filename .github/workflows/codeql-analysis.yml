@@ -64,3 +64,5 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
+
+https://github.com/microsoft/appcenter-sdk-dotnet/pull/1387/files/cb86dc55e3de839d1eae829d461c6097ab3067e3

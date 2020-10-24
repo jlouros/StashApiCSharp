@@ -59,9 +59,9 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Atlassian.Stash.Net45\Atlassian.Stash.Net45.csproj">
-      <Project>{7d240671-3da9-47a8-9b6c-620721a2f92a}</Project>
-      <Name>Atlassian.Stash.Net45</Name>
+    <ProjectReference Include="..\..\src\Atlassian.Stash\Atlassian.Stash.csproj">
+      <Project>{bb967176-9957-4686-b45f-a6ee316dae04}</Project>
+      <Name>Atlassian.Stash</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
