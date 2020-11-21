@@ -26,12 +26,22 @@ namespace Atlassian.Stash.Api
         private const string PERMISSION_USERS = ONE_REPOSITORY + "/permissions/users";
         private const string PERMISSION_REVOKE_USER = PERMISSION_USERS + "?name={2}";
         private const string PERMISSION_GRANT_USER = PERMISSION_USERS + "?permission={2}&name={3}";
+        private const string REPO_SIZES = "projects/{0}/repos/{1}/sizes";
 
         private HttpCommunicationWorker _httpWorker;
 
         internal Repositories(HttpCommunicationWorker httpWorker)
         {
             _httpWorker = httpWorker;
+        }
+
+        public async Task<Sizes> GetSizes(string projectKey, string repositorySlug, RequestOptions requestOptions = null)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(REPO_SIZES, requestOptions, projectKey, repositorySlug);
+
+            Sizes response = await _httpWorker.GetAsync<Sizes>(requestUrl).ConfigureAwait(false);
+
+            return response;
         }
 
         public async Task<ResponseWrapper<Repository>> Get(string projectKey, RequestOptions requestOptions = null)
