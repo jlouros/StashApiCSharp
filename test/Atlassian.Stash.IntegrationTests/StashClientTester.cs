@@ -99,12 +99,10 @@ namespace Atlassian.Stash.IntegrationTests
         [TestMethod]
         public async Task Can_GetAllSizes()
         {
-            var response = await stashClient.Repositories.GetSizes(EXISTING_PROJECT, EXISTING_REPOSITORY);
-            var sizes = response.Values;
+            var response = await this.stashClient.Repositories.GetSizes(this.EXISTING_PROJECT, this.EXISTING_REPOSITORY);
 
-            Assert.IsNotNull(sizes);
-            Assert.IsInstanceOfType(sizes, typeof(Sizes));
-            Assert.IsTrue(sizes.Any());
+            Assert.IsNotNull(response.Repository);
+            Assert.IsNotNull(response.Attachments);
         }
 
         [TestMethod]
