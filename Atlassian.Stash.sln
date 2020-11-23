@@ -3,18 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlassian.Stash.IntegrationTests", "test\Atlassian.Stash.IntegrationTests\Atlassian.Stash.IntegrationTests.csproj", "{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlassian.Stash.IntegrationTests", "test\Atlassian.Stash.IntegrationTests\Atlassian.Stash.IntegrationTests.csproj", "{AF376EF0-2FF2-4D2D-ADBF-309A7E78E278}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlassian.Stash.UnitTests", "test\Atlassian.Stash.UnitTests\Atlassian.Stash.UnitTests.csproj", "{E7A7BD1F-BBBE-4662-9A65-66931979B57E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlassian.Stash.UnitTests", "test\Atlassian.Stash.UnitTests\Atlassian.Stash.UnitTests.csproj", "{E7A7BD1F-BBBE-4662-9A65-66931979B57E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{DEEDD21F-DF73-4F31-ADBB-ABA389142ED1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F61C74C-4030-4280-80F2-3202F17DC024}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuspec", ".nuspec", "{649E6F16-4128-4081-A6C0-3F0F69CF0446}"
-	ProjectSection(SolutionItems) = preProject
-		.nuspec\Atlassian.Stash.nuspec = .nuspec\Atlassian.Stash.nuspec
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".docs", ".docs", "{6D9B80C2-22CF-41C8-86AD-62C30C146BB1}"
 	ProjectSection(SolutionItems) = preProject

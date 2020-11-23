@@ -10,7 +10,7 @@ env:
 
 jobs:
   build:
-    name: Build and deploy
+    name: Build
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -27,8 +27,25 @@ jobs:
     - name: Restore NuGet packages
       run: nuget restore ${{ env.SOLUTION_NAME }}
 
-    - name: Build
+    - name: Build solution
       run: dotnet build ${{ env.SOLUTION_NAME }} /p:Configuration=Release
+
+    - name: Determine change type
+      id: bump
+      uses: zwaldowski/match-label-action@v2
+      with:
+        allowed: major,minor,patch
+
+    - name: Set version
+      id: next_version
+      uses: zwaldowski/semver-release-action@v2
+      with:
+        dry_run: true
+        bump: ${{ steps.bump.outputs.match }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    - run: echo "${{ steps.next_version.outputs.version }}"
+
 
     # - name: Publish to folder
     #   run: msbuild ${{ env.SOLUTION_NAME }} /p:Configuration=Release /p:DeployOnBuild=true /t:WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl=${{ env.AZURE_WEBAPP_PACKAGE_PATH }} /p:PackageAsSingleFile=false
