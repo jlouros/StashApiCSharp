@@ -4,7 +4,7 @@ This project is designed to run against a local instance of Bitbucket Server.
 Modify 'App.config' with your local configuration settings.
 
 ## Setting up Integrations to run locally
-	
+
 ### Step 1: Setting up Bitbucket instance with Docker containers by running the following commands:
 	1. docker volume create --name bitbucketVolume
 	2. docker run -v bitbucketVolume:/var/atlassian/application-data/bitbucket --name="bitbucket" -d -p 7990:7990 -p 7999:7999 atlassian/bitbucket-server
@@ -20,7 +20,7 @@ Modify 'App.config' with your local configuration settings.
 	8. Login as 'TestUser' and create a personal access token (you need this in Step 4)
 	9. Create new project named 'test'
 	10 In 'test' project, create a repository named 'TestRepository'
-	11. On the repository permission settings add 'TestGroup' with "Write" permissions 
+	11. On the repository permission settings add 'TestGroup' with "Write" permissions
 	12. Create a pullrequest from the 'develop' to the 'master' branch (This pullrequest need to be recreated everytime the 'Merge_PullRequest' test has run)
 
 ### Step 3: Run script for creating a Git repository containing history
@@ -72,3 +72,9 @@ Modify 'App.config' with your local configuration settings.
 	* Fix 'Merge_PullRequest' test to create a commit and pullrequest, because this need to be done manually every time the test has ran.
 	* Initial script set branch permissions
 	* Create a admin user, do not use TestUser as admin
+
+## Docker
+
+```
+docker run --name="bitbucket" -d -p 7990:7990 -p 7999:7999 atlassian/bitbucket-server
+```

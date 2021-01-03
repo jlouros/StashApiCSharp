@@ -1,0 +1,23 @@
+name: Infer#
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  analyze:
+    name: Infer#
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build solution
+      run: dotnet build /p:Configuration=Debug
+
+    - name: Run Infer#
+      uses: microsoft/infersharpaction@v0.2
+      id: runinfersharp
+      with:
+        binary-path: ./src/Atlassian.Stash/bin/Debug/netstandard2.0
+    - name: Infer# analysis results
+      run: echo "${{ steps.runinfersharp.outputs.results }}"
