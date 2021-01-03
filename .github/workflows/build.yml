@@ -5,8 +5,9 @@ on:
     branches: [ master ]
 
 env:
-  SOLUTION_NAME: Atlassian.Stash.sln     # set this to your application's name
-#   AZURE_WEBAPP_PACKAGE_PATH: 'published'      # set this to the path to your web app project, defaults to the repository root
+  SOLUTION_NAME: Atlassian.Stash.sln
+  UNIT_TEST_PROJECT_PATH: ./test/Atlassian.Stash.UnitTests/
+  BUILD_OUTPUT_PATH: ./buildOutput/
 
 jobs:
   build:
@@ -14,18 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1
-      with:
-        nuget-api-key: ${{ secrets.NUGET_API_KEY }}
-        nuget-version: '5.x'
-
-    - name: Restore NuGet packages
-      run: nuget restore ${{ env.SOLUTION_NAME }}
-
-    - name: Build solution
-      run: dotnet build ${{ env.SOLUTION_NAME }} /p:Configuration=Release
 
     - name: Determine change type
       id: bump
@@ -42,6 +31,29 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
     - run: echo "${{ steps.next_version.outputs.version }}"
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1
+      with:
+        nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+        nuget-version: '5.x'
+
+    - name: Restore NuGet packages
+      run: nuget restore ${{ env.SOLUTION_NAME }}
+
+    - name: Build solution
+      run: dotnet build ${{ env.SOLUTION_NAME }} -c Release -o buildOutput "/p:Version=${{ steps.next_version.outputs.version }}"
+
+    - name: Run unit tests
+      run: dotnet test ${{ env.UNIT_TEST_PROJECT_PATH }}
+
+    - name: Publish artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: generated-nuget-packages
+        path: |
+          ${{ env.BUILD_OUTPUT_PATH }}/*.nupkg
+          ${{ env.BUILD_OUTPUT_PATH }}/*.snupkg
 
 
     # - name: Publish to folder

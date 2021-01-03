@@ -1,0 +1,58 @@
+name: Publish NuGet
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Publish package
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1
+      with:
+        nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+        nuget-version: '5.x'
+
+    - name: Restore NuGet packages
+      run: nuget restore ${{ env.SOLUTION_NAME }}
+
+    - name: Build solution
+      run: dotnet build ${{ env.SOLUTION_NAME }} /p:Configuration=Release
+
+    - name: Run unit tests
+      run: dotnet test ${{ env.UNIT_TEST_PROJECT_PATH }}
+
+    - name: Determine change type
+      id: bump
+      uses: zwaldowski/match-label-action@v2
+      with:
+        allowed: major,minor,patch
+
+    - name: Set version
+      id: next_version
+      uses: zwaldowski/semver-release-action@v2
+      with:
+        dry_run: true
+        bump: ${{ steps.bump.outputs.match }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    - run: echo "${{ steps.next_version.outputs.version }}"
+
+
+    # - name: Publish to folder
+    #   run: msbuild ${{ env.SOLUTION_NAME }} /p:Configuration=Release /p:DeployOnBuild=true /t:WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl=${{ env.AZURE_WEBAPP_PACKAGE_PATH }} /p:PackageAsSingleFile=false
+
+    # - name: Deploy to Azure WebApp
+    #   uses: azure/webapps-deploy@v1
+    #   with:
+    #     app-name: ${{ env.SOLUTION_NAME }}
+    #     publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+    #     package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+    - name: Publish artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: nuget_package
+        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
