@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build and Package
 
 on:
   pull_request:
@@ -7,15 +7,13 @@ on:
 env:
   SOLUTION_NAME: Atlassian.Stash.sln
   UNIT_TEST_PROJECT_PATH: ./test/Atlassian.Stash.UnitTests/
-  BUILD_OUTPUT_PATH: ./buildOutput/
+  BUILD_OUTPUT_PATH: ./buildOutput
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-
     - name: Determine change type
       id: bump
       uses: zwaldowski/match-label-action@v2
@@ -32,20 +30,21 @@ jobs:
 
     - run: echo "${{ steps.next_version.outputs.version }}"
 
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1
-      with:
-        nuget-api-key: ${{ secrets.NUGET_API_KEY }}
-        nuget-version: '5.x'
+    - uses: actions/checkout@v2
 
-    - name: Restore NuGet packages
-      run: nuget restore ${{ env.SOLUTION_NAME }}
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+
+    - name: Install dependencies
+      run: dotnet restore
 
     - name: Build solution
-      run: dotnet build ${{ env.SOLUTION_NAME }} -c Release -o buildOutput "/p:Version=${{ steps.next_version.outputs.version }}"
+      run: dotnet build --configuration Release --no-restore --output ./buildOutput "/p:Version=${{ steps.next_version.outputs.version }}"
 
     - name: Run unit tests
-      run: dotnet test ${{ env.UNIT_TEST_PROJECT_PATH }}
+      run: dotnet test ${{ env.UNIT_TEST_PROJECT_PATH }} --no-restore --verbosity normal
 
     - name: Publish artifacts
       uses: actions/upload-artifact@v2
@@ -54,20 +53,3 @@ jobs:
         path: |
           ${{ env.BUILD_OUTPUT_PATH }}/*.nupkg
           ${{ env.BUILD_OUTPUT_PATH }}/*.snupkg
-
-
-    # - name: Publish to folder
-    #   run: msbuild ${{ env.SOLUTION_NAME }} /p:Configuration=Release /p:DeployOnBuild=true /t:WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl=${{ env.AZURE_WEBAPP_PACKAGE_PATH }} /p:PackageAsSingleFile=false
-
-    # - name: Deploy to Azure WebApp
-    #   uses: azure/webapps-deploy@v1
-    #   with:
-    #     app-name: ${{ env.SOLUTION_NAME }}
-    #     publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-    #     package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-
-    # - name: Publish artifacts
-    #   uses: actions/upload-artifact@v1.0.0
-    #   with:
-    #     name: webapp
-    #     path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
