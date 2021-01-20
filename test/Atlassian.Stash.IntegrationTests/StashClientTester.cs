@@ -75,6 +75,17 @@ namespace Atlassian.Stash.IntegrationTests
         }
 
         [TestMethod]
+        public async Task Can_GetAllUsers()
+        {
+            var response = await stashClient.Groups.GetUsers(EXISTING_GROUP, new RequestOptions { Limit = 1, Start = 0 });
+            var projects = response.Values;
+
+            Assert.IsNotNull(projects);
+            Assert.IsInstanceOfType(projects, typeof(IEnumerable<User>));
+            Assert.IsTrue(projects.Any());
+        }
+
+        [TestMethod]
         public async Task Can_GetAllProjects_WithRequestOptions()
         {
             int requestLimit = 1;

@@ -21,5 +21,8 @@ namespace Atlassian.Stash.Entities
 
         [JsonProperty("type")]
         public string Type { get; set; }
+
+        [JsonProperty("lastAuthenticationTimestamp")]
+        public long LastAuthenticationTimestamp { get; set; }
     }
 }
