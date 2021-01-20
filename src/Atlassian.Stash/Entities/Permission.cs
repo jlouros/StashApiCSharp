@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 
 using Newtonsoft.Json;
 
@@ -20,23 +20,22 @@ namespace Atlassian.Stash.Entities
         {
             get
             {
-                if (this.Group != null && this.User != null)
+                if (Group != null && User != null)
                 {
-                    return $"User: {this.User.Email} : {this.Group.Name} => {this.permission}";
+                    return $"User: {User.Email} : {Group.Name} => {permission}";
                 }
 
-                if (this.Group == null)
+                if (Group == null)
                 {
-                    return $"User: {this.User.Name} : {this.User.Email} => {this.permission}";
+                    return $"User: {User.Name} : {User.Email} => {permission}";
                 }
 
-                if (this.User == null)
+                if (User == null)
                 {
-                    return $"Group: {this.Group.Name} => {this.permission}";
+                    return $"Group: {Group.Name} => {permission}";
                 }
 
-                return $"Permission: {this.permission}";
-
+                return $"Permission: {permission}";
             }
         }
     }
