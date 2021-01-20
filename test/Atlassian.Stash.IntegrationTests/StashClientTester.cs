@@ -97,6 +97,15 @@ namespace Atlassian.Stash.IntegrationTests
         }
 
         [TestMethod]
+        public async Task Can_GetAllSizes()
+        {
+            var response = await this.stashClient.Repositories.GetSizes(this.EXISTING_PROJECT, this.EXISTING_REPOSITORY);
+
+            Assert.IsNotNull(response.Repository);
+            Assert.IsNotNull(response.Attachments);
+        }
+
+        [TestMethod]
         public async Task Can_GetAllRepositories()
         {
             var response = await stashClient.Repositories.Get(EXISTING_PROJECT);
