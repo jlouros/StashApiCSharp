@@ -51,6 +51,5 @@ namespace Atlassian.Stash
         public Forks Forks { get; private set; }
         public Labels Labels { get; private set; }
 
-
     }
 }
