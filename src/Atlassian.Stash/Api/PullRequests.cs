@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Atlassian.Stash.Entities;
 using Atlassian.Stash.Helpers;
 using Atlassian.Stash.Workers;
@@ -25,6 +25,7 @@ namespace Atlassian.Stash.Api
         }
 
         private const string PULL_REQUEST = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests";
+        private const string PULL_REQUEST_GET = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests/{2}";
         private const string PULL_REQUEST_UPDATE = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests/{2}";
         private const string PULL_REQUEST_MERGEABLE = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests/{2}/merge";
         private const string PULL_REQUEST_MERGE = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests/{2}/merge?version={3}";
@@ -144,6 +145,22 @@ namespace Atlassian.Stash.Api
                 }
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Get an existing pull request.
+        /// </summary>
+        /// <param name="pullRequestId"></param>
+        /// <param name="projectKey"></param>
+        /// <param name="slug"></param>
+        /// <returns>The pull request</returns>
+        public async Task<PullRequest> Get(string pullRequestId, string projectKey, string slug)
+        {
+            string requestUrl = UrlBuilder.FormatRestApiUrl(PULL_REQUEST_GET, null, projectKey, slug, pullRequestId);
+
+            PullRequest pullRequest = await _httpWorker.GetAsync<PullRequest>(requestUrl).ConfigureAwait(false);
+
+            return pullRequest;
         }
 
         /// <summary>
