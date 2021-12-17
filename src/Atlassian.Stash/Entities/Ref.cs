@@ -10,5 +10,7 @@ namespace Atlassian.Stash.Entities
         public string LatestChangeset { get; set; }
         [JsonProperty("repository")]
         public Repository Repository { get; set; }
+        [JsonProperty("latestCommit")]
+        public string LatestCommit { get; set; }
     }
 }

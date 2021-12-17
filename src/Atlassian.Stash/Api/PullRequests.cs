@@ -26,6 +26,8 @@ namespace Atlassian.Stash.Api
 
         private const string PULL_REQUEST = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests";
         private const string PULL_REQUEST_GET = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests/{2}";
+        private const string PULL_REQUEST_ACTIVITIES = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests/{2}/activities";
+        private const string PULL_REQUEST_COMMITS = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests/{2}/commits";
         private const string PULL_REQUEST_UPDATE = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests/{2}";
         private const string PULL_REQUEST_MERGEABLE = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests/{2}/merge";
         private const string PULL_REQUEST_MERGE = "rest/api/1.0/projects/{0}/repos/{1}/pull-requests/{2}/merge?version={3}";
@@ -161,6 +163,36 @@ namespace Atlassian.Stash.Api
             PullRequest pullRequest = await _httpWorker.GetAsync<PullRequest>(requestUrl).ConfigureAwait(false);
 
             return pullRequest;
+        }
+
+        /// <summary>
+        /// Get pull request activities.
+        /// </summary>
+        /// <param name="pullRequestId"></param>
+        /// <param name="projectKey"></param>
+        /// <param name="slug"></param>
+        /// <param name="requestOptions"></param>
+        /// <returns>The pull request activities.</returns>
+        public async Task<ResponseWrapper<PullRequestActivity>> GetActivities(string pullRequestId, string projectKey, string slug, RequestOptions requestOptions = null)
+        {
+            var requestUrl = UrlBuilder.FormatRestApiUrl(PULL_REQUEST_ACTIVITIES, requestOptions, projectKey, slug, pullRequestId);
+
+            return await _httpWorker.GetAsync<ResponseWrapper<PullRequestActivity>>(requestUrl).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Get pull request commits.
+        /// </summary>
+        /// <param name="pullRequestId"></param>
+        /// <param name="projectKey"></param>
+        /// <param name="slug"></param>
+        /// <param name="requestOptions"></param>
+        /// <returns>The commits.</returns>
+        public async Task<ResponseWrapper<Commit>> GetCommits(string pullRequestId, string projectKey, string slug, RequestOptions requestOptions = null)
+        {
+            var requestUrl = UrlBuilder.FormatRestApiUrl(PULL_REQUEST_COMMITS, requestOptions, projectKey, slug, pullRequestId);
+
+            return await _httpWorker.GetAsync<ResponseWrapper<Commit>>(requestUrl).ConfigureAwait(false);
         }
 
         /// <summary>
