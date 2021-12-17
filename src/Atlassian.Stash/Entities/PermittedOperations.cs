@@ -1,4 +1,3 @@
-
 namespace Atlassian.Stash.Entities
 {
     public class PermittedOperations

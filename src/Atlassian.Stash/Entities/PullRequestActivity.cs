@@ -1,4 +1,3 @@
-
 using System;
 using Atlassian.Stash.Converters;
 using Newtonsoft.Json;
