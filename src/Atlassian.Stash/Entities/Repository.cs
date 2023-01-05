@@ -22,5 +22,7 @@ namespace Atlassian.Stash.Entities
         public Links Links { get; set; }
         [JsonProperty("project")]
         public Project Project { get; set; }
+        [JsonProperty("hierarchyId")]
+        public string HierarchyId { get; set; }
     }
 }
