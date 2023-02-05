@@ -48,12 +48,12 @@ namespace Atlassian.Stash.IntegrationTests
         public async Task Can_GetFileContents_From_Branch()
         {
             var response = await stashClient.Repositories.GetFileContents(EXISTING_PROJECT, EXISTING_REPOSITORY, EXISTING_FILE, MASTER_BRANCH_NAME);
-            
+
             Assert.IsNotNull(response);
             Assert.IsTrue(response.FileContents.Count > 0);
             Assert.AreEqual(1, response.Size);
         }
-        
+
         [TestMethod]
         public async Task Can_GetBranchesForCommit()
         {
@@ -855,6 +855,17 @@ namespace Atlassian.Stash.IntegrationTests
             Assert.IsNotNull(users);
             Assert.IsTrue(users.Any());
             Assert.IsNotNull(users.Single(user => user.Name == TEST_USERNAME));
+        }
+
+        [TestMethod]
+        public async Task Can_GetAllLabels()
+        {
+            var response = await stashClient.Labels.Get();
+            var projects = response.Values;
+
+            Assert.IsNotNull(projects);
+            Assert.IsInstanceOfType(projects, typeof(IEnumerable<Label>));
+            Assert.IsTrue(projects.Any());
         }
     }
 }
